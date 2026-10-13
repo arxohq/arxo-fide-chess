@@ -22,5 +22,11 @@
   },
   "fullCorpus": "not_checked",
   "releaseVerified": false,
-  "profile": "fide-chess"
+  "profile": "fide-chess",
+  "runtime": {
+    "sourceCommit": "03df2df0e13b8107f6f46a5dd49ba91d75a95e58",
+    "archiveUrl": "https://github.com/arxohq/arxo-fide-chess/releases/download/preview-03df2df0e13b8107f6f46a5dd49ba91d75a95e58/runtime.tar.gz",
+    "archiveSha256": "sha256:8f1a805a60ea81bfa965de72f54f8d130e95cfa957e29894a3b7f25a0b4f870b",
+    "treeSha256": "sha256:f24f215b5e63c2fa2470a219386786ddf494805b04b3afd549c156633b73ea04"
+  }
 }
