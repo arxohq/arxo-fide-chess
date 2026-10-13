@@ -70,3 +70,13 @@ The repository is public. [Public CI](https://github.com/arxohq/arxo-fide-chess/
 [Dry run](https://github.com/arxo-io/law/actions/runs/38452941907) and [npm publication](https://github.com/arxo-io/law/actions/runs/38453113544) succeeded. npm 0.1.0 is published under latest. The version endpoint and public archive were verified anonymously against the exact prepared SHA-256 and size. [README assets](https://github.com/arxohq/arxo-fide-chess/releases/tag/npm-v0.1.0) are public; all four PNGs were downloaded anonymously and match the shipped manifest.
 
 Root npm metadata propagation and ordinary installation are checked separately. The first ordinary install encountered an npm CDN 404 after the version endpoint was already available; it is preserved as a failed propagation attempt, not a reason for another publication. Full corpus: `not_checked`; `releaseVerified: false`.
+
+The propagation condition resolved. Public package-root metadata now report latest 0.1.0; the full npm README matches the immutable archive. Ordinary anonymous installation by package name in fresh Node.js 20.20.2 and 24.21.0 consumers passed all nine runtime groups, strict TypeScript, all six GitHub/npm README blocks and the bundled example. The source-only reproduction tool reran the released CLI for all ten cases and reproduced the canonical fixture objects and original request hashes exactly.
+
+To verify fixture capture without rewriting the frozen inputs, use Python 3.11+ and an explicitly installed released CLI 0.2.3 binary:
+
+```sh
+python3 npm/tools/verify-case-capture.py --law /absolute/path/to/law --out /absolute/new-capture-directory
+```
+
+The updated public CI uses actions running on Node.js 24 and passed again: https://github.com/arxohq/arxo-fide-chess/actions/runs/38453653799. This does not change the package's supported Node.js 20 minimum. No packed bytes were changed after publication.
