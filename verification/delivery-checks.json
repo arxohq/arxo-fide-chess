@@ -129,6 +129,122 @@
     "dryRun": "https://github.com/arxo-io/law/actions/runs/38452941907",
     "publicCI": "https://github.com/arxohq/arxo-fide-chess/actions/runs/38452471203",
     "tarballVerifiedAnonymously": true,
-    "assetsVerifiedAnonymously": true
+    "assetsVerifiedAnonymously": true,
+    "rootMetadataAndReadmeVerifiedAnonymously": true,
+    "latestPublicCI": "https://github.com/arxohq/arxo-fide-chess/actions/runs/38453653799",
+    "initialInstallPropagationFailure": {
+      "status": "npm E404",
+      "resolved": true
+    }
+  },
+  "publicInstalledConsumers": [
+    {
+      "node": "v20.20.2",
+      "passed": true,
+      "sdk": "0.4.3",
+      "engine": "0.5.3",
+      "typescript": "5.9.3",
+      "skipLibCheck": false,
+      "checks": [
+        {
+          "check": "install",
+          "exitCode": 0
+        },
+        {
+          "check": "runtime",
+          "exitCode": 0
+        },
+        {
+          "check": "types",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "bundled-example",
+          "exitCode": 0
+        }
+      ],
+      "published": true
+    },
+    {
+      "node": "v24.21.0",
+      "passed": true,
+      "sdk": "0.4.3",
+      "engine": "0.5.3",
+      "typescript": "5.9.3",
+      "skipLibCheck": false,
+      "checks": [
+        {
+          "check": "install",
+          "exitCode": 0
+        },
+        {
+          "check": "runtime",
+          "exitCode": 0
+        },
+        {
+          "check": "types",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "bundled-example",
+          "exitCode": 0
+        }
+      ],
+      "published": true
+    }
+  ],
+  "caseCaptureReproduction": {
+    "cases": 10,
+    "canonicalInputsMatch": true,
+    "originalRequestHashesMatch": true,
+    "cli": "0.2.3"
   }
 }
