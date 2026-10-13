@@ -1,0 +1,26 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Приложение A.5.2. Рапид по A.5: соперник уже сделал следующий ход — невозможный ход
+// остаётся, арбитр по 7.5.5 не действует.
+test "urn:query:fide-rapid-illegal-move-stands" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g21"), entity_ref("urn:fide:w21")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g21"), entity_ref("urn:fide:b21")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g21"), entity_ref("urn:fide:w21"), entity_ref("urn:fide:b21")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g21"), entity_ref("urn:fide:b21"), entity_ref("urn:fide:w21")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g21"), entity_ref("urn:fide:w21")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w21")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b21")) { origin case_input; }
+        assert "a7": game_in_competition(entity_ref("urn:fide:g21"), entity_ref("urn:fide:c21")) { origin case_input; }
+        assert "a8": time_control_base_seconds(entity_ref("urn:fide:c21"), 900) { origin case_input; }
+        assert "a9": time_control_increment_seconds(entity_ref("urn:fide:c21"), 10) { origin case_input; }
+        assert "a10": event_regulations_choose_appendix_a5(entity_ref("urn:fide:c21")) { origin case_input; }
+        assert "a11": illegal_move_completed_by(entity_ref("urn:fide:g21"), entity_ref("urn:fide:w21")) { origin case_input; }
+        assert "a12": opponent_made_next_move(entity_ref("urn:fide:g21"), entity_ref("urn:fide:w21")) { origin case_input; }
+    }
+    evaluate truth(arbiter_acts_under_7_5_5(entity_ref("urn:fide:g21"), entity_ref("urn:fide:w21")));
+    expect truth_status == FALSE_ONLY;
+}

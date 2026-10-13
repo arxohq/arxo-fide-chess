@@ -1,0 +1,54 @@
+[package]
+name = "examples.chess.arbiter"
+version = "0.1.0"
+language = "0.2"
+namespace = "urn:law:examples:chess:arbiter"
+
+[dependencies]
+"fide.laws.chess" = "0.1.1"
+
+[[cases]]
+name = "TouchIntentUnknown"
+path = "cases/touch-intent-unknown.lawcase"
+
+[[cases]]
+name = "FirstIllegal"
+path = "cases/first-illegal.lawcase"
+
+[[cases]]
+name = "SecondIllegal"
+path = "cases/second-illegal.lawcase"
+
+[[cases]]
+name = "SecondIllegalNoMate"
+path = "cases/second-illegal-no-mate.lawcase"
+
+[[cases]]
+name = "FlagFall"
+path = "cases/flag-fall.lawcase"
+
+[[cases]]
+name = "FlagFallNoMate"
+path = "cases/flag-fall-no-mate.lawcase"
+
+[[cases]]
+name = "RapidFirstIllegal"
+path = "cases/rapid-first-illegal.lawcase"
+
+[[cases]]
+name = "BlitzFirstIllegalCompetitive"
+path = "cases/blitz-first-illegal-competitive.lawcase"
+
+[[cases]]
+name = "ShortOfTimeRecording"
+path = "cases/short-of-time-recording.lawcase"
+
+[[cases]]
+name = "DeviceWarning"
+path = "cases/device-warning.lawcase"
+
+[metadata]
+act = "fide-laws-chess-examples-arbiter"
+
+[authoring]
+local_imports = "explicit"

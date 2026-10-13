@@ -1,0 +1,26 @@
+{
+  "queryId": "extra-time-black-120",
+  "kind": "truth",
+  "literal": {
+    "kind": "literal",
+    "polarity": "positive",
+    "predicate": "urn:fide:laws:clir:chess#extra_time_awarded_seconds",
+    "args": [
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:game"
+      },
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:black"
+      },
+      {
+        "kind": "value",
+        "type": {
+          "name": "urn:law:std#Integer"
+        },
+        "value": 120
+      }
+    ]
+  }
+}

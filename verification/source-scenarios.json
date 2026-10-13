@@ -1,0 +1,9 @@
+{
+  "schema": "arxo.fide-chess-addressed-check/1",
+  "total": 103,
+  "passed": 103,
+  "failed": 0,
+  "ok": true,
+  "evaluator": "CLI 0.2.3 native; package.py build, replay and rebuild",
+  "originalExpectedOutcomesUnchanged": true
+}

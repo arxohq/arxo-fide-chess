@@ -1,0 +1,78 @@
+# Манифест §10 — маркер корня пакета (DECISION-0033). Нормативны заголовки §22
+# в самих .law; манифест обязан с ними совпадать (LDC-E1109, lawc check).
+[package]
+name = "fide.laws.chess"
+version = "0.1.1"
+language = "0.2"
+namespace = "urn:fide:laws:clir:chess"
+
+# Каталожная метадата (DECISION-0051; docs/PACKAGE-METADATA.ru.md). НЕ семантика:
+# в CLIR не понижается, в semantic hash §209 не входит. Выводимые поля
+# (jurisdiction ← jurisdiction источника, instrument ← kind, sourceFidelity ←
+# materialization_status) сверяются с source-декларациями воротами
+# ci/check_package_metadata.py.
+[metadata]
+act = "fide-laws-chess"
+title = "FIDE Laws of Chess (в силе с 01.01.2023) — полный свод: ст. 1–12, приложения A и B"
+primarySource = "FIDE_LAWS_OF_CHESS"
+# jurisdiction: `International`, а не `FIDE`. FIDE — издатель, не правопорядок
+# (та же ошибка, которую регламент УЕФА закрепил в себе самом и которую
+# docs/PACKAGE-METADATA.ru.md §2.2 называет категориальной). Соседи по кусту
+# международных актов (`nuremberg-principles`, `npt-1968`) пишут International.
+jurisdiction = "International"
+instrument = "regulation"
+sourceFidelity = "pinned_unofficial_copy"
+# legalStatus: `in_force` — пункт 0.1 и шапка Handbook: applied from 01/01/2023,
+# прекращения редакция не объявляет.
+legalStatus = "in_force"
+# issuer: Генеральная ассамблея ФИДЕ утвердила текст 07.08.2022; издатель —
+# сама ФИДЕ, не выдуманный «правопорядок ФИДЕ».
+issuer = "FIDE"
+# verifiedAgainstSource: срез сверен с видимым текстом официальной страницы
+# Handbook (аутентичный английский текст по п. 0.1). Байты печатного PDF в
+# руках не держали — отсюда PINNED_UNOFFICIAL_COPY при officiality official.
+verifiedAgainstSource = true
+
+# Рукописные сценарии пакета: исполняются общим раннером,
+# в учёт покрытия регрессии не входят.
+[[tests]]
+family = "fide.laws.chess#authored"
+regression = false
+suites = [
+  "tests/01-touch-move-requires-judgment.lawtest",
+  "tests/02-second-illegal-move-loses.lawtest",
+  "tests/03-threefold-without-claim-not-yet.lawtest",
+  "tests/04-flag-fall-loses.lawtest",
+  "tests/05-flag-fall-drawn-mate-impossible.lawtest",
+  "tests/06-checkmate-before-flag-prevails.lawtest",
+  "tests/07-late-arrival-requires-arbiter.lawtest",
+  "tests/08-late-arrival-loses-after-arbiter.lawtest",
+  "tests/09-rapid-first-illegal-one-minute.lawtest",
+  "tests/10-standard-first-illegal-two-minutes.lawtest",
+  "tests/11-blitz-classification.lawtest",
+  "tests/12-short-of-time-relieves-recording.lawtest",
+  "tests/13-increment-keeps-recording-duty.lawtest",
+  "tests/14-device-loses.lawtest",
+  "tests/15-event-less-severe-device-penalty.lawtest",
+  "tests/16-warning-instead-of-prescribed-loss.lawtest",
+  "tests/17-resignation-scores-opponent.lawtest",
+  "tests/18-both-persistent-refusal-no-winner.lawtest",
+  "tests/19-colours-reversed-replay.lawtest",
+  "tests/20-incorrect-threefold-claim-penalty.lawtest",
+  "tests/21-rapid-illegal-move-stands.lawtest",
+  "tests/22-signed-result-requires-arbiter.lawtest",
+  "tests/23-quarter-point-score-not-normal.lawtest",
+  "tests/24-excess-scoresheet-requests-penalised.lawtest",
+  "tests/25-observed-mate-position.lawtest",
+  "tests/26-score-half-point-boundary.lawtest",
+]
+world = ["fide.laws.chess"]
+
+# Сценарии пакета: единственный источник фактов, вопросов и ожиданий.
+[[tests]]
+family = "fide_chess"
+suites = ["tests/fide-chess.lawtest"]
+world = ["fide.laws.chess"]
+
+[authoring]
+local_imports = "explicit"

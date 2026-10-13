@@ -1,0 +1,37 @@
+{
+  "dependencyEdges": [
+    {
+      "features": [],
+      "from": "examples.chess.arbiter",
+      "requested": "0.1.1",
+      "resolved": "0.1.1",
+      "to": "fide.laws.chess"
+    }
+  ],
+  "languageSemantics": "law.core/0.2.11",
+  "lockVersion": "0.4",
+  "packages": [
+    {
+      "artifactHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+      "features": [
+        "core-executable"
+      ],
+      "name": "fide.laws.chess",
+      "namespace": "urn:fide:laws:clir:chess",
+      "questionCatalogHash": "sha256:7d5218658212fc19cb13b46ef8ccb808d0c2a7ed85ba5fbf8e5dc205269516f6",
+      "registryId": "arxo",
+      "resolverUri": "registry://arxo/fide.laws.chess/0.1.1",
+      "sourceHash": "sha256:45de26d5aa0d2f5445b801d7cd739ad8922a01a59da7d12a4453bd9ffa2a3956",
+      "version": "0.1.1"
+    }
+  ],
+  "resolutionHash": "sha256:2f96485eca69f9f9f8e7d450c6290bffd5b4bd9a0df617128cbe5b0d1f6585be",
+  "resources": [],
+  "root": {
+    "artifactHash": "sha256:faf2148ec0aecfec0ed1af5a5b08bcd12b31c4f8677ab325a61c8f075df2086f",
+    "name": "examples.chess.arbiter",
+    "namespace": "urn:law:examples:chess:arbiter",
+    "sourceHash": "sha256:0c63f7289d5baf7da41003a6f61099d9dd46448ad105d6b6ea1614e165fc3476",
+    "version": "0.1.0"
+  }
+}

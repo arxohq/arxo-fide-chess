@@ -1,0 +1,15 @@
+{
+  "queryId": "draw",
+  "kind": "truth",
+  "literal": {
+    "kind": "literal",
+    "polarity": "positive",
+    "predicate": "urn:fide:laws:clir:chess#game_drawn",
+    "args": [
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:game"
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+test "half-point-units-0.0" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "score": points_recorded(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white"), 0.0) { origin case_input; }
+    }
+    evaluate truth(recorded_score_not_normally_associated(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white")));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "half-point-units-0.25" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "score": points_recorded(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white"), 0.25) { origin case_input; }
+    }
+    evaluate truth(recorded_score_not_normally_associated(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+}
+
+test "half-point-units-0.5" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "score": points_recorded(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white"), 0.5) { origin case_input; }
+    }
+    evaluate truth(recorded_score_not_normally_associated(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white")));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "half-point-units-0.75" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "score": points_recorded(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white"), 0.75) { origin case_input; }
+    }
+    evaluate truth(recorded_score_not_normally_associated(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+}
+
+test "half-point-units-1.0" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "score": points_recorded(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white"), 1.0) { origin case_input; }
+    }
+    evaluate truth(recorded_score_not_normally_associated(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white")));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "half-point-units-1.5" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "score": points_recorded(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white"), 1.5) { origin case_input; }
+    }
+    evaluate truth(recorded_score_not_normally_associated(entity_ref("urn:fide:score:game"), entity_ref("urn:fide:score:white")));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+

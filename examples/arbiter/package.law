@@ -1,0 +1,5 @@
+language "law.core" version "0.2";
+package examples.chess.arbiter version "0.1.0";
+namespace "urn:law:examples:chess:arbiter";
+
+import fide.laws.chess version "0.1.1";

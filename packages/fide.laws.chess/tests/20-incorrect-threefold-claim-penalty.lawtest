@@ -1,0 +1,25 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 9.5.3. Заявка троекратного повторения при двух появлениях позиции неверна:
+// сопернику две минуты.
+test "urn:query:fide-incorrect-threefold-claim-penalty" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g20"), entity_ref("urn:fide:w20")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g20"), entity_ref("urn:fide:b20")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g20"), entity_ref("urn:fide:w20"), entity_ref("urn:fide:b20")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g20"), entity_ref("urn:fide:b20"), entity_ref("urn:fide:w20")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g20"), entity_ref("urn:fide:w20")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w20")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b20")) { origin case_input; }
+        assert "a7": game_in_competition(entity_ref("urn:fide:g20"), entity_ref("urn:fide:c20")) { origin case_input; }
+        assert "a8": time_control_base_seconds(entity_ref("urn:fide:c20"), 5400) { origin case_input; }
+        assert "a9": time_control_increment_seconds(entity_ref("urn:fide:c20"), 30) { origin case_input; }
+        assert "a10": threefold_draw_claimed(entity_ref("urn:fide:g20"), entity_ref("urn:fide:w20")) { origin case_input; }
+        assert "a11": position_occurrence_count(entity_ref("urn:fide:g20"), 2) { origin case_input; }
+    }
+    evaluate truth(extra_time_awarded_seconds(entity_ref("urn:fide:g20"), entity_ref("urn:fide:b20"), 120));
+    expect truth_status == TRUE_ONLY;
+}

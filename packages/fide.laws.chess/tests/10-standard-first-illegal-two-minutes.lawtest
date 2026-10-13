@@ -1,0 +1,23 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 7.5.5. Классика 90+30 (5400 + 1800 с ≥ 3600): прибавка сопернику две минуты.
+test "urn:query:fide-standard-first-illegal-two-minutes" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g10"), entity_ref("urn:fide:w10")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g10"), entity_ref("urn:fide:b10")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g10"), entity_ref("urn:fide:w10"), entity_ref("urn:fide:b10")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g10"), entity_ref("urn:fide:b10"), entity_ref("urn:fide:w10")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g10"), entity_ref("urn:fide:w10")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w10")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b10")) { origin case_input; }
+        assert "a7": game_in_competition(entity_ref("urn:fide:g10"), entity_ref("urn:fide:c10")) { origin case_input; }
+        assert "a8": time_control_base_seconds(entity_ref("urn:fide:c10"), 5400) { origin case_input; }
+        assert "a9": time_control_increment_seconds(entity_ref("urn:fide:c10"), 30) { origin case_input; }
+        assert "a10": completed_illegal_move_count(entity_ref("urn:fide:w10"), 1) { origin case_input; }
+    }
+    evaluate truth(extra_time_awarded_seconds(entity_ref("urn:fide:g10"), entity_ref("urn:fide:b10"), 120));
+    expect truth_status == TRUE_ONLY;
+}

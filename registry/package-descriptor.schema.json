@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://law.arxo.io/schema/package-descriptor.schema.json",
+  "title": "Arxo registry publication descriptor 0.2",
+  "description": "Descriptor of a RELEASE in the registry. The previous record `p/<name>/<version>.json` carried only a locked package and said nothing about what the release pulls in: a graph edge could be learned only by downloading the whole compiled file. Here dependencies and required resources are declared, so the graph and pin conflicts are visible BEFORE downloading. This is the publication contract, not the source of lockfile fields: only a subset flows into the closed locked-package form of the lockfile, and `dependencies`/`resources`/`languageSemantics` are not carried over there.",
+  "$comment": "DECISION-0168 §6",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "descriptorFormat": {
+      "const": "law.package-descriptor/0.2",
+      "description": "Format version. Its absence means an old registry record (specVersion 0.1): it can still be read, but the new add/install/update orchestration rejects it because it does not declare exact dependencies."
+    },
+    "name": {
+      "$ref": "#/$defs/PackageName"
+    },
+    "version": {
+      "$ref": "#/$defs/Version"
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^urn:[A-Za-z0-9][A-Za-z0-9-]{0,31}(?::[A-Za-z0-9._~%!$&'()*+,;=@-]+)+$"
+    },
+    "contentHash": {
+      "$ref": "#/$defs/Sha256",
+      "description": "sha256 of the canonical compiled (CLIR) bytes. Deliberately narrower than the general digest form: the bytes can only be checked with the algorithm they were computed with.",
+      "$comment": "SPEC §208"
+    },
+    "worldHash": {
+      "$ref": "#/$defs/Sha256",
+      "description": "Optional sha256 of the canonical bytes of the linked world of this release (root plus its pinned closure), published as p/<name>/<version>/world.lawir.json. The world is built by the engine link step only; SDKs verify these bytes and execute them, they never link. Absent on releases published before the field existed.",
+      "$comment": "SPEC §23; DECISION-0384 §3; DX10/DX11"
+    },
+    "editorSourceMapHash": {
+      "$ref": "#/$defs/Sha256",
+      "description": "Optional sha256 of the raw editor source-map sidecar. A resolver copies it to the locked package, so the resolution hash covers the authored-location pin without changing the CLIR.",
+      "$comment": "Former form id law.editor-source-map/0.1"
+    },
+    "questionCatalogHash": {
+      "$ref": "#/$defs/Sha256",
+      "description": "Optional sha256 of the published questions catalog sidecar, installed as deps/<package>.questions.json from the immutable registry version. It does not affect CLIR or evaluation semantics.",
+      "$comment": "Former path analysis/questions.json"
+    },
+    "taskGuideCatalogHash": {
+      "$ref": "#/$defs/Sha256",
+      "description": "Optional sha256 of the published task-guides catalog sidecar, installed as deps/<package>.task-guides.json from the immutable registry version. Task guides are metadata: they do not affect CLIR or evaluation semantics.",
+      "$comment": "Former path analysis/task-guides.json; form law.package-task-guides/0.1; DECISION-0414"
+    },
+    "signature": {
+      "description": "Ed25519 signature over the canonical locked-package projection excluding the signature, domain-separated by application/vnd.arxo.locked-package+json.",
+      "$comment": "DECISION-0369 R7",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "keyId", "value"],
+      "properties": {
+        "algorithm": {"const": "ed25519"},
+        "keyId": {"type": "string", "pattern": "^ed25519:[0-9a-f]{64}$"},
+        "value": {"type": "string", "minLength": 1}
+      }
+    },
+    "registryId": {
+      "$ref": "#/$defs/RegistryId"
+    },
+    "resolverUri": {
+      "type": "string",
+      "pattern": "^registry://[A-Za-z0-9._-]+/[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*/[0-9A-Za-z][0-9A-Za-z._+-]*$",
+      "description": "Identity of the release, not a URL. The registry address lives in the consumer's settings and changes with the mirror; identity does not."
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "languageSemantics": {
+      "type": "string",
+      "pattern": "^law\\.core/(?:0\\.1|0\\.2)(?:\\.[0-9]+)?$",
+      "description": "Semantics line of the release. A linked world is assembled from packages of ONE line; incompatibility is detected while preparing the operation, not by editing the semanticVersion of a downloaded file.",
+      "$comment": "SPEC §23"
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "EXACT direct dependencies of the release. Must match the actual `imports` of the published CLIR — this is checked after download, because the descriptor is the publisher's promise, and it is proved by the bytes.",
+      "items": {
+        "$ref": "#/$defs/DescriptorDependency"
+      },
+      "uniqueItems": true
+    },
+    "resources": {
+      "type": "array",
+      "description": "Required resources of the release, delivered as a blob keyed by contentHash. The first release supports only calendar datasets; an unknown kind is rejected rather than being placed \"somewhere\".",
+      "$comment": "SPEC §85; decision §7",
+      "items": {
+        "$ref": "#/$defs/DescriptorResource"
+      },
+      "uniqueItems": true
+    },
+    "sourceHash": {
+      "$ref": "#/$defs/Sha256",
+      "description": "Optional sha256 identity of the actual authoring source snapshot. A complete current signed locked-package projection requires this identity; an unsourced compiled publication cannot fabricate it."
+    }
+  },
+  "required": [
+    "descriptorFormat",
+    "name",
+    "version",
+    "namespace",
+    "contentHash",
+    "registryId",
+    "resolverUri",
+    "features",
+    "dependencies"
+  ],
+  "$defs": {
+    "PackageName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*$"
+    },
+    "Version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[0-9A-Za-z][0-9A-Za-z._+-]*$"
+    },
+    "Sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "RegistryId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "DescriptorDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/PackageName"
+        },
+        "version": {
+          "$ref": "#/$defs/Version"
+        },
+        "namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "registryId": {
+          "$ref": "#/$defs/RegistryId"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "namespace",
+        "registryId",
+        "contentHash"
+      ]
+    },
+    "DescriptorResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Logical resource identifier — the same one as the calendar snapshot node and the law.lock entry. Two incompatible datasets under one id are a rejection citing both sources.",
+          "$comment": "SPEC §85"
+        },
+        "kind": {
+          "const": "calendar-dataset"
+        },
+        "capability": {
+          "const": "law.calendar/0.1"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "file": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "description": "File name as A SINGLE segment: the in-project address is built by the consumer (resources/calendars/<package>/<file>). The publisher's path does not become a requirement on the user's machine."
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "capability",
+        "contentHash",
+        "file"
+      ]
+    },
+    "PackageVersions": {
+      "type": "object",
+      "description": "Index `p/<name>/versions.json`: without it the remote registry cannot name the latest stable version, and `add NAME` without a version would be unrunnable.",
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "law.package-versions/0.1"
+        },
+        "name": {
+          "$ref": "#/$defs/PackageName"
+        },
+        "versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Version"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "format",
+        "name",
+        "versions"
+      ]
+    }
+  }
+}

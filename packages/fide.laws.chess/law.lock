@@ -1,0 +1,15 @@
+{
+  "dependencyEdges": [],
+  "languageSemantics": "law.core/0.2.11",
+  "lockVersion": "0.4",
+  "packages": [],
+  "resolutionHash": "sha256:909a9da904a86d45c579d665721af6e8d85ca3b0c07e916c5cd4b172ed965f74",
+  "resources": [],
+  "root": {
+    "artifactHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+    "name": "fide.laws.chess",
+    "namespace": "urn:fide:laws:clir:chess",
+    "sourceHash": "sha256:45de26d5aa0d2f5445b801d7cd739ad8922a01a59da7d12a4453bd9ffa2a3956",
+    "version": "0.1.1"
+  }
+}

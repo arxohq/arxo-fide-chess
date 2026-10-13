@@ -1,0 +1,349 @@
+// Source-bound finite geometric producer, not a general chess solver.
+// Complete current four-piece K/Q/R frame; file/rank 1..8. Candidate Black
+// king step left, then White queen immediately below that king. Every move,
+// attack, path, eight king escapes and rook response is calculated. This
+// witnesses existence of a legal series, never a forced win. Bare White king
+// is an exhaustive-material impossibility, not a generic dead-position claim.
+// All raw per-piece fields are checked independently, including BOTH-positive
+// alternatives. Missing observations and unsupported kinds remain unknown.
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+use self::{
+    FIDE_ART_1,
+    FIDE_ART_2,
+    FIDE_ART_3,
+    FIDE_ART_6,
+    Game,
+    Piece,
+    Player,
+    game_drawn,
+    game_lost_by,
+    player_has_the_move,
+    time_forfeit,
+};
+pub enum ObservedPieceKind { King; Queen; Rook; Bishop; Knight; Pawn; }
+pub enum ObservedSide { white_side; black_side; }
+pub relation declared_full_piece_count(g: Game, n: Integer) kind empirical;
+pub relation board_roster_member(g: Game, p: Piece) kind empirical;
+pub relation observed_piece(g: Game, p: Piece, owner: Player, kind: ObservedPieceKind, file: Integer, rank: Integer) kind empirical;
+pub relation observed_side(g: Game, owner: Player, side: ObservedSide) kind empirical;
+relation checked_board_piece(g: Game, p: Piece, owner: Player, kind: ObservedPieceKind, file: Integer, rank: Integer) kind institutional;
+relation piece_known(g: Game, p: Piece) kind institutional;
+relation checked_side(g: Game, owner: Player, side: ObservedSide) kind institutional;
+relation occupied_twice(g: Game, p: Piece) kind institutional;
+relation complete_geometric_frame(g: Game, white: Player, black: Player) kind institutional;
+relation witness_shape(g: Game, white: Player, black: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece) kind institutional;
+relation board_initial(g: Game, step: Integer, p: Piece, owner: Player, kind: ObservedPieceKind, file: Integer, rank: Integer) kind institutional;
+relation board_after_black(g: Game, step: Integer, p: Piece, owner: Player, kind: ObservedPieceKind, file: Integer, rank: Integer) kind institutional;
+relation board_after_white(g: Game, step: Integer, p: Piece, owner: Player, kind: ObservedPieceKind, file: Integer, rank: Integer) kind institutional;
+relation board_at(g: Game, step: Integer, p: Piece, owner: Player, kind: ObservedPieceKind, file: Integer, rank: Integer) kind institutional;
+relation tested_square(g: Game, step: Integer, file: Integer, rank: Integer) kind institutional;
+relation ray_blocker(g: Game, step: Integer, mover: Piece, file: Integer, rank: Integer, blocker: Piece) kind institutional;
+relation attack_blocker(g: Game, step: Integer, mover: Piece, file: Integer, rank: Integer, blocker: Piece) kind institutional;
+relation attacks_square(g: Game, step: Integer, attacker: Piece, owner: Player, file: Integer, rank: Integer) kind institutional;
+relation adjacent_kings(g: Game) kind institutional;
+relation initially_valid_frame(g: Game, white: Player, black: Player) kind institutional;
+relation legal_black_step(g: Game, white: Player, black: Player, bk: Piece) kind institutional;
+relation legal_white_step(g: Game, white: Player, black: Player, wq: Piece) kind institutional;
+relation legal_black_escape(g: Game, bk: Piece, file: Integer, rank: Integer) kind institutional;
+relation rook_can_capture_checker(g: Game, br: Piece) kind institutional;
+pub relation observed_two_ply_mate(g: Game, victim: Player) kind institutional { label en unofficial "a calculated two-ply legal continuation checkmates the victim"; }
+pub relation observed_mate_possible(g: Game, victim: Player) kind institutional { label en unofficial "the opponent can checkmate the victim by some legal series in the complete observed position"; }
+pub relation observed_mate_impossible(g: Game, victim: Player) kind institutional { label en unofficial "the opponent's exhaustive material is only a king, so no legal series can checkmate the victim"; }
+
+@source(FIDE_ART_3)
+rule CheckObservedPiece(g: Game, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when observed_piece(g,p,o,k,x,y) and x >= 1 and x <= 8 and y >= 1 and y <= 8 and (k == King or k == Queen or k == Rook)
+ and (forall v in (collect owner: Player, kind: ObservedPieceKind, file: Integer, rank: Integer where supported(observed_piece(g,p,owner,kind,file,rank))) satisfies v == o)
+ and (forall v in (collect kind: ObservedPieceKind, owner: Player, file: Integer, rank: Integer where supported(observed_piece(g,p,owner,kind,file,rank))) satisfies v == k)
+ and (forall v in (collect file: Integer, owner: Player, kind: ObservedPieceKind, rank: Integer where supported(observed_piece(g,p,owner,kind,file,rank))) satisfies v == x)
+ and (forall v in (collect rank: Integer, owner: Player, kind: ObservedPieceKind, file: Integer where supported(observed_piece(g,p,owner,kind,file,rank))) satisfies v == y);
+ then checked_board_piece(g,p,o,k,x,y);
+}
+
+@source(FIDE_ART_3)
+rule BoardPieceKnown(g: Game, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when checked_board_piece(g,p,o,k,x,y);
+ then piece_known(g,p);
+}
+
+@source(FIDE_ART_3)
+rule CheckObservedSide(g: Game, o: Player, s: ObservedSide) strict {
+ when observed_side(g,o,s) and (forall value in (collect v: ObservedSide where supported(observed_side(g,o,v))) satisfies value == s);
+ then checked_side(g,o,s);
+}
+
+@source(FIDE_ART_3)
+rule DuplicateOccupancy(g: Game, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when checked_board_piece(g,p,o,k,x,y) and (count(collect q: Piece, a: Player, b: ObservedPieceKind where checked_board_piece(g,q,a,b,x,y))) > 1;
+ then occupied_twice(g,p);
+}
+
+@source(FIDE_ART_2)
+rule CompleteObservedGeometry(g: Game, w: Player, b: Player) strict {
+ when declared_full_piece_count(g,4)
+ and (forall total in (collect n: Integer where supported(declared_full_piece_count(g,n))) satisfies total == 4)
+ and (count distinct p: Piece where supported(board_roster_member(g,p))) == 4
+ and (forall p in (collect member: Piece where supported(board_roster_member(g,member))) satisfies established(board_roster_member(g,p)) and piece_known(g,p))
+ and (count(collect p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer where supported(observed_piece(g,p,o,k,x,y)))) == 4
+ and (forall p in (collect member: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer where supported(observed_piece(g,member,o,k,x,y))) satisfies established(board_roster_member(g,p)))
+ and checked_side(g,w,white_side) and checked_side(g,b,black_side) and w != b
+ and (count(collect o: Player, s: ObservedSide where supported(observed_side(g,o,s)))) == 2
+ and (forall o in (collect owner: Player, k: ObservedPieceKind, p: Piece, x: Integer, y: Integer where checked_board_piece(g,p,owner,k,x,y)) satisfies o == w or o == b)
+ and player_has_the_move(g,b) and (forall turn in (collect who: Player where supported(player_has_the_move(g,who))) satisfies turn == b)
+ and (count(collect p: Piece, x: Integer, y: Integer where checked_board_piece(g,p,w,King,x,y))) == 1
+ and (count(collect p: Piece, x: Integer, y: Integer where checked_board_piece(g,p,b,King,x,y))) == 1
+ and (count(collect p: Piece where occupied_twice(g,p))) == 0;
+ then complete_geometric_frame(g,w,b);
+}
+
+@source(FIDE_ART_3)
+rule ConstructiveFourPieceShape(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, a: Integer, c: Integer, d: Integer, e: Integer, f: Integer, h: Integer, j: Integer, l: Integer) strict {
+ when complete_geometric_frame(g,w,b) and checked_board_piece(g,wk,w,King,a,c) and checked_board_piece(g,wq,w,Queen,d,e) and checked_board_piece(g,bk,b,King,f,h) and checked_board_piece(g,br,b,Rook,j,l);
+ then witness_shape(g,w,b,wk,wq,bk,br);
+}
+
+@source(FIDE_ART_3)
+rule InitialBoard(g: Game, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when checked_board_piece(g,p,o,k,x,y) and (count(collect w: Player, b: Player where complete_geometric_frame(g,w,b))) == 1;
+ then board_initial(g,0,p,o,k,x,y);
+}
+
+@source(FIDE_ART_3)
+rule CandidateBlackKingStep(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and board_initial(g,0,bk,b,King,x,y);
+ then board_after_black(g,1,bk,b,King,x-1,y);
+}
+
+@source(FIDE_ART_3)
+rule CopyAfterBlackStep(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and board_initial(g,0,p,o,k,x,y) and p != bk;
+ then board_after_black(g,1,p,o,k,x,y);
+}
+
+@source(FIDE_ART_3)
+rule CandidateWhiteQueenStep(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and board_after_black(g,1,bk,b,King,x,y);
+ then board_after_white(g,2,wq,w,Queen,x,y-1);
+}
+
+@source(FIDE_ART_3)
+rule CopyAfterWhiteStep(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and board_after_black(g,1,p,o,k,x,y) and p != wq;
+ then board_after_white(g,2,p,o,k,x,y);
+}
+
+@source(FIDE_ART_3)
+rule ExposeBoardStage0(g: Game, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when board_initial(g,0,p,o,k,x,y);
+ then board_at(g,0,p,o,k,x,y);
+}
+
+@source(FIDE_ART_3)
+rule ExposeBoardStage1(g: Game, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when board_after_black(g,1,p,o,k,x,y);
+ then board_at(g,1,p,o,k,x,y);
+}
+
+@source(FIDE_ART_3)
+rule ExposeBoardStage2(g: Game, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when board_after_white(g,2,p,o,k,x,y);
+ then board_at(g,2,p,o,k,x,y);
+}
+
+@source(FIDE_ART_3)
+rule TestOccupiedSquare(g: Game, s: Integer, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,k,x,y);
+ then tested_square(g,s,x,y);
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor00(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(-1),y+(-1));
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor01(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(-1),y+(0));
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor02(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(-1),y+(1));
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor10(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(0),y+(-1));
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor12(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(0),y+(1));
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor20(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(1),y+(-1));
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor21(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(1),y+(0));
+}
+
+@source(FIDE_ART_3)
+rule TestKingNeighbor22(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer) strict {
+ when board_at(g,s,p,o,King,x,y);
+ then tested_square(g,s,x+(1),y+(1));
+}
+
+@source(FIDE_ART_3)
+rule FullPathBlockerHorizontal(g: Game, s: Integer, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer, tx: Integer, ty: Integer, q: Piece, a: Player, z: ObservedPieceKind, qx: Integer, qy: Integer) strict {
+ when board_at(g,s,p,o,k,x,y) and tested_square(g,s,tx,ty) and board_at(g,s,q,a,z,qx,qy) and q != p and y == ty and qy == y and (qx-x)*(qx-tx) < 0;
+ then ray_blocker(g,s,p,tx,ty,q);
+}
+
+@source(FIDE_ART_3)
+rule VacatedVictimAttackBlockerHorizontal(g: Game, s: Integer, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer, tx: Integer, ty: Integer, q: Piece, a: Player, z: ObservedPieceKind, qx: Integer, qy: Integer) strict {
+ when board_at(g,s,p,o,k,x,y) and tested_square(g,s,tx,ty) and board_at(g,s,q,a,z,qx,qy) and q != p and (z != King or a == o) and y == ty and qy == y and (qx-x)*(qx-tx) < 0;
+ then attack_blocker(g,s,p,tx,ty,q);
+}
+
+@source(FIDE_ART_3)
+rule FullPathBlockerVertical(g: Game, s: Integer, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer, tx: Integer, ty: Integer, q: Piece, a: Player, z: ObservedPieceKind, qx: Integer, qy: Integer) strict {
+ when board_at(g,s,p,o,k,x,y) and tested_square(g,s,tx,ty) and board_at(g,s,q,a,z,qx,qy) and q != p and x == tx and qx == x and (qy-y)*(qy-ty) < 0;
+ then ray_blocker(g,s,p,tx,ty,q);
+}
+
+@source(FIDE_ART_3)
+rule VacatedVictimAttackBlockerVertical(g: Game, s: Integer, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer, tx: Integer, ty: Integer, q: Piece, a: Player, z: ObservedPieceKind, qx: Integer, qy: Integer) strict {
+ when board_at(g,s,p,o,k,x,y) and tested_square(g,s,tx,ty) and board_at(g,s,q,a,z,qx,qy) and q != p and (z != King or a == o) and x == tx and qx == x and (qy-y)*(qy-ty) < 0;
+ then attack_blocker(g,s,p,tx,ty,q);
+}
+
+@source(FIDE_ART_3)
+rule FullPathBlockerDiagonal(g: Game, s: Integer, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer, tx: Integer, ty: Integer, q: Piece, a: Player, z: ObservedPieceKind, qx: Integer, qy: Integer) strict {
+ when board_at(g,s,p,o,k,x,y) and tested_square(g,s,tx,ty) and board_at(g,s,q,a,z,qx,qy) and q != p and (tx-x)*(tx-x) == (ty-y)*(ty-y) and x != tx and (qx-x)*(ty-y) == (qy-y)*(tx-x) and (qx-x)*(qx-tx) < 0;
+ then ray_blocker(g,s,p,tx,ty,q);
+}
+
+@source(FIDE_ART_3)
+rule VacatedVictimAttackBlockerDiagonal(g: Game, s: Integer, p: Piece, o: Player, k: ObservedPieceKind, x: Integer, y: Integer, tx: Integer, ty: Integer, q: Piece, a: Player, z: ObservedPieceKind, qx: Integer, qy: Integer) strict {
+ when board_at(g,s,p,o,k,x,y) and tested_square(g,s,tx,ty) and board_at(g,s,q,a,z,qx,qy) and q != p and (z != King or a == o) and (tx-x)*(tx-x) == (ty-y)*(ty-y) and x != tx and (qx-x)*(ty-y) == (qy-y)*(tx-x) and (qx-x)*(qx-tx) < 0;
+ then attack_blocker(g,s,p,tx,ty,q);
+}
+
+@source(FIDE_ART_3)
+rule KingAttacksAdjacent(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer, tx: Integer, ty: Integer) strict {
+ when board_at(g,s,p,o,King,x,y) and tested_square(g,s,tx,ty)
+ and (tx-x)*(tx-x) <= 1 and (ty-y)*(ty-y) <= 1 and (tx != x or ty != y);
+ then attacks_square(g,s,p,o,tx,ty);
+}
+
+@source(FIDE_ART_3)
+rule QueenAttacksAlongClearRay(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer, tx: Integer, ty: Integer) strict {
+ when board_at(g,s,p,o,Queen,x,y) and tested_square(g,s,tx,ty) and (tx != x or ty != y) and (tx == x or ty == y or (tx-x)*(tx-x) == (ty-y)*(ty-y))
+ and (count(collect q: Piece where attack_blocker(g,s,p,tx,ty,q))) == 0;
+ then attacks_square(g,s,p,o,tx,ty);
+}
+
+@source(FIDE_ART_3)
+rule RookAttacksAlongClearRay(g: Game, s: Integer, p: Piece, o: Player, x: Integer, y: Integer, tx: Integer, ty: Integer) strict {
+ when board_at(g,s,p,o,Rook,x,y) and tested_square(g,s,tx,ty) and (tx != x or ty != y) and (tx == x or ty == y)
+ and (count(collect q: Piece where attack_blocker(g,s,p,tx,ty,q))) == 0;
+ then attacks_square(g,s,p,o,tx,ty);
+}
+
+@source(FIDE_ART_3)
+rule KingsAreAdjacent(g: Game, w: Player, b: Player, wk: Piece, bk: Piece, x: Integer, y: Integer, bx: Integer, by: Integer) strict {
+ when complete_geometric_frame(g,w,b) and board_at(g,0,wk,w,King,x,y) and board_at(g,0,bk,b,King,bx,by) and (bx-x)*(bx-x) <= 1 and (by-y)*(by-y) <= 1;
+ then adjacent_kings(g);
+}
+
+@source(FIDE_ART_3)
+rule ValidateInitialPosition(g: Game, w: Player, b: Player, wk: Piece, x: Integer, y: Integer) strict {
+ when complete_geometric_frame(g,w,b) and board_at(g,0,wk,w,King,x,y)
+ and (count(collect a: Player, c: Player where adjacent_kings(g) and complete_geometric_frame(g,a,c))) == 0
+ and (count(collect p: Piece where attacks_square(g,0,p,b,x,y))) == 0;
+ then initially_valid_frame(g,w,b);
+}
+
+@source(FIDE_ART_3)
+rule ValidateBlackKingMove(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, x: Integer, y: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and initially_valid_frame(g,w,b) and board_at(g,1,bk,b,King,x,y) and x >= 1 and x <= 8 and y >= 1 and y <= 8
+ and (count(collect p: Piece, o: Player, k: ObservedPieceKind where board_at(g,0,p,o,k,x,y))) == 0
+ and (count(collect p: Piece where attacks_square(g,1,p,w,x,y))) == 0;
+ then legal_black_step(g,w,b,bk);
+}
+
+@source(FIDE_ART_3)
+rule ValidateWhiteQueenMove(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, x: Integer, y: Integer, tx: Integer, ty: Integer, kx: Integer, ky: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and legal_black_step(g,w,b,bk) and board_at(g,1,wq,w,Queen,x,y) and board_at(g,2,wq,w,Queen,tx,ty)
+ and tx >= 1 and tx <= 8 and ty >= 1 and ty <= 8 and (tx != x or ty != y)
+ and (tx == x or ty == y or (tx-x)*(tx-x) == (ty-y)*(ty-y))
+ and (count(collect p: Piece, o: Player, k: ObservedPieceKind where board_at(g,1,p,o,k,tx,ty))) == 0
+ and (count(collect q: Piece where ray_blocker(g,1,wq,tx,ty,q))) == 0
+ and board_at(g,2,wk,w,King,kx,ky) and (count(collect p: Piece where attacks_square(g,2,p,b,kx,ky))) == 0;
+ then legal_white_step(g,w,b,wq);
+}
+
+@source(FIDE_ART_3)
+rule CalculateBlackKingEscape(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, x: Integer, y: Integer, tx: Integer, ty: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and board_at(g,2,bk,b,King,x,y) and tested_square(g,2,tx,ty)
+ and tx >= 1 and tx <= 8 and ty >= 1 and ty <= 8 and (tx-x)*(tx-x) <= 1 and (ty-y)*(ty-y) <= 1 and (tx != x or ty != y)
+ and (count(collect p: Piece, k: ObservedPieceKind where board_at(g,2,p,b,k,tx,ty))) == 0
+ and (count(collect p: Piece where board_at(g,2,p,w,King,tx,ty))) == 0
+ and (count(collect p: Piece where attacks_square(g,2,p,w,tx,ty))) == 0;
+ then legal_black_escape(g,bk,tx,ty);
+}
+
+@source(FIDE_ART_3)
+rule CalculateRookCaptureResponse(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, x: Integer, y: Integer, tx: Integer, ty: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and board_at(g,2,br,b,Rook,x,y) and board_at(g,2,wq,w,Queen,tx,ty) and (x == tx or y == ty)
+ and (count(collect p: Piece where ray_blocker(g,2,br,tx,ty,p))) == 0;
+ then rook_can_capture_checker(g,br);
+}
+
+@source(FIDE_ART_1)
+rule CalculateTwoPlyMate(g: Game, w: Player, b: Player, wk: Piece, wq: Piece, bk: Piece, br: Piece, x: Integer, y: Integer, qx: Integer, qy: Integer) strict {
+ when witness_shape(g,w,b,wk,wq,bk,br) and legal_black_step(g,w,b,bk) and legal_white_step(g,w,b,wq)
+ and board_at(g,2,bk,b,King,x,y) and board_at(g,2,wq,w,Queen,qx,qy)
+ and qx == x and qy == y-1 and attacks_square(g,2,wq,w,x,y)
+ and (count(collect tx: Integer, ty: Integer where legal_black_escape(g,bk,tx,ty))) == 0
+ and (count(collect p: Piece where rook_can_capture_checker(g,p))) == 0;
+ then observed_two_ply_mate(g,b);
+}
+
+@source(FIDE_ART_6)
+rule LegalMateWitnessShowsPossibility(g: Game, b: Player) strict {
+ when observed_two_ply_mate(g,b);
+ then observed_mate_possible(g,b);
+}
+
+@source(FIDE_ART_3)
+rule ExhaustiveBareWhiteKingCannotMate(g: Game, w: Player, b: Player, wk: Piece, x: Integer, y: Integer) strict {
+ when initially_valid_frame(g,w,b) and board_at(g,0,wk,w,King,x,y)
+ and (count(collect p: Piece, k: ObservedPieceKind, px: Integer, py: Integer where board_at(g,0,p,w,k,px,py))) == 1;
+ then observed_mate_impossible(g,b);
+}
+
+@source(FIDE_ART_6)
+rule ObservedPossibilityLosesOnTime(g: Game, b: Player) defeasible {
+ when time_forfeit(g,b) and observed_mate_possible(g,b);
+ then game_lost_by(g,b);
+}
+
+@source(FIDE_ART_6)
+rule ObservedImpossibilityDrawsOnTime(g: Game, b: Player) defeasible {
+ when time_forfeit(g,b) and observed_mate_impossible(g,b);
+ then game_drawn(g);
+}

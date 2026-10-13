@@ -1,0 +1,154 @@
+// Статья 5: завершение партии. Мат, сдача, пат, мёртвая позиция, согласие.
+// «Противник не может поставить мат никакой серией легальных ходов» —
+// анализ мёртвой позиции, не вывод из доски: приходит фактом протокола и
+// замыкается closure, чтобы сдача при матовой возможности давала поражение,
+// а не молчание.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    FIDE_ART_5,
+    Game,
+    Player,
+    checked_player,
+    player_of,
+};
+
+relation checkmate_delivered(game: Game, who: Player) kind empirical {
+    label en official "the player has checkmated the opponent's king";
+}
+pub relation player_resigned(who: Player) kind empirical {
+    label en official "the player has declared that he/she resigns";
+}
+relation stalemate_arisen(game: Game) kind empirical {
+    label en official "the player to move has no legal move and his/her king is not in check";
+}
+relation dead_position_arisen(game: Game) kind empirical {
+    label en official "a position has arisen in which neither player can checkmate the opponent's king with any series of legal moves";
+}
+relation draw_agreed(game: Game) kind empirical {
+    label en official "the two players have agreed a draw during the game";
+}
+relation both_players_have_moved(game: Game) kind empirical {
+    label en official "both players have made at least one move";
+}
+pub relation king_cannot_be_checkmated(who: Player) kind empirical {
+    label en official "the opponent cannot checkmate this player's king by any possible series of legal moves";
+}
+
+relation game_won_by(game: Game, who: Player) kind institutional {
+    label en official "the game is won by the player";
+}
+pub relation game_lost_by(game: Game, who: Player) kind institutional {
+    label en official "the game is lost by the player";
+}
+pub relation game_drawn(game: Game) kind institutional {
+    label en official "the game is drawn";
+}
+relation checkmate_has_been_delivered(game: Game) kind institutional {
+    label en official "checkmate has been delivered and the game has ended";
+}
+relation resignation_has_ended_the_game(game: Game) kind institutional {
+    label en official "a resignation has ended the game";
+}
+relation stalemate_has_ended_the_game(game: Game) kind institutional {
+    label en official "stalemate has ended the game";
+}
+relation dead_position_has_ended_the_game(game: Game) kind institutional {
+    label en official "a dead position has ended the game";
+}
+relation agreed_draw_has_ended_the_game(game: Game) kind institutional {
+    label en official "an agreed draw has ended the game";
+}
+
+closure MateImpossibilityClosure {
+    label en official "a king not recorded as unable to be checkmated can be checkmated";
+    predicate king_cannot_be_checkmated;
+    domain checked_player;
+    snapshot "urn:fide:snapshot:mate-possibility:2023-01-01";
+    complete_as_of @2023-01-01T00:00:00Z;
+    derive_explicit_negative true;
+}
+
+@source(FIDE_ART_5)
+rule CheckmateWins(game: Game, who: Player) strict {
+    label en official "Article 5.1.1. The game is won by the player who has checkmated his/her opponent's king";
+    when checkmate_delivered(game, who);
+    then game_won_by(game, who);
+}
+
+@source(FIDE_ART_5)
+rule CheckmateEndsTheGame(game: Game, who: Player) strict {
+    label en official "Article 5.1.1. Checkmate immediately ends the game";
+    when checkmate_delivered(game, who);
+    then checkmate_has_been_delivered(game);
+}
+
+@source(FIDE_ART_5)
+rule ResignationLoses(game: Game, who: Player) strict {
+    label en official "Article 5.1.2. The game is lost by the player who declares he/she resigns, unless the opponent cannot checkmate";
+    when player_of(game, who)
+        and player_resigned(who)
+        and not king_cannot_be_checkmated(who);
+    then game_lost_by(game, who);
+}
+
+@source(FIDE_ART_5)
+rule ResignationDrawnIfMateImpossible(game: Game, who: Player) strict {
+    label en official "Article 5.1.2. If the opponent cannot checkmate the player's king, the result of the game is a draw";
+    when player_of(game, who)
+        and player_resigned(who)
+        and king_cannot_be_checkmated(who);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_5)
+rule ResignationEndsTheGame(game: Game, who: Player) strict {
+    label en official "Article 5.1.2. Resignation immediately ends the game";
+    when player_of(game, who) and player_resigned(who);
+    then resignation_has_ended_the_game(game);
+}
+
+@source(FIDE_ART_5)
+rule StalemateDraws(game: Game) strict {
+    label en official "Article 5.2.1. The game is drawn when the player to move has no legal move and his/her king is not in check";
+    when stalemate_arisen(game);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_5)
+rule StalemateEndsTheGame(game: Game) strict {
+    label en official "Article 5.2.1. Stalemate immediately ends the game";
+    when stalemate_arisen(game);
+    then stalemate_has_ended_the_game(game);
+}
+
+@source(FIDE_ART_5)
+rule DeadPositionDraws(game: Game) strict {
+    label en official "Article 5.2.2. The game is drawn when neither player can checkmate with any series of legal moves";
+    when dead_position_arisen(game);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_5)
+rule DeadPositionEndsTheGame(game: Game) strict {
+    label en official "Article 5.2.2. A dead position immediately ends the game";
+    when dead_position_arisen(game);
+    then dead_position_has_ended_the_game(game);
+}
+
+@source(FIDE_ART_5)
+rule AgreedDraw(game: Game) strict {
+    label en official "Article 5.2.3. The game is drawn upon agreement between the two players, provided both have made at least one move";
+    when draw_agreed(game) and both_players_have_moved(game);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_5)
+rule AgreedDrawEndsTheGame(game: Game) strict {
+    label en official "Article 5.2.3. An agreed draw immediately ends the game";
+    when draw_agreed(game) and both_players_have_moved(game);
+    then agreed_draw_has_ended_the_game(game);
+}

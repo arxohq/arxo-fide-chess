@@ -1,0 +1,25 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 6.9 «кроме случаев 5.1.1». Мат поставлен в 11:30:00, флаг матующего упал
+// в 11:30:04: приоритет §116 — исход раньше флага, поражения по времени нет.
+test "urn:query:fide-checkmate-before-flag-prevails" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g6"), entity_ref("urn:fide:b6")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6"), entity_ref("urn:fide:b6")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g6"), entity_ref("urn:fide:b6"), entity_ref("urn:fide:w6")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w6")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b6")) { origin case_input; }
+        assert "a7": checkmate_delivered(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6")) { origin case_input; }
+        assert "a8": game_result_arose_at(entity_ref("urn:fide:g6"), @2026-09-01T11:30:00Z) { origin case_input; }
+        assert "a9": flag_fall_observed_by_arbiter(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6")) { origin case_input; }
+        assert "a10": prescribed_moves_not_completed(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6")) { origin case_input; }
+        assert "a11": flag_fell_at(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6"), @2026-09-01T11:30:04Z) { origin case_input; }
+    }
+    evaluate truth(time_forfeit(entity_ref("urn:fide:g6"), entity_ref("urn:fide:w6")));
+    expect truth_status == FALSE_ONLY;
+}

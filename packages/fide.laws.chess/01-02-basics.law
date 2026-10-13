@@ -1,0 +1,71 @@
+// Статьи 1 и 2: природа игры и начальная расстановка — Основные правила.
+//
+// Из статьи 1 выводятся: первый ход белых (1.2) и поражение того, кому
+// поставлен мат (1.4.2). «Иметь ход» (1.3) — факт протокола
+// `player_has_the_move` (решение 1 шапки `package.law`): автомат цвет не
+// чередует. Недостижимость мата (1.5) — та же мёртвая позиция 5.2.2.
+//
+// Статья 2 — геометрия доски и расстановка фигур. Доска не симулируется:
+// нарушения 2.1 и 2.3 приходят фактом протокола и получают последствия
+// статьи 7 (7.2.1, 7.2.2) и приложения A (A.5.1.2).
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    FIDE_ART_1,
+    FIDE_ART_2,
+    Game,
+    Player,
+    checkmate_delivered,
+    dead_position_arisen,
+    game_drawn,
+    game_lost_by,
+    opponent_of,
+    plays_white,
+};
+
+pub relation chessboard_placed_contrary_to_2_1(game: Game) kind empirical {
+    label en official "the chessboard has been placed contrary to Article 2.1";
+}
+pub relation initial_position_incorrect(game: Game) kind empirical {
+    label en official "the initial position of the pieces was incorrect";
+}
+
+relation makes_the_first_move(game: Game, who: Player) kind institutional {
+    label en official "the player makes the first move";
+}
+
+@source(FIDE_ART_1)
+rule WhiteMakesTheFirstMove(game: Game, who: Player) strict {
+    label en official "Article 1.2. The player with the light-coloured pieces (White) makes the first move";
+    when plays_white(game, who);
+    then makes_the_first_move(game, who);
+}
+
+@source(FIDE_ART_1)
+rule CheckmatedPlayerLoses(game: Game, who: Player, opp: Player) strict {
+    label en official "Article 1.4.2. The opponent whose king has been checkmated has lost the game";
+    when checkmate_delivered(game, who)
+        and opponent_of(game, who, opp);
+    then game_lost_by(game, opp);
+}
+
+@source(FIDE_ART_1)
+rule NoPossibleCheckmateDraws(game: Game) strict {
+    label en official "Article 1.5. If neither player can possibly checkmate the opponent's king, the game is drawn";
+    when dead_position_arisen(game);
+    then game_drawn(game);
+}
+
+relation near_right_corner_square_is_dark(game: Game) kind empirical {
+    label en official "the near corner square to the right of a player is a dark square";
+}
+
+@source(FIDE_ART_2)
+rule BoardWithDarkRightCornerMisplaced(game: Game) strict {
+    label en official "Article 2.1. The chessboard is placed between the players in such a way that the near corner square to the right of the player is white";
+    when near_right_corner_square_is_dark(game);
+    then chessboard_placed_contrary_to_2_1(game);
+}

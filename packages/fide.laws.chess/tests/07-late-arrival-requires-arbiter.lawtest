@@ -1,0 +1,24 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 6.7.1. Время неявки не установлено — ноль; чёрные пришли через минуту после
+// старта. «Если арбитр не решит иначе» — канал суждения §47.3.
+test "urn:query:fide-late-arrival-requires-arbiter" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g7"), entity_ref("urn:fide:w7")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g7"), entity_ref("urn:fide:b7")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g7"), entity_ref("urn:fide:w7"), entity_ref("urn:fide:b7")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g7"), entity_ref("urn:fide:b7"), entity_ref("urn:fide:w7")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g7"), entity_ref("urn:fide:w7")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w7")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b7")) { origin case_input; }
+        assert "a7": default_time_not_specified(entity_ref("urn:fide:g7")) { origin case_input; }
+        assert "a8": scheduled_start_at(entity_ref("urn:fide:g7"), @2026-09-01T10:00:00Z) { origin case_input; }
+        assert "a9": arrived_at_chessboard_at(entity_ref("urn:fide:g7"), entity_ref("urn:fide:b7"), @2026-09-01T10:01:00Z) { origin case_input; }
+    }
+    evaluate truth(game_lost_by(entity_ref("urn:fide:g7"), entity_ref("urn:fide:b7")));
+    expect evaluation_status == REQUIRES_JUDGMENT;
+    expect judgment_request(arbiter_decides_otherwise_on_default, FIDEArbiter);
+}

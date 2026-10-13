@@ -1,0 +1,19 @@
+{
+  "queryId": "must-record",
+  "kind": "truth",
+  "literal": {
+    "kind": "literal",
+    "polarity": "positive",
+    "predicate": "urn:fide:laws:clir:chess#must_record_moves",
+    "args": [
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:game"
+      },
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:white"
+      }
+    ]
+  }
+}

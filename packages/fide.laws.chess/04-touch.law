@@ -1,0 +1,44 @@
+// Статья 4: совершение хода. «Тронул — ходи» (4.3) решает арбитр: намерение
+// двигать или брать — открытый стандарт, и канал §47.3 назван Правилами
+// (предисловие 0.2 и статья 12), а не формализатором.
+//
+// СТУПЕНЬ РАЗДЕЛЕНА НАМЕРЕННО. Канал суждения §47.3 открывает только СТРОГОЕ
+// правило с литеральной головой: через побеждаемое правило судья невидим
+// (измерено на NPT и на Принципах Нюрнберга). Спрашивать арбитра надо у
+// `must_move_first_touched_piece`.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    FIDE_ART_4,
+    Game,
+    Piece,
+    Player,
+    own_piece_of,
+    player_has_the_move,
+};
+
+pub relation piece_can_be_moved(piece: Piece) kind empirical {
+    label en official "the piece can be moved";
+}
+
+external judgment relation piece_touched_intentionally(who: Player, piece: Piece) {
+    authority FIDEArbiter;
+    label en official "the player having the move touched the piece with the intention of moving or capturing";
+}
+
+pub relation must_move_first_touched_piece(who: Player, piece: Piece) kind institutional {
+    label en official "the player must move the first piece touched that can be moved";
+}
+
+@source(FIDE_ART_4)
+rule MustMoveFirstTouchedPiece(game: Game, who: Player, piece: Piece) strict {
+    label en official "Article 4.3.1. If the player having the move touches one or more of his/her own pieces, he/she must move the first piece touched that can be moved";
+    when player_has_the_move(game, who)
+        and own_piece_of(who, piece)
+        and piece_touched_intentionally(who, piece)
+        and piece_can_be_moved(piece);
+    then must_move_first_touched_piece(who, piece);
+}

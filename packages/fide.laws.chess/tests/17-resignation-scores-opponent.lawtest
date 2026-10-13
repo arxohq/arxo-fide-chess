@@ -1,0 +1,23 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статьи 5.1.2 и 10.1. Чёрные сдались, мат возможен: белые получают одно очко.
+test "urn:query:fide-resignation-scores-opponent" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g17"), entity_ref("urn:fide:w17")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g17"), entity_ref("urn:fide:b17")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g17"), entity_ref("urn:fide:w17"), entity_ref("urn:fide:b17")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g17"), entity_ref("urn:fide:b17"), entity_ref("urn:fide:w17")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g17"), entity_ref("urn:fide:w17")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w17")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b17")) { origin case_input; }
+        assert "a7": game_in_competition(entity_ref("urn:fide:g17"), entity_ref("urn:fide:c17")) { origin case_input; }
+        assert "a8": time_control_base_seconds(entity_ref("urn:fide:c17"), 5400) { origin case_input; }
+        assert "a9": time_control_increment_seconds(entity_ref("urn:fide:c17"), 30) { origin case_input; }
+        assert "a10": player_resigned(entity_ref("urn:fide:b17")) { origin case_input; }
+    }
+    evaluate truth(points_scored(entity_ref("urn:fide:g17"), entity_ref("urn:fide:w17"), 1.0));
+    expect truth_status == TRUE_ONLY;
+}

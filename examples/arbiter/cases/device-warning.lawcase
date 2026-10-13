@@ -1,0 +1,12 @@
+language "law.core" version "0.2";
+package examples.chess.arbiter version "0.1.0";
+namespace "urn:law:examples:chess:arbiter";
+
+// Статьи 11.3.2.2 и 12.9: у белых в зале очевиден телефон, регламент турнира
+// санкцию мягче не установил, а арбитр вынес предупреждение.
+case DeviceWarning {
+    context { legal_time @2026-09-01; knowledge_time @2026-09-08T12:00:00Z; decision_time @2026-09-08T12:00:00Z; timezone "UTC"; }
+    assert "competition": fide.laws.chess::game_in_competition(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:classic")) { origin case_input; }
+    assert "device": fide.laws.chess::electronic_device_evident_on_person(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:white")) { origin case_input; }
+    assert "penalty": fide.laws.chess::penalty_imposed(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:white"), fide.laws.chess::warning) { origin case_input; }
+}

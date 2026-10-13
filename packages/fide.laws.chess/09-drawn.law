@@ -1,0 +1,205 @@
+// Статья 9: ничья. Троекратное повторение и правило 50 ходов — по заявке
+// игрока, имеющего очередь хода; пятикратное и 75 ходов — автоматом.
+// Число появлений позиции и счёт ходов без взятия и хода пешкой — факты
+// протокола (барьер §111). Мат побеждает 75 ходов (9.6.2): дефитер, не
+// `not` выведенного предиката.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    Competition,
+    FIDE_APP_A,
+    FIDE_APP_B,
+    FIDE_ART_9,
+    Game,
+    Player,
+    appendix_a5_applies,
+    blitz_game,
+    checkmate_delivered,
+    extra_time_awarded_seconds,
+    game_drawn,
+    game_in_competition,
+    opponent_of,
+    player_has_the_move,
+    rapid_game,
+    standard_game,
+};
+
+relation position_occurrence_count(game: Game, n: Integer) kind empirical {
+    label en official "the same position has appeared this many times";
+}
+relation moves_by_each_without_pawn_or_capture(game: Game, n: Integer) kind empirical {
+    label en official "this many moves by each player have been made without the movement of any pawn and without any capture";
+}
+relation draw_claimed(who: Player) kind empirical {
+    label en official "the player has claimed a draw";
+}
+
+relation threefold_claim_correct(game: Game, who: Player) kind institutional {
+    label en official "the player's threefold-repetition claim is correct";
+}
+relation fifty_move_claim_correct(game: Game, who: Player) kind institutional {
+    label en official "the player's fifty-move claim is correct";
+}
+
+@source(FIDE_ART_9)
+rule ThreefoldClaimCorrect(game: Game, who: Player, n: Integer) strict {
+    label en official "Article 9.2. The game is drawn upon a correct claim by a player having the move when the same position has appeared at least the third time";
+    when player_has_the_move(game, who)
+        and draw_claimed(who)
+        and position_occurrence_count(game, n)
+        and (n >= 3);
+    then threefold_claim_correct(game, who);
+}
+
+@source(FIDE_ART_9)
+rule ThreefoldClaimDraws(game: Game, who: Player) strict {
+    label en official "Article 9.5.2. If the claim is found to be correct, the game is immediately drawn";
+    when threefold_claim_correct(game, who);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_9)
+rule FiftyMoveClaimCorrect(game: Game, who: Player, n: Integer) strict {
+    label en official "Article 9.3. The game is drawn upon a correct claim by a player having the move if the last 50 moves by each player have been completed without a pawn move or capture";
+    when player_has_the_move(game, who)
+        and draw_claimed(who)
+        and moves_by_each_without_pawn_or_capture(game, n)
+        and (n >= 50);
+    then fifty_move_claim_correct(game, who);
+}
+
+@source(FIDE_ART_9)
+rule FiftyMoveClaimDraws(game: Game, who: Player) strict {
+    label en official "Article 9.5.2. If the fifty-move claim is found to be correct, the game is immediately drawn";
+    when fifty_move_claim_correct(game, who);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_9)
+rule FivefoldAutomaticDraw(game: Game, n: Integer) strict {
+    label en official "Article 9.6.1. The game is drawn if the same position has appeared at least five times";
+    when position_occurrence_count(game, n)
+        and (n >= 5);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_9)
+rule SeventyFiveAutomaticDraw(game: Game, n: Integer) defeasible {
+    label en official "Article 9.6.2. The game is drawn if at least 75 moves have been made by each player without a pawn move or capture";
+    when moves_by_each_without_pawn_or_capture(game, n)
+        and (n >= 75);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_9)
+rule CheckmateTakesPrecedenceOverSeventyFive(game: Game, who: Player) defeasible {
+    label en official "Article 9.6.2. If the last move resulted in checkmate, that shall take precedence";
+    when checkmate_delivered(game, who);
+    then not game_drawn(game);
+}
+
+@source(FIDE_ART_9)
+priority CheckmateOverSeventyFiveMoves {
+    label en official "Article 9.6.2. Checkmate takes precedence over the 75-move draw";
+    prefer CheckmateTakesPrecedenceOverSeventyFive over SeventyFiveAutomaticDraw;
+    reason lex_specialis;
+}
+
+// --- 9.1.1, 9.4, 9.5.3 ----------------------------------------------------
+//
+// Расширение свода (DECISION-0294). Неверная заявка ничьей даёт сопернику
+// прибавку две минуты, в рапиде и блице по A.3 — одну. Неверность заявки
+// выводится из тех же счётчиков протокола, что и верность, а не отрицанием
+// вывода `threefold_claim_correct`. Касание фигуры по 4.3 отнимает право
+// заявки «на этом ходу» (9.4) — вывод о праве, не пересмотр исхода.
+
+relation threefold_draw_claimed(game: Game, who: Player) kind empirical {
+    label en official "the player claimed a draw under Article 9.2";
+}
+relation fifty_move_draw_claimed(game: Game, who: Player) kind empirical {
+    label en official "the player claimed a draw under Article 9.3";
+}
+relation piece_touched_before_claim(game: Game, who: Player) kind empirical {
+    label en official "the player touched a piece as in Article 4.3 before claiming on that move";
+}
+relation event_requires_arbiter_consent_to_draw(comp: Competition) kind empirical {
+    label en official "the regulations of the event specify that players cannot agree to a draw without the consent of the arbiter";
+}
+relation draw_agreed_without_arbiter_consent(game: Game) kind empirical {
+    label en official "the players agreed a draw without the consent of the arbiter";
+}
+
+relation draw_claim_incorrect(game: Game, who: Player) kind institutional {
+    label en official "the player's draw claim is found to be incorrect";
+}
+relation draw_claim_right_lost_on_that_move(game: Game, who: Player) kind institutional {
+    label en official "the player loses the right to claim a draw under Article 9.2 or 9.3 on that move";
+}
+relation draw_agreement_contrary_to_regulations(game: Game) kind institutional {
+    label en official "the draw was agreed contrary to the regulations of the event";
+}
+
+@source(FIDE_ART_9)
+rule ThreefoldClaimIncorrect(game: Game, who: Player, n: Integer) strict {
+    label en official "Article 9.5.3. A threefold-repetition claim is incorrect when the same position has not appeared at least three times";
+    when threefold_draw_claimed(game, who)
+        and position_occurrence_count(game, n)
+        and (n < 3);
+    then draw_claim_incorrect(game, who);
+}
+
+@source(FIDE_ART_9)
+rule FiftyMoveClaimIncorrect(game: Game, who: Player, n: Integer) strict {
+    label en official "Article 9.5.3. A fifty-move claim is incorrect when fewer than 50 moves by each player have been made without a pawn move or capture";
+    when fifty_move_draw_claimed(game, who)
+        and moves_by_each_without_pawn_or_capture(game, n)
+        and (n < 50);
+    then draw_claim_incorrect(game, who);
+}
+
+@source(FIDE_ART_9)
+rule IncorrectClaimTwoMinutesToOpponent(game: Game, who: Player, opp: Player) strict {
+    label en official "Article 9.5.3. If the claim is found to be incorrect, the arbiter shall add two minutes to the opponent's remaining thinking time";
+    when draw_claim_incorrect(game, who)
+        and opponent_of(game, who, opp)
+        and standard_game(game);
+    then extra_time_awarded_seconds(game, opp, 120);
+}
+
+@source(FIDE_APP_A)
+rule IncorrectClaimOneMinuteInRapid(game: Game, who: Player, opp: Player) strict {
+    label en official "Articles 9.5.3 and A.3. In rapid chess the penalty shall be one minute instead of two minutes";
+    when draw_claim_incorrect(game, who)
+        and opponent_of(game, who, opp)
+        and rapid_game(game);
+    then extra_time_awarded_seconds(game, opp, 60);
+}
+
+@source(FIDE_APP_B)
+rule IncorrectClaimOneMinuteInBlitzUnderB3(game: Game, who: Player, opp: Player) strict {
+    label en official "Articles 9.5.3, B.3 and A.3. In blitz governed by the Rapid chess Laws the penalty shall be one minute";
+    when draw_claim_incorrect(game, who)
+        and opponent_of(game, who, opp)
+        and blitz_game(game)
+        and appendix_a5_applies(game);
+    then extra_time_awarded_seconds(game, opp, 60);
+}
+
+@source(FIDE_ART_9)
+rule TouchLosesClaimRightOnThatMove(game: Game, who: Player) strict {
+    label en official "Article 9.4. If the player touches a piece as in Article 4.3, he/she loses the right to claim a draw under Article 9.2 or 9.3 on that move";
+    when piece_touched_before_claim(game, who);
+    then draw_claim_right_lost_on_that_move(game, who);
+}
+
+@source(FIDE_ART_9)
+rule DrawAgreedWithoutRequiredConsent(game: Game, comp: Competition) strict {
+    label en official "Article 9.1.1. The regulations of an event may specify that players cannot agree to a draw without the consent of the arbiter";
+    when game_in_competition(game, comp)
+        and event_requires_arbiter_consent_to_draw(comp)
+        and draw_agreed_without_arbiter_consent(game);
+    then draw_agreement_contrary_to_regulations(game);
+}
