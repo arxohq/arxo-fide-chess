@@ -20,7 +20,15 @@ Installation acquires npm archives; execution reads only the pinned local runtim
 
 The separately deployed public service uses `https://mcp.arxo.io/mcp/fide-chess`; health is `https://mcp.arxo.io/healthz/fide-chess`. Its backend is private and Bearer protected. The edge supplies its server-side token; clients need no token. Origin checks remain active. Exact deployment identity and acceptance state belong to the delivery record, not a mutable image tag.
 
-For a local container, use the accepted registry digest from the immutable release and `compose.yaml`. Runtime data and binary are read-only. The backend has no outgoing runtime network access; limits are 1 CPU, 512 MiB, 128 PID and bounded temporary state/logs. The native response timeout does not promise cancellation of a synchronous calculation.
+For a local container, set the accepted image and your own private backend token, then use `compose.yaml`:
+
+```sh
+export FIDE_CHESS_MCP_IMAGE='ghcr.io/arxohq/arxo-fide-chess-mcp@sha256:8b5e5bf32791835d864d2065170698fdd6ecd00330d615dab8fb5c45ed9e4a16'
+export FIDE_CHESS_MCP_TOKEN='<your-private-backend-token>'
+docker compose up -d
+```
+
+The local ingress listens on `127.0.0.1:8725` by default. It passes the client's Bearer header; the hosted public edge supplies its own backend token. `FIDE_CHESS_MCP_PORT` selects the local port. Runtime data and binary are read-only. The backend has no outgoing runtime network access; limits are 1 CPU, 512 MiB, 128 PID and bounded temporary state/logs. The native response timeout does not promise cancellation of a synchronous calculation.
 
 ## Inputs and results
 
