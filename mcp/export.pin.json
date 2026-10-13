@@ -55,8 +55,8 @@
     },
     {
       "path": "docs/mcp.md",
-      "bytes": 3772,
-      "sha256": "sha256:f66fbe703be0a7bcd5a0dce59a8c648df3a8903da454af4dc48695ed0c9210ad"
+      "bytes": 4055,
+      "sha256": "sha256:351b58f39ad76ab2006beac749d3491e820e44e8e24a1e223aafb8360eb116b5"
     },
     {
       "path": "examples/arbiter/README.md",
@@ -270,13 +270,13 @@
     },
     {
       "path": "mcp/npm/README.md",
-      "bytes": 2022,
-      "sha256": "sha256:f9171123d3c45f4a2242f3efc0ed35bdceddbc44eb121f360514aab6aeefad78"
+      "bytes": 2305,
+      "sha256": "sha256:789a862829d16d336854980a5805e41b57c74408699d69b12eae4838a5d54715"
     },
     {
       "path": "mcp/npm/bin/arxo-mcp.cjs",
-      "bytes": 6055,
-      "sha256": "sha256:beb64e97ca8e4a7fae88b8f7179a2d67fc01463349c3df50535de144838f6685"
+      "bytes": 9986,
+      "sha256": "sha256:ad8d55b0ebaa9860ed6b5d41fb0b0b4c5e8aa13d45ffdec40b9df3ad48c2c17f"
     },
     {
       "path": "mcp/npm/host-pins.json",
@@ -630,8 +630,8 @@
     },
     {
       "path": "tests/mcp/npm-launcher.test.cjs",
-      "bytes": 5577,
-      "sha256": "sha256:8e7d1b3ef1439717429b38883435204ee7510e1e2a1113c732262aa39bf83fea"
+      "bytes": 13423,
+      "sha256": "sha256:54667264b9708602211a8776f75ee69118c318912d24498737de6a32067d5988"
     },
     {
       "path": "tests/mcp/test_entrypoint.py",

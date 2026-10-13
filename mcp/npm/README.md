@@ -30,3 +30,5 @@ The HTTP service is deployed separately at `https://mcp.arxo.io/mcp/fide-chess`;
 [Usage, inputs and limitations](https://github.com/arxohq/arxo-fide-chess/blob/main/docs/mcp.md) · [Reproduction and delivery](https://github.com/arxohq/arxo-fide-chess/blob/main/docs/mcp-npm-release.md)
 
 Technical preview: full corpus `not_checked`; `releaseVerified: false`. Arxo code licensing and FIDE publisher text terms are separate; see NOTICE. This independent distribution does not claim FIDE endorsement or general chess-engine capability.
+
+On Linux, an additional read-only `/proc` check stops the native host if its invoking npm/npx process disappears while stdin remains open; a missing or changed parent identity fails closed. EOF, direct signals and outer-client termination are accepted as separate lifecycle checks.
