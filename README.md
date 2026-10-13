@@ -10,6 +10,16 @@
 
 This is an independent open-source teaching and research demonstration. For an actual chess ruling, use the authentic FIDE Laws and the competent arbiter. Source text and model scope are pinned; the package does not claim general chess-engine capability or complete formalization.
 
+## Use as an MCP server
+
+The separate native MCP wrapper runs the same pinned model over stdio:
+
+```sh
+npx -y @arxo/mcp-fide-chess@0.1.0
+```
+
+Node.js 20+, Linux x64 or macOS arm64. [Client configuration, HTTP endpoint, inputs and limitations](docs/mcp.md) · [OCI recipe](docs/mcp-release.md) · [npm recipe](docs/mcp-npm-release.md). This MCP delivery is separate from the model-library package below.
+
 ## Start in Node.js
 
 In a fresh directory:

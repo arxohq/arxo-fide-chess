@@ -1,0 +1,51 @@
+name: Autonomous FIDE chess MCP verify
+on:
+  pull_request:
+    paths: ['mcp/**', 'tools/*mcp*', 'tools/standalone_mcp/**', 'tests/**', 'schema/mcp/**', 'packages/**', 'registry/**', 'Dockerfile', 'compose.yaml', 'NOTICE', '.dockerignore', '.github/workflows/mcp-*.yml', '!mcp/npm/**', '!tools/mcp_npm.py', '!tests/mcp/*npm*']
+  push:
+    branches: [main]
+    paths: ['mcp/**', 'tools/*mcp*', 'tools/standalone_mcp/**', 'tests/**', 'schema/mcp/**', 'packages/**', 'registry/**', 'Dockerfile', 'compose.yaml', 'NOTICE', '.dockerignore', '.github/workflows/mcp-*.yml', '!mcp/npm/**', '!tools/mcp_npm.py', '!tests/mcp/*npm*']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: fide-chess-mcp-verify-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, verified 2026-10-13
+        with:
+          persist-credentials: false
+      - name: Acquire immutable dependencies online
+        run: python3 tools/acquire_mcp.py --root . --output "$RUNNER_TEMP/acquired"
+      - name: Build and accept without network
+        run: >-
+          python3 tools/build_mcp.py --root .
+          --acquired "$RUNNER_TEMP/acquired" --output "$RUNNER_TEMP/candidate"
+          --source-commit "$GITHUB_SHA" --image "arxo-fide-chess-mcp:preview-$GITHUB_SHA"
+      - name: Archive exact candidate and external checksums
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: fide-chess-mcp-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/candidate/image.tar
+            ${{ runner.temp }}/candidate/runtime.tar.gz
+            ${{ runner.temp }}/candidate/runtime.tar.gz.sha256
+            ${{ runner.temp }}/candidate/tree.pin.json
+            ${{ runner.temp }}/candidate/materialization.json
+            ${{ runner.temp }}/candidate/offline-smoke.json
+            ${{ runner.temp }}/candidate/image-smoke.json
+            ${{ runner.temp }}/candidate/container-policy.json
+            ${{ runner.temp }}/candidate/runtime-contract.json
+            ${{ runner.temp }}/candidate/host-compatibility.json
+            ${{ runner.temp }}/candidate/runtime.lock.json
+            ${{ runner.temp }}/candidate/candidate.json
+            ${{ runner.temp }}/candidate/candidate.json.sha256
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+      - name: Candidate identity
+        run: cat "$RUNNER_TEMP/candidate/candidate.json.sha256" >> "$GITHUB_STEP_SUMMARY"

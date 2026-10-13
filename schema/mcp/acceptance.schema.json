@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arxohq/arxo-fide-chess/schema/mcp/acceptance.schema.json",
+  "title": "Pinned standalone MCP acceptance requests",
+  "type": "object",
+  "required": [
+    "format",
+    "profileId",
+    "sourceFixtures",
+    "cases",
+    "catalogExpectedKeys",
+    "fullCorpus",
+    "releaseVerified"
+  ],
+  "properties": {
+    "format": {
+      "const": "arxo.mcp-smoke-cases/0.1"
+    },
+    "profileId": {
+      "const": "fide-chess"
+    },
+    "fullCorpus": {
+      "const": "not_checked"
+    },
+    "releaseVerified": {
+      "const": false
+    },
+    "sourceFixtures": {
+      "type": "object",
+      "required": [
+        "sourceCommit",
+        "caseCount",
+        "expectationCount",
+        "files"
+      ],
+      "properties": {
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "caseCount": {
+          "const": 10
+        },
+        "expectationCount": {
+          "const": 18
+        },
+        "files": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 28,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "request",
+          "expect"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request": {
+            "type": "object",
+            "required": [
+              "name",
+              "arguments"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "arguments": {
+                "type": "object"
+              }
+            }
+          },
+          "expect": {
+            "type": "object",
+            "properties": {
+              "evaluationStatus": {
+                "enum": [
+                  "COMPUTED",
+                  "REQUIRES_JUDGMENT"
+                ]
+              },
+              "truthStatus": {
+                "enum": [
+                  "TRUE_ONLY",
+                  "FALSE_ONLY",
+                  "BOTH",
+                  "NEITHER"
+                ]
+              },
+              "requiredRules": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^urn:"
+                }
+              },
+              "judgmentRequired": {
+                "type": "boolean"
+              },
+              "sourceAnchorLinks": {
+                "type": "array"
+              },
+              "refusal": {
+                "type": "boolean"
+              },
+              "proof": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "catalogExpectedKeys": {
+      "const": [
+        "fide-laws-chess"
+      ]
+    },
+    "referenceRequests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "arguments"
+        ]
+      }
+    }
+  }
+}

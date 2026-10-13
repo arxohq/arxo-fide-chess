@@ -1,0 +1,26 @@
+{
+  "format": "arxo.mcp-npm-inputs/0.1",
+  "hostVersion": "0.4.2-cnafpreview.1",
+  "hostSourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc",
+  "platforms": {
+    "linux-x64": {
+      "package": "@arxo/mcp-host-linux-x64",
+      "sha256": "sha256:0a620900bfe6a9b6f73ddadfd945e7f7ec168a4ed6d7ef1a93c2c6d261419a87",
+      "archiveSha256": "sha256:e296a992b2dde4a964317c5a3cf013bf0b603c3e7102be82c3661a158a0903cb",
+      "bytes": 10255519,
+      "distTag": "cnaf-preview",
+      "archiveUrl": "https://registry.npmjs.org/@arxo/mcp-host-linux-x64/-/mcp-host-linux-x64-0.4.2-cnafpreview.1.tgz"
+    },
+    "darwin-arm64": {
+      "package": "@arxo/mcp-host-darwin-arm64",
+      "sha256": "sha256:76652208a494a7f91af1badee91ac066d8e575bd71a73da9fe1effbbe646508d",
+      "archiveSha256": "sha256:f8cba565e2368f5c2670ca9d2a49fc73d1e73cae4dd525cdc28a88e462f78b24",
+      "bytes": 8975716,
+      "distTag": "cnaf-preview",
+      "archiveUrl": "https://registry.npmjs.org/@arxo/mcp-host-darwin-arm64/-/mcp-host-darwin-arm64-0.4.2-cnafpreview.1.tgz"
+    }
+  },
+  "fullCorpus": "not_checked",
+  "releaseVerified": false,
+  "profile": "fide-chess"
+}

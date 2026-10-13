@@ -1,0 +1,111 @@
+name: Promote accepted FIDE chess MCP preview
+on:
+  workflow_dispatch:
+    inputs:
+      verification_run_id:
+        description: Successful Autonomous FIDE chess MCP verify push run on main
+        required: true
+      source_commit:
+        description: Exact accepted 40-character FIDE chess Git SHA
+        required: true
+      receipt_sha256:
+        description: Accepted external SHA-256 of candidate.json
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fide-chess-mcp-release
+  cancel-in-progress: false
+jobs:
+  promote:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+      packages: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED_COMMIT: ${{ inputs.source_commit }}
+      EXPECTED_RECEIPT: ${{ inputs.receipt_sha256 }}
+      VERIFY_RUN: ${{ inputs.verification_run_id }}
+    steps:
+      - name: Establish trusted successful source run
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$EXPECTED_RECEIPT" =~ ^[0-9a-f]{64}$ ]]
+          [[ "$VERIFY_RUN" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$VERIFY_RUN" > "$RUNNER_TEMP/source-run.json"
+          python3 - <<'PY'
+          import json, os
+          p=json.load(open(os.environ['RUNNER_TEMP']+'/source-run.json'))
+          assert p['head_sha']==os.environ['EXPECTED_COMMIT']
+          assert p['event']=='push' and p['head_branch']=='main'
+          assert p['status']=='completed' and p['conclusion']=='success'
+          assert p['path']=='.github/workflows/mcp-verify.yml'
+          assert p['repository']['full_name']==os.environ['GITHUB_REPOSITORY']
+          PY
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.source_commit }}
+          persist-credentials: false
+      - name: Transfer immutable accepted artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.verification_run_id }}
+          name: fide-chess-mcp-${{ inputs.source_commit }}
+          path: ${{ runner.temp }}/candidate
+      - name: Refuse existing immutable release or Git tag
+        run: |
+          python3 - <<'PY'
+          import os, urllib.request, urllib.error
+          repository=os.environ['GITHUB_REPOSITORY']
+          tag='preview-'+os.environ['EXPECTED_COMMIT']
+          for path in ('releases/tags/'+tag, 'git/ref/tags/'+tag):
+              request=urllib.request.Request('https://api.github.com/repos/'+repository+'/'+path,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+              try:
+                  urllib.request.urlopen(request,timeout=30)
+              except urllib.error.HTTPError as error:
+                  if error.code==404: continue
+                  raise
+              raise SystemExit('Immutable release/tag already exists: '+tag)
+          PY
+      - name: Login to dedicated image registry
+        run: printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Verify identity and promote without rebuild
+        run: >-
+          python3 tools/promote_mcp.py --directory "$RUNNER_TEMP/candidate"
+          --receipt-sha256 "$EXPECTED_RECEIPT" --source-commit "$EXPECTED_COMMIT"
+          --image "ghcr.io/arxohq/arxo-fide-chess-mcp:preview-$EXPECTED_COMMIT"
+      - name: Publish exact accepted runtime and durable evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidate="$RUNNER_TEMP/candidate"
+          cat > "$RUNNER_TEMP/release-notes.txt" <<'EOF'
+          Autonomous Arxo FIDE chess MCP technical preview. The runtime archive and OCI image are the exact accepted candidate, without rebuilding. This independent Arxo model is not an official FIDE service. Full corpus: not_checked. releaseVerified: false. See release.json for immutable binary/runtime/image identities and candidate.json for artifact checksums.
+          EOF
+          gh release create "preview-$EXPECTED_COMMIT" --repo "$GITHUB_REPOSITORY" \
+            --target "$EXPECTED_COMMIT" --title "Arxo FIDE chess MCP preview $EXPECTED_COMMIT" \
+            --prerelease --notes-file "$RUNNER_TEMP/release-notes.txt" \
+            "$candidate/image.tar" "$candidate/runtime.tar.gz" "$candidate/runtime.tar.gz.sha256" \
+            "$candidate/tree.pin.json" "$candidate/materialization.json" \
+            "$candidate/offline-smoke.json" "$candidate/image-smoke.json" \
+            "$candidate/container-policy.json" "$candidate/runtime-contract.json" \
+            "$candidate/host-compatibility.json" "$candidate/runtime.lock.json" \
+            "$candidate/candidate.json" "$candidate/candidate.json.sha256" \
+            "$candidate/release.json" "$candidate/release.json.sha256"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: fide-chess-mcp-release-${{ inputs.source_commit }}
+          path: |
+            ${{ runner.temp }}/candidate/release.json
+            ${{ runner.temp }}/candidate/release.json.sha256
+          if-no-files-found: error
+          retention-days: 90
+      - name: Release digest
+        run: cat "$RUNNER_TEMP/candidate/release.json" >> "$GITHUB_STEP_SUMMARY"

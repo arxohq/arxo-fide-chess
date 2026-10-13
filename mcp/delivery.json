@@ -1,0 +1,28 @@
+{
+  "format": "arxo.standalone-mcp-delivery/0.1",
+  "profileId": "fide-chess",
+  "producerRepository": "arxohq/arxo-fide-chess",
+  "packageName": "@arxo/mcp-fide-chess",
+  "refs": {
+    "canon": "mcp/canon.json",
+    "profile": "mcp/profile.json",
+    "sourcePolicy": "mcp/source-policy.json",
+    "runtimePolicy": "mcp/runtime-policy.json",
+    "cases": "mcp/cases/acceptance.json",
+    "runtimeLock": "mcp/runtime.lock.json",
+    "buildLock": "mcp/build.lock.json",
+    "inputInventory": "mcp/input-inventory.json",
+    "runtimeContract": "mcp/runtime-contract.json",
+    "hostCompatibility": "mcp/host-compatibility.json",
+    "treePin": "mcp/tree.pin.json"
+  },
+  "selectedPublications": [
+    {
+      "name": "fide.laws.chess",
+      "version": "0.1.1",
+      "runtimeKey": "fide-laws-chess",
+      "packagePath": "corpus/laws/org/fide/laws-chess",
+      "role": "root"
+    }
+  ]
+}

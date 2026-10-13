@@ -1,0 +1,34 @@
+{
+  "name": "@arxo/mcp-fide-chess",
+  "version": "0.1.0",
+  "description": "Pinned FIDE Laws of Chess as a local Arxo MCP server over stdio",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "arxo-mcp-fide-chess": "bin/arxo-mcp.cjs"
+  },
+  "files": [
+    "bin/arxo-mcp.cjs",
+    "slice/",
+    "pin.json",
+    "LICENSE",
+    "NOTICE",
+    "README.md"
+  ],
+  "optionalDependencies": {
+    "@arxo/mcp-host-linux-x64": "0.4.2-cnafpreview.1",
+    "@arxo/mcp-host-darwin-arm64": "0.4.2-cnafpreview.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arxohq/arxo-fide-chess.git",
+    "directory": "mcp/npm"
+  },
+  "homepage": "https://github.com/arxohq/arxo-fide-chess/blob/main/docs/mcp.md",
+  "publishConfig": {
+    "access": "public",
+    "tag": "latest"
+  }
+}
