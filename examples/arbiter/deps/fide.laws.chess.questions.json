@@ -1399,6 +1399,10 @@
     {
       "predicate": "rook_can_capture_checker",
       "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "recorded_half_point_units",
+      "reason": "Intermediate exact Decimal half-point units for Article 10.2; the consumer query is recorded_score_not_normally_associated."
     }
   ]
 }
