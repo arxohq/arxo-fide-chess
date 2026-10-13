@@ -1,0 +1,184 @@
+{
+  "format": "arxo.canon-depth-snapshot/0.1",
+  "source": {
+    "repository": "https://github.com/arxohq/arxo-fide-chess",
+    "revision": "3550570cef14da097ae92250f8e1b953f8a040e6"
+  },
+  "method": {
+    "implementation": "boundaries.depth",
+    "implementationHashes": {
+      ".claude/skills/formalize-act/scripts/boundaries.py": "sha256:4138459861a438324c7fdbdbb7ac192f1a996ff83354836484397de18e2451e6",
+      "corpus/tools/lib/act_split.py": "sha256:3289fb03603fe85293054b5966db860ebde93353cc41e5f2f5feb644b9d6de54",
+      "corpus/lib/lawbin.py": "sha256:1ce73ab0067413112bafec7fa0c15ebd8f658a476403e61be9a97073965a4816",
+      "engines/lawref/lawref/editions/applicability.py": "sha256:72c85d6e851b190c8b4d2c8e4fd48003ccc74e8e867fe9b182da3d9f2ad7847c"
+    },
+    "implementationRevisions": {
+      "corpus": "6225feb5cc3960bc251426b45b83e065456ba5be",
+      "core": "c42cbc71f6eec1060fdcb99bc6572301fa7afc1e"
+    },
+    "adapterHash": "sha256:acec6f82a53bfe52d976900f0279b2aa77aecc729031734776fbb14741fcc42c",
+    "adapter": "static import resolver only; original depth and applicability code unchanged",
+    "unit": "en_article: Article 1–12 of the pinned 2023 FIDE Laws of Chess",
+    "imports": "excluded; own package nodes only",
+    "completeness": "not assessed",
+    "unmeasuredAreas": [
+      "Preface 0.2",
+      "Appendices A and B: implemented rules are outside the article denominator",
+      "Appendix C: notation text not parsed",
+      "Appendix D: organizational material not executed",
+      "Guidelines: outside the retained Laws of Chess publication"
+    ],
+    "scenarios": "declared scenarios and addressed execution are recorded separately",
+    "releaseVerified": false,
+    "corpus": "not_checked"
+  },
+  "packages": [
+    {
+      "name": "fide.laws.chess",
+      "spec": "fide.laws.chess@0.1.1",
+      "status": "partial",
+      "packageHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+      "worldHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+      "sourceHash": "sha256:d24adcdaec8b46dc37d5dcc74d52052d314d804870d5d5402e2434aa1bfda836",
+      "declarationHash": "sha256:89affd26a49724ad71bb6e1eaeda30f0c2386c05ca87cca9386eb9ee6c7312d0",
+      "edition": "FIDE_LAWS_2023",
+      "effectiveFrom": "2023-01-01",
+      "unit": "en_article",
+      "denominator": 12,
+      "levels": {
+        "EXECUTABLE": 12,
+        "INTERPRETED": 0,
+        "ANCHORED": 0,
+        "SOURCE_ONLY": 0,
+        "NONE": 0,
+        "EXCLUDED": 0
+      },
+      "ownRules": 197,
+      "ownFragments": 17,
+      "ownDeonticNorms": 0,
+      "declaredScenarios": 103,
+      "executedScenarios": 103,
+      "executionOutcome": "passed",
+      "documents": [
+        {
+          "documentHash": "sha256:d24adcdaec8b46dc37d5dcc74d52052d314d804870d5d5402e2434aa1bfda836",
+          "sourcePath": "packages/fide.laws.chess/sources/fide-chess/en.txt",
+          "edition": "FIDE_LAWS_2023",
+          "unit": "en_article",
+          "denominator": 12,
+          "units": [
+            {
+              "article": "1",
+              "title": "The Nature and Objectives of the Game of Chess",
+              "level": "EXECUTABLE",
+              "deriving": 4,
+              "interpreted": 0,
+              "anchoring": 4,
+              "defeasible": 0
+            },
+            {
+              "article": "2",
+              "title": "The Initial Position of the Pieces on the Chessboard",
+              "level": "EXECUTABLE",
+              "deriving": 2,
+              "interpreted": 0,
+              "anchoring": 2,
+              "defeasible": 0
+            },
+            {
+              "article": "3",
+              "title": "The Moves of the Pieces",
+              "level": "EXECUTABLE",
+              "deriving": 63,
+              "interpreted": 0,
+              "anchoring": 63,
+              "defeasible": 0
+            },
+            {
+              "article": "4",
+              "title": "The Act of Moving the Pieces",
+              "level": "EXECUTABLE",
+              "deriving": 1,
+              "interpreted": 0,
+              "anchoring": 1,
+              "defeasible": 0
+            },
+            {
+              "article": "5",
+              "title": "The Completion of the Game",
+              "level": "EXECUTABLE",
+              "deriving": 11,
+              "interpreted": 0,
+              "anchoring": 11,
+              "defeasible": 0
+            },
+            {
+              "article": "6",
+              "title": "The Chessclock",
+              "level": "EXECUTABLE",
+              "deriving": 22,
+              "interpreted": 0,
+              "anchoring": 22,
+              "defeasible": 7
+            },
+            {
+              "article": "7",
+              "title": "Irregularities",
+              "level": "EXECUTABLE",
+              "deriving": 11,
+              "interpreted": 0,
+              "anchoring": 11,
+              "defeasible": 0
+            },
+            {
+              "article": "8",
+              "title": "The recording of the moves",
+              "level": "EXECUTABLE",
+              "deriving": 7,
+              "interpreted": 0,
+              "anchoring": 7,
+              "defeasible": 4
+            },
+            {
+              "article": "9",
+              "title": "The Drawn Game",
+              "level": "EXECUTABLE",
+              "deriving": 13,
+              "interpreted": 0,
+              "anchoring": 13,
+              "defeasible": 2
+            },
+            {
+              "article": "10",
+              "title": "Points",
+              "level": "EXECUTABLE",
+              "deriving": 12,
+              "interpreted": 0,
+              "anchoring": 12,
+              "defeasible": 8
+            },
+            {
+              "article": "11",
+              "title": "The Conduct of the Players",
+              "level": "EXECUTABLE",
+              "deriving": 23,
+              "interpreted": 0,
+              "anchoring": 23,
+              "defeasible": 9
+            },
+            {
+              "article": "12",
+              "title": "The Role of the Arbiter (see Preface)",
+              "level": "EXECUTABLE",
+              "deriving": 13,
+              "interpreted": 0,
+              "anchoring": 13,
+              "defeasible": 6
+            }
+          ],
+          "unresolvedAnchors": 28
+        }
+      ]
+    }
+  ]
+}

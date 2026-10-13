@@ -1,0 +1,10 @@
+node_modules/
+data/
+models.json
+index.d.ts
+types/
+src/chess.js
+LICENSE
+NOTICE
+canon-packages.json
+*.tgz

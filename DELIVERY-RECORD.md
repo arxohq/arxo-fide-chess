@@ -41,3 +41,24 @@ coverage is separate from completeness and successful scenario execution.
 
 Publication and installed-consumer results are recorded after verification.
 Full corpus: `not_checked`; `releaseVerified: false`.
+
+## Prepared and locally verified
+
+The exact 524,353-byte tarball has SHA-256
+`0d81c3be34783400ac1f35774fbc13ea22285b2412cb8159c9c2914cedecc9d1`.
+Fresh installed consumers on Node.js 20.20.2 and 24.21.0 passed nine runtime
+groups, all 18 retained case/query expectations, strict TypeScript 5.9.3,
+all three JavaScript blocks in each GitHub/npm README and the bundled example.
+Archive inventory, original asset hashes, licences/notices and absence of
+private authoring caches and machine paths were checked. Four SVG/PNG figures
+were generated from SDK evidence and native unfold and visually inspected.
+
+The original code-fix revision is recorded above; the corpus question-catalog
+follow-up is `6225feb5cc3960bc251426b45b83e065456ba5be`. The public immutable
+source pin is `3550570cef14da097ae92250f8e1b953f8a040e6`.
+The intermediate score producer is classified as internal in the retained
+question catalog. Source anchors are a static join from executed producer
+IDs to the pinned model; the current SDK source-anchor arrays are empty.
+
+These local checks do not assert public publication or full subject acceptance.
+See `verification/delivery-checks.json` for the prepared evidence.

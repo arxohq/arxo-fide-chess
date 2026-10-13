@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560" role="img" aria-labelledby="title desc"><title id="title">From an episode to an inspectable answer</title><desc id="desc">A frozen model and explicit case facts enter the common Arxo SDK. Loss and draw are separate questions. The canonical answer records producer rules and judgments.</desc><style>text{font-family:Arial,Helvetica,sans-serif}.mono{font-family:Menlo,Consolas,monospace}</style><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#315d84"/></marker></defs><rect x="0" y="0" width="1000" height="560" rx="16" fill="#f8f4eb"/><text x="36" y="54" font-size="31" font-weight="700" fill="#122d4c">A recorded episode, evaluated by the model.</text>
+<rect x="36" y="90" width="292" height="120" rx="16" fill="#e8ecef"/>
+<text x="58" y="128" font-size="25" font-weight="650" fill="#315d84" class="mono">loadModel()</text>
+<text x="58" y="164" font-size="19" font-weight="400" fill="#122d4c" class="mono">fide.laws.chess@0.1.1</text>
+<text x="58" y="192" font-size="19" font-weight="400" fill="#53677d">Original bytes checked</text>
+<rect x="360" y="90" width="604" height="120" rx="16" fill="#e8ecef"/>
+<text x="382" y="128" font-size="23" font-weight="650" fill="#315d84" class="mono">getCaseInput('SecondIllegal')</text>
+<text x="382" y="164" font-size="21" font-weight="400" fill="#122d4c">Explicit facts · date · any arbiter judgments</text>
+<text x="382" y="192" font-size="19" font-weight="400" fill="#53677d">No judgment is supplied by the loader</text>
+<path d="M182 218 L182 252" stroke="#315d84" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M660 218 L660 252" stroke="#315d84" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="36" y="260" width="928" height="86" rx="16" fill="#dce6ef"/>
+<text x="58" y="296" font-size="24" font-weight="650" fill="#315d84" class="mono">@arxo/law → open(... local.packages)</text>
+<text x="58" y="325" font-size="19" font-weight="400" fill="#53677d">Offline WebAssembly execution · rules and exceptions remain in the model</text>
+<path d="M269 354 L269 387" stroke="#315d84" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M736 354 L736 387" stroke="#315d84" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="36" y="397" width="446" height="124" rx="16" fill="#e6f1eb"/>
+<rect x="518" y="397" width="446" height="124" rx="16" fill="#e8ecef"/>
+<text x="58" y="433" font-size="21" font-weight="650" fill="#14644b" class="mono">game_lost_by(game, white)</text>
+<text x="58" y="477" font-size="29" font-weight="700" fill="#14644b" class="mono">TRUE_ONLY</text>
+<text x="58" y="508" font-size="18" font-weight="600" fill="#14644b" class="mono">COMPUTED</text>
+<text x="540" y="433" font-size="24" font-weight="650" fill="#315d84">Canonical document + proof</text>
+<text x="540" y="475" font-size="20" font-weight="400" fill="#122d4c">Producer IDs · requests · hashes</text>
+<text x="540" y="508" font-size="17" font-weight="400" fill="#53677d">Source links join the retained model anchors</text></svg>

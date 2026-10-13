@@ -1,0 +1,74 @@
+{
+  "text": "• must_move_first_touched_piece (chess, institutional): the player must move the first piece touched that can be moved\n  ⇐ MustMoveFirstTouchedPiece (chess): Article 4.3.1. If the player having the move touches one or more of his/her own pieces, he/she must move the first piece touched that can be moved\n      § FIDE_ART_4 (article/4)\n    • own_piece_of (chess, empirical): the piece belongs to the player\n    • piece_touched_intentionally (chess, judgment): the player having the move touched the piece with the intention of moving or capturing\n        (no producers in the world)\n    • piece_can_be_moved (chess, empirical): the piece can be moved\n    • player_has_the_move (chess, empirical): the player has the move\n",
+  "tree": {
+    "anchors": [],
+    "label": "the player must move the first piece touched that can be moved",
+    "name": "must_move_first_touched_piece",
+    "package": "chess",
+    "predicate": "urn:fide:laws:clir:chess#must_move_first_touched_piece",
+    "producers": [
+      {
+        "anchors": [
+          {
+            "id": "urn:fide:laws:clir:chess#FIDE_ART_4",
+            "locator": "article/4",
+            "quote": []
+          }
+        ],
+        "headPolarity": "positive",
+        "label": "Article 4.3.1. If the player having the move touches one or more of his/her own pieces, he/she must move the first piece touched that can be moved",
+        "name": "MustMoveFirstTouchedPiece",
+        "package": "chess",
+        "premises": [
+          {
+            "anchors": [],
+            "label": "the piece belongs to the player",
+            "name": "own_piece_of",
+            "package": "chess",
+            "polarity": "positive",
+            "predicate": "urn:fide:laws:clir:chess#own_piece_of",
+            "producers": [],
+            "relationKind": "empirical",
+            "truncated": false
+          },
+          {
+            "anchors": [],
+            "label": "the player having the move touched the piece with the intention of moving or capturing",
+            "name": "piece_touched_intentionally",
+            "package": "chess",
+            "polarity": "positive",
+            "predicate": "urn:fide:laws:clir:chess#piece_touched_intentionally",
+            "producers": [],
+            "relationKind": "judgment",
+            "truncated": false
+          },
+          {
+            "anchors": [],
+            "label": "the piece can be moved",
+            "name": "piece_can_be_moved",
+            "package": "chess",
+            "polarity": "positive",
+            "predicate": "urn:fide:laws:clir:chess#piece_can_be_moved",
+            "producers": [],
+            "relationKind": "empirical",
+            "truncated": false
+          },
+          {
+            "anchors": [],
+            "label": "the player has the move",
+            "name": "player_has_the_move",
+            "package": "chess",
+            "polarity": "positive",
+            "predicate": "urn:fide:laws:clir:chess#player_has_the_move",
+            "producers": [],
+            "relationKind": "empirical",
+            "truncated": false
+          }
+        ],
+        "rule": "urn:fide:laws:clir:chess#MustMoveFirstTouchedPiece",
+        "strength": "strict"
+      }
+    ],
+    "relationKind": "institutional"
+  }
+}
