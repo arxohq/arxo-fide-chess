@@ -1,0 +1,19 @@
+{
+  "queryId": "must-move",
+  "kind": "truth",
+  "literal": {
+    "kind": "literal",
+    "polarity": "positive",
+    "predicate": "urn:fide:laws:clir:chess#must_move_first_touched_piece",
+    "args": [
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:white"
+      },
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:king"
+      }
+    ]
+  }
+}

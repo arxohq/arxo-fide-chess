@@ -1,0 +1,1475 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Сценарии перенесены из прежнего Python-раннера семейства `fide_chess`.
+// Заголовки — прежние ID сценариев (scenario-manifest); ожидания
+// выведены из ПРЕЖНИХ проверок, а не из ответов движка.
+
+test "FIDE-01-START-ENTERS-PLAYING" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": GamePlay__procedure_instance(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": play_started(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": GamePlay__attempted_transition(entity_ref("urn:entity:fide:game"), StartPlay, GamePlayStep { id: "urn:entity:fide:game#step-0", time: @2023-05-02T09:00:00+05:00 }) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(GamePlay__entered_state(entity_ref("urn:entity:fide:game"), Playing, GamePlayStep { id: "urn:entity:fide:game#step-0", time: @2023-05-02T09:00:00+05:00 }));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+}
+
+test "FIDE-01B-A-CONCLUDED-GAME-ENTERED-PLAYING-BUT-IS-NOT-PLAYING" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": GamePlay__procedure_instance(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": play_started(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": GamePlay__attempted_transition(entity_ref("urn:entity:fide:game"), StartPlay, GamePlayStep { id: "urn:entity:fide:game#step-0", time: @2023-05-02T09:00:00+05:00 }) {
+            origin case_input;
+        }
+        assert "assert-a18": checkmate_delivered(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a19": GamePlay__attempted_transition(entity_ref("urn:entity:fide:game"), ConcludeByCheckmate, GamePlayStep { id: "urn:entity:fide:game#step-1", time: @2023-05-02T10:00:00+05:00 }) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(GamePlay__entered_state(entity_ref("urn:entity:fide:game"), Playing, GamePlayStep { id: "urn:entity:fide:game#step-0", time: @2023-05-02T09:00:00+05:00 }));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+
+    evaluate truth(GamePlay__current_state(entity_ref("urn:entity:fide:game"), Playing));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+
+    evaluate truth(GamePlay__current_state(entity_ref("urn:entity:fide:game"), Ended));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+
+    evaluate truth(GamePlay__left_state(entity_ref("urn:entity:fide:game"), Playing, GamePlayStep { id: "urn:entity:fide:game#step-1", time: @2023-05-02T10:00:00+05:00 }));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+}
+
+test "FIDE-02-LEGAL-PLAYMOVE-VALID" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": GamePlay__procedure_instance(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": play_started(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": GamePlay__attempted_transition(entity_ref("urn:entity:fide:game"), StartPlay, GamePlayStep { id: "urn:entity:fide:game#step-0", time: @2023-05-02T09:00:00+05:00 }) {
+            origin case_input;
+        }
+
+        assert "assert-a18": move_meets_articles_3_1_to_3_9(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a19": GamePlay__attempted_transition(entity_ref("urn:entity:fide:game"), PlayMove, GamePlayStep { id: "urn:entity:fide:game#step-1", time: @2023-05-02T10:00:00+05:00 }) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(GamePlay__valid_transition(entity_ref("urn:entity:fide:game"), PlayMove, GamePlayStep { id: "urn:entity:fide:game#step-1", time: @2023-05-02T10:00:00+05:00 }));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+}
+
+test "FIDE-03-ILLEGAL-PLAYMOVE-WITHOUT-EFFECT" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": GamePlay__procedure_instance(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": play_started(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": GamePlay__attempted_transition(entity_ref("urn:entity:fide:game"), StartPlay, GamePlayStep { id: "urn:entity:fide:game#step-0", time: @2023-05-02T09:00:00+05:00 }) {
+            origin case_input;
+        }
+
+        assert "assert-a18": GamePlay__attempted_transition(entity_ref("urn:entity:fide:game"), PlayMove, GamePlayStep { id: "urn:entity:fide:game#step-1", time: @2023-05-02T10:00:00+05:00 }) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(GamePlay__valid_transition(entity_ref("urn:entity:fide:game"), PlayMove, GamePlayStep { id: "urn:entity:fide:game#step-1", time: @2023-05-02T10:00:00+05:00 }));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "FIDE-04-CASTLING-LEGAL-WHEN-NEITHER-MOVED" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": castling_side_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:kingside"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(castling_legal(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:kingside")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(CastlingLegal);
+}
+
+test "FIDE-05-CASTLING-NOT-DERIVED-IF-KING-MOVED" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": castling_side_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:kingside"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": piece_has_moved(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(castling_legal(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:kingside")));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "FIDE-06-EN-PASSANT-OPEN-ON-THE-FOLLOWING-MOVE" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": en_passant_right_open(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": capturing_pawn_on_adjacent_file(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(en_passant_capture_legal(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white-pawn")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(EnPassantCaptureLegal);
+}
+
+test "FIDE-07-EN-PASSANT-GONE-ON-THE-NEXT-FRAME" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": capturing_pawn_on_adjacent_file(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(en_passant_capture_legal(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white-pawn")));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "FIDE-08-THREEFOLD-WITH-CLAIM-DRAWS" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": draw_claimed(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": position_occurrence_count(entity_ref("urn:entity:fide:game"), 3) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_drawn(entity_ref("urn:entity:fide:game")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(ThreefoldClaimDraws);
+}
+
+test "FIDE-09-THREEFOLD-WITHOUT-CLAIM-NOT-YET" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": position_occurrence_count(entity_ref("urn:entity:fide:game"), 3) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_drawn(entity_ref("urn:entity:fide:game")));
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "FIDE-10-FIVEFOLD-AUTOMATIC-DRAW" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": position_occurrence_count(entity_ref("urn:entity:fide:game"), 5) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_drawn(entity_ref("urn:entity:fide:game")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(FivefoldAutomaticDraw);
+}
+
+test "FIDE-11-FIFTY-MOVE-WITH-CLAIM-DRAWS" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": draw_claimed(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a17": moves_by_each_without_pawn_or_capture(entity_ref("urn:entity:fide:game"), 50) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_drawn(entity_ref("urn:entity:fide:game")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(FiftyMoveClaimDraws);
+}
+
+test "FIDE-12-SEVENTY-FIVE-AUTOMATIC-DRAW" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": moves_by_each_without_pawn_or_capture(entity_ref("urn:entity:fide:game"), 75) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_drawn(entity_ref("urn:entity:fide:game")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(SeventyFiveAutomaticDraw);
+}
+
+test "FIDE-13-SECOND-ILLEGAL-MOVE-LOSES" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": completed_illegal_move_count(entity_ref("urn:entity:fide:white"), 2) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_lost_by(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(SecondIllegalMoveLoses);
+}
+
+test "FIDE-14-SECOND-ILLEGAL-DRAWN-IF-MATE-IMPOSSIBLE" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": completed_illegal_move_count(entity_ref("urn:entity:fide:white"), 2) {
+            origin case_input;
+        }
+
+        assert "assert-a16": king_cannot_be_checkmated(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_drawn(entity_ref("urn:entity:fide:game")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(SecondIllegalMoveDrawnIfMateImpossible);
+}
+
+test "FIDE-15-TOUCH-MOVE-REQUIRES-JUDGMENT" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": player_has_the_move(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a16": piece_can_be_moved(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(must_move_first_touched_piece(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")));
+    expect evaluation_status == REQUIRES_JUDGMENT;
+    expect truth_status == NEITHER;
+    expect issues_within(info);
+}
+
+test "FIDE-16-CHECKMATE-WINS" {
+    given {
+        context {
+            decision_time @2026-08-26T12:00:00+05:00;
+            knowledge_time @2026-08-26T12:00:00+05:00;
+            legal_time @2023-06-01;
+            timezone "Asia/Qyzylorda";
+        }
+
+        assert "assert-a0": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a1": player_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a2": king_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a3": rook_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a4": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a5": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a6": own_piece_of(entity_ref("urn:entity:fide:white"), entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a7": checked_game(entity_ref("urn:entity:fide:game")) {
+            origin case_input;
+        }
+
+        assert "assert-a8": checked_piece(entity_ref("urn:entity:fide:white-king")) {
+            origin case_input;
+        }
+
+        assert "assert-a9": checked_piece(entity_ref("urn:entity:fide:white-rook-h")) {
+            origin case_input;
+        }
+
+        assert "assert-a10": checked_piece(entity_ref("urn:entity:fide:white-pawn")) {
+            origin case_input;
+        }
+
+        assert "assert-a11": checked_player(entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+
+        assert "assert-a12": checked_player(entity_ref("urn:entity:fide:black")) {
+            origin case_input;
+        }
+
+        assert "assert-a13": checked_castling_side(entity_ref("urn:entity:fide:kingside")) {
+            origin case_input;
+        }
+
+        assert "assert-a14": arbiter_of(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:arbiter")) {
+            origin case_input;
+        }
+
+        assert "assert-a15": checkmate_delivered(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")) {
+            origin case_input;
+        }
+    }
+
+    evaluate truth(game_won_by(entity_ref("urn:entity:fide:game"), entity_ref("urn:entity:fide:white")));
+    expect truth_status == TRUE_ONLY;
+    expect issues_within(info);
+    expect any_applied(CheckmateWins);
+}

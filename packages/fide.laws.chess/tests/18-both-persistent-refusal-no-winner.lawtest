@@ -1,0 +1,24 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статьи 11.7–11.8. Арбитр признал упорный отказ обоих: партия проиграна обоими, никто
+// не выиграл.
+test "urn:query:fide-both-persistent-refusal-no-winner" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g18"), entity_ref("urn:fide:w18")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g18"), entity_ref("urn:fide:b18")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g18"), entity_ref("urn:fide:w18"), entity_ref("urn:fide:b18")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g18"), entity_ref("urn:fide:b18"), entity_ref("urn:fide:w18")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g18"), entity_ref("urn:fide:w18")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w18")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b18")) { origin case_input; }
+        assert "a7": persistent_refusal_to_comply(entity_ref("urn:fide:g18"), entity_ref("urn:fide:w18")) { origin adjudicated; }
+        assert "a8": refusal_to_comply_reported(entity_ref("urn:fide:g18"), entity_ref("urn:fide:w18")) { origin case_input; }
+        assert "a9": refusal_to_comply_reported(entity_ref("urn:fide:g18"), entity_ref("urn:fide:b18")) { origin case_input; }
+        assert "a10": persistent_refusal_to_comply(entity_ref("urn:fide:g18"), entity_ref("urn:fide:b18")) { origin adjudicated; }
+    }
+    evaluate truth(game_won_by(entity_ref("urn:fide:g18"), entity_ref("urn:fide:w18")));
+    expect truth_status == FALSE_ONLY;
+}

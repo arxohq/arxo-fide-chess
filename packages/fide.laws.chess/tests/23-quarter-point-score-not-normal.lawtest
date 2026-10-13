@@ -1,0 +1,13 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 10.2. Записан счёт ¾ – ¼: очки, не связанные обычно с партией.
+test "urn:query:fide-quarter-point-score-not-normal" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": points_recorded(entity_ref("urn:fide:g23"), entity_ref("urn:fide:w23"), 0.75) { origin case_input; }
+    }
+    evaluate truth(recorded_score_not_normally_associated(entity_ref("urn:fide:g23"), entity_ref("urn:fide:w23")));
+    expect truth_status == TRUE_ONLY;
+}

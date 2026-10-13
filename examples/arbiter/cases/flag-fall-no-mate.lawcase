@@ -1,0 +1,15 @@
+language "law.core" version "0.2";
+package examples.chess.arbiter version "0.1.0";
+namespace "urn:law:examples:chess:arbiter";
+
+// Статьи 6.8–6.9: арбитр видит падение флага белых, ходы контроля не сделаны,
+// а у чёрных остался один король — мат белым невозможен.
+case FlagFallNoMate {
+    context { legal_time @2026-09-01; knowledge_time @2026-09-08T12:00:00Z; decision_time @2026-09-08T12:00:00Z; timezone "UTC"; }
+    assert "white": fide.laws.chess::player_of(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:white")) { origin case_input; }
+    assert "black": fide.laws.chess::player_of(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:black")) { origin case_input; }
+    assert "complete-mate-facts-white": fide.laws.chess::checked_player(entity_ref("urn:example:chess:white")) { origin case_input; }
+    assert "flag-observed": fide.laws.chess::flag_fall_observed_by_arbiter(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:white")) { origin case_input; }
+    assert "moves-not-completed": fide.laws.chess::prescribed_moves_not_completed(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:white")) { origin case_input; }
+    assert "mate-impossible": fide.laws.chess::king_cannot_be_checkmated(entity_ref("urn:example:chess:white")) { origin case_input; }
+}

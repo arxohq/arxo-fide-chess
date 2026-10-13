@@ -1,0 +1,276 @@
+// Статья 12 и предисловие 0.2: арбитр и процедура партии.
+//
+// Автомат: NotStarted → Playing → Ended. Self-loop PlayMove на Playing —
+// попытка хода: легальный ход — valid_transition, нелегальный —
+// ATTEMPT_WITHOUT_EFFECT у process-run (событие `on E` в procedure до CLIR
+// не доезжает; попытка = attempted_transition).
+//
+// Канал суждения предисловия — «случаи, не урегулированные статьёй» — и
+// мост обязан быть strict с литеральной головой.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    Arbiter,
+    FIDE_ART_11,
+    FIDE_ART_12,
+    FIDE_PREFACE,
+    Game,
+    PenaltyOption,
+    Player,
+    Situation,
+    agreed_draw_has_ended_the_game,
+    arbiter_of,
+    checkmate_has_been_delivered,
+    considered_spectator,
+    dead_position_has_ended_the_game,
+    default_has_ended_the_game,
+    game_drawn,
+    game_lost_by,
+    illegal_position_has_ended_the_game,
+    legal_move,
+    penalty_imposed,
+    penalty_under_12_9_due,
+    play_started,
+    prescribed_loss_under_the_laws,
+    resignation_has_ended_the_game,
+    second_illegal_move_has_ended_the_game,
+    stalemate_has_ended_the_game,
+    time_forfeit_has_ended_the_game,
+};
+
+external judgment relation case_not_precisely_regulated(situation: Situation) {
+    authority FIDEArbiter;
+    label en official "the case is not precisely regulated by an Article of the Laws";
+}
+
+relation arbiter_competent_to_decide(situation: Situation) kind institutional {
+    label en official "the arbiter is competent to reach a correct decision";
+}
+relation arbiter_shall_see_laws_observed(arb: Arbiter, game: Game) kind institutional {
+    label en official "the arbiter shall see that the Laws of Chess are observed";
+}
+
+@source(FIDE_PREFACE)
+rule UnregulatedCaseDecidedByArbiter(situation: Situation) strict {
+    label en official "Preface 0.2. Where cases are not precisely regulated by an Article of the Laws, it should be possible to reach a correct decision";
+    when case_not_precisely_regulated(situation);
+    then arbiter_competent_to_decide(situation);
+}
+
+@source(FIDE_ART_12)
+rule ArbiterSeesLawsObserved(game: Game, arb: Arbiter) strict {
+    label en official "Article 12.1. The arbiter shall see that the Laws of Chess are observed";
+    when arbiter_of(game, arb) and play_started(game);
+    then arbiter_shall_see_laws_observed(arb, game);
+}
+
+// --- 12.7–12.9: зрители, связь, санкции (DECISION-0294) --------------------
+//
+// Санкции 12.9 — перечень `PenaltyOption`. Порядок §116: общий выбор арбитра
+// («может наложить любую санкцию перечня») уступает санкции, которую Законы
+// предписали сами (11.3.2.2, 11.7) — lex specialis. Пакет не выбирает
+// санкцию; он отвечает, соответствует ли наложенная санкция Правилам.
+
+relation spectator_interfered_in_game(who: Player) kind empirical {
+    label en official "the person spoke about or otherwise interfered in a game";
+}
+relation communication_device_used_without_authorisation(game: Game, who: Player) kind empirical {
+    label en official "the player used a mobile phone or communication device in the playing venue without the arbiter's authorisation";
+}
+
+relation may_be_expelled_from_venue(who: Player) kind institutional {
+    label en official "the arbiter may expel the offender from the playing venue";
+}
+relation arbiter_chooses_among_12_9_options(game: Game, who: Player) kind institutional {
+    label en official "the arbiter chooses the penalty among the options of Article 12.9";
+}
+relation penalty_conforms_to_laws(game: Game, who: Player) kind institutional {
+    label en official "the penalty imposed conforms to the Laws of Chess";
+}
+pub relation penalty_differs_from_prescribed_loss(game: Game, who: Player) kind institutional {
+    label en official "the penalty imposed differs from the loss of the game prescribed by the Laws";
+}
+
+@source(FIDE_ART_12)
+rule SpectatorInterferenceMayBeExpelled(game: Game, who: Player) strict {
+    label en official "Article 12.7. Spectators are not allowed to interfere in a game. The arbiter may expel offenders from the playing venue";
+    when considered_spectator(who)
+        and spectator_interfered_in_game(who);
+    then may_be_expelled_from_venue(who);
+}
+
+@source(FIDE_ART_12)
+rule UnauthorisedCommunicationDevicePenalised(game: Game, who: Player) strict {
+    label en official "Article 12.8. Unless authorised by the arbiter, it is forbidden for anybody to use a mobile phone or any kind of communication device in the playing venue";
+    when communication_device_used_without_authorisation(game, who);
+    then penalty_under_12_9_due(game, who);
+}
+
+@source(FIDE_ART_12)
+rule ArbiterChoosesPenalty(game: Game, who: Player) defeasible {
+    label en official "Article 12.9. Options available to the arbiter concerning penalties";
+    when penalty_under_12_9_due(game, who);
+    then arbiter_chooses_among_12_9_options(game, who);
+}
+
+@source(FIDE_ART_11)
+rule PrescribedLossRemovesChoice(game: Game, who: Player) defeasible {
+    label en official "Articles 11.3.2.2 and 11.7. Where the Laws prescribe the loss of the game, the penalty is not left to the arbiter's choice";
+    when prescribed_loss_under_the_laws(game, who);
+    then not arbiter_chooses_among_12_9_options(game, who);
+}
+
+@source(FIDE_ART_11)
+priority PrescribedPenaltyOverGeneralChoice {
+    label en official "The penalty prescribed by a specific Article prevails over the general options of Article 12.9";
+    prefer PrescribedLossRemovesChoice over ArbiterChoosesPenalty;
+    reason lex_specialis;
+}
+
+@source(FIDE_ART_12)
+rule ChosenOptionConforms(game: Game, who: Player, p: PenaltyOption) defeasible {
+    label en official "Article 12.9. A penalty chosen among the listed options conforms to the Laws";
+    when arbiter_chooses_among_12_9_options(game, who)
+        and penalty_imposed(game, who, p);
+    then penalty_conforms_to_laws(game, who);
+}
+
+@source(FIDE_ART_12)
+rule PrescribedLossImposedConforms(game: Game, who: Player, p: PenaltyOption) defeasible {
+    label en official "Articles 11.3.2.2, 11.7 and 12.9.6. Declaring the game lost where the Laws prescribe the loss conforms to the Laws";
+    when prescribed_loss_under_the_laws(game, who)
+        and penalty_imposed(game, who, p)
+        and (p == declaring_game_lost);
+    then penalty_conforms_to_laws(game, who);
+}
+
+@source(FIDE_ART_12)
+rule OtherPenaltyThanPrescribedLoss(game: Game, who: Player, p: PenaltyOption) defeasible {
+    label en official "Articles 11.3.2.2 and 11.7. A penalty other than the prescribed loss of the game";
+    when prescribed_loss_under_the_laws(game, who)
+        and penalty_imposed(game, who, p);
+    then penalty_differs_from_prescribed_loss(game, who);
+}
+
+@source(FIDE_ART_12)
+rule LossAmongImposedPenalties(game: Game, who: Player, p: PenaltyOption) defeasible {
+    label en official "Article 12.9.6. The imposed penalties include declaring the game lost";
+    when prescribed_loss_under_the_laws(game, who)
+        and penalty_imposed(game, who, p)
+        and (p == declaring_game_lost);
+    then not penalty_differs_from_prescribed_loss(game, who);
+}
+
+@source(FIDE_ART_12)
+priority DeclaredLossSatisfiesPrescription {
+    label en official "Article 12.9.6. Where the game was declared lost, the penalty does not differ from the prescribed loss";
+    prefer LossAmongImposedPenalties over OtherPenaltyThanPrescribedLoss;
+    reason lex_specialis;
+}
+
+@source(FIDE_ART_12)
+rule DeclaredLossLoses(game: Game, who: Player, p: PenaltyOption) strict {
+    label en official "Article 12.9.6. Declaring the game to be lost by the offending player";
+    when penalty_imposed(game, who, p)
+        and (p == declaring_game_lost);
+    then game_lost_by(game, who);
+}
+
+procedure GamePlay(game: Game) {
+    state NotStarted initial {
+        label en official "the game has not started";
+    }
+    state Playing {
+        label en official "the game is in progress";
+    }
+    state Ended terminal {
+        label en official "the game is completed";
+    }
+
+    transition StartPlay {
+        label en official "start the game";
+        from NotStarted;
+        to Playing;
+        when play_started(game);
+    }
+
+    transition PlayMove {
+        label en official "make a move";
+        from Playing;
+        to Playing;
+        when legal_move(game);
+    }
+
+    transition ConcludeByCheckmate {
+        label en official "the game ends by checkmate";
+        from Playing;
+        to Ended;
+        when checkmate_has_been_delivered(game);
+    }
+
+    transition ConcludeByResignation {
+        label en official "the game ends by resignation";
+        from Playing;
+        to Ended;
+        when resignation_has_ended_the_game(game);
+    }
+
+    transition ConcludeByStalemate {
+        label en official "the game ends by stalemate";
+        from Playing;
+        to Ended;
+        when stalemate_has_ended_the_game(game);
+    }
+
+    transition ConcludeByDeadPosition {
+        label en official "the game ends by a dead position";
+        from Playing;
+        to Ended;
+        when dead_position_has_ended_the_game(game);
+    }
+
+    transition ConcludeByAgreement {
+        label en official "the game ends by agreement";
+        from Playing;
+        to Ended;
+        when agreed_draw_has_ended_the_game(game);
+    }
+
+    transition ConcludeBySecondIllegalMove {
+        label en official "the game ends by a second completed illegal move";
+        from Playing;
+        to Ended;
+        when second_illegal_move_has_ended_the_game(game);
+    }
+
+    transition ConcludeOnTime {
+        label en official "the game ends by the fall of a flag";
+        from Playing;
+        to Ended;
+        when time_forfeit_has_ended_the_game(game);
+    }
+
+    transition ConcludeByDefault {
+        label en official "the game ends by a player arriving after the default time";
+        from NotStarted;
+        to Ended;
+        when default_has_ended_the_game(game);
+    }
+
+    transition ConcludeByIllegalPosition {
+        label en official "the game ends by a draw declared for an illegal position";
+        from Playing;
+        to Ended;
+        when illegal_position_has_ended_the_game(game);
+    }
+
+    transition ConcludeByDrawnClaim {
+        label en official "the game ends by a correct draw claim or an automatic draw";
+        from Playing;
+        to Ended;
+        when game_drawn(game);
+    }
+}

@@ -1,0 +1,23 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 6.7.1, второй шаг: арбитр иначе не решил — поражение за неявку.
+test "urn:query:fide-late-arrival-loses-after-arbiter" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g8"), entity_ref("urn:fide:w8")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g8"), entity_ref("urn:fide:b8")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g8"), entity_ref("urn:fide:w8"), entity_ref("urn:fide:b8")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g8"), entity_ref("urn:fide:b8"), entity_ref("urn:fide:w8")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g8"), entity_ref("urn:fide:w8")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w8")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b8")) { origin case_input; }
+        assert "a7": default_time_expires_at(entity_ref("urn:fide:g8"), @2026-09-01T10:30:00Z) { origin case_input; }
+        assert "a8": arrived_at_chessboard_at(entity_ref("urn:fide:g8"), entity_ref("urn:fide:b8"), @2026-09-01T10:31:00Z) { origin case_input; }
+        assert "a9": not arbiter_decides_otherwise_on_default(entity_ref("urn:fide:g8"), entity_ref("urn:fide:b8")) { origin adjudicated; }
+    }
+    evaluate truth(game_lost_by(entity_ref("urn:fide:g8"), entity_ref("urn:fide:b8")));
+    expect truth_status == TRUE_ONLY;
+    expect judgment_requests(0);
+}

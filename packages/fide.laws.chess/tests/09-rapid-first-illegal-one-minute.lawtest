@@ -1,0 +1,24 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 7.5.5 и A.3. Рапид 15+10 (900 + 60·10 = 1500 с): первый невозможный ход —
+// сопернику одна минута, а не две.
+test "urn:query:fide-rapid-first-illegal-one-minute" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g9"), entity_ref("urn:fide:w9")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g9"), entity_ref("urn:fide:b9")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g9"), entity_ref("urn:fide:w9"), entity_ref("urn:fide:b9")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g9"), entity_ref("urn:fide:b9"), entity_ref("urn:fide:w9")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g9"), entity_ref("urn:fide:w9")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w9")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b9")) { origin case_input; }
+        assert "a7": game_in_competition(entity_ref("urn:fide:g9"), entity_ref("urn:fide:c9")) { origin case_input; }
+        assert "a8": time_control_base_seconds(entity_ref("urn:fide:c9"), 900) { origin case_input; }
+        assert "a9": time_control_increment_seconds(entity_ref("urn:fide:c9"), 10) { origin case_input; }
+        assert "a10": completed_illegal_move_count(entity_ref("urn:fide:w9"), 1) { origin case_input; }
+    }
+    evaluate truth(extra_time_awarded_seconds(entity_ref("urn:fide:g9"), entity_ref("urn:fide:b9"), 60));
+    expect truth_status == TRUE_ONLY;
+}

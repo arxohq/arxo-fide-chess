@@ -1,0 +1,7 @@
+{
+ "format": "law.package-versions/0.1",
+ "name": "fide.laws.chess",
+ "versions": [
+  "0.1.1"
+ ]
+}

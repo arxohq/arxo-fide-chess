@@ -1,0 +1,17 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 9.2: троекратное повторение даёт ничью только по заявке игрока,
+// имеющего ход. Без заявки при n = 3 право молчит — автомат начинается с пяти.
+
+test "urn:query:fide-threefold-without-claim-not-yet" {
+    given {
+        context { decision_time @2023-06-01T12:00:00Z; knowledge_time @2023-06-01T12:00:00Z; legal_time @2023-06-01; timezone "UTC"; }
+        assert "fide-r1": player_has_the_move(entity_ref("urn:fide:game:rep"), entity_ref("urn:fide:white:rep")) { origin case_input; }
+        assert "fide-r2": position_occurrence_count(entity_ref("urn:fide:game:rep"), 3) { origin case_input; }
+    }
+    evaluate truth(game_drawn(entity_ref("urn:fide:game:rep")));
+    expect result_kind == PROPOSITION;
+    expect truth_status == NEITHER;
+}

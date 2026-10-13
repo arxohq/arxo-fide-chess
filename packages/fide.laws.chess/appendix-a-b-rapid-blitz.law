@@ -1,0 +1,293 @@
+// Приложения A (быстрые шахматы) и B (блиц).
+//
+// Классификация партии (A.1, B.1) — целочисленная сумма настройки контроля
+// времени: основное время плюс 60 добавлений, в секундах. Это настройка
+// регламента соревнования, а не показание часов: арифметика над ней — целые
+// числа, не `Duration`. Партия, не являющаяся ни рапидом, ни блицем, в
+// Законах имени не имеет; пакет называет её «стандартной» только меткой
+// предиката `standard_game`, чтобы санкции статей 7 и 9 читали три
+// положительных вывода, а не отрицание выведенного.
+//
+// Режим соревнования (A.6, B.4) выбирает регламент турнира: факт
+// `event_regulations_choose_competitive_rules`. Соревновательные правила
+// применяются только при выполненных условиях A.4 / B.2; иначе действуют
+// A.5 / B.3.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    Competition,
+    FIDE_APP_A,
+    FIDE_APP_B,
+    Game,
+    Player,
+    flag_considered_fallen,
+    game_drawn,
+    game_in_competition,
+    game_lost_by,
+    king_cannot_be_checkmated,
+};
+
+pub relation time_control_base_seconds(comp: Competition, secs: Integer) kind empirical {
+    label en official "the fixed time allotted to each player, in seconds";
+}
+pub relation time_control_increment_seconds(comp: Competition, secs: Integer) kind empirical {
+    label en official "the increment added with each move, in seconds";
+}
+pub relation event_regulations_choose_competitive_rules(comp: Competition) kind empirical {
+    label en official "the regulations of the event specify that Article A.4 (B.2) applies for the entire event";
+}
+pub relation event_regulations_choose_appendix_a5(comp: Competition) kind empirical {
+    label en official "the regulations of the event specify that Article A.5 (B.3) applies for the entire event";
+}
+pub relation games_supervised_by_one_arbiter(comp: Competition, n: Integer) kind empirical {
+    label en official "the number of games one arbiter supervises";
+}
+pub relation each_game_recorded_by_arbiter(comp: Competition) kind empirical {
+    label en official "each game is recorded by the arbiter or his/her assistant";
+}
+relation scoresheet_view_requests(game: Game, who: Player, n: Integer) kind empirical {
+    label en official "the number of times the player asked to be shown the scoresheet";
+}
+relation moves_completed_by_each_player(game: Game, n: Integer) kind empirical {
+    label en official "the number of moves completed by each player from the initial position";
+}
+relation king_placement_incorrect(game: Game) kind empirical {
+    label en official "the king was placed incorrectly in the initial position";
+}
+relation opponent_made_next_move(game: Game, who: Player) kind empirical {
+    label en official "the opponent has made his/her next move after the player's illegal move";
+}
+relation illegal_move_completed_by(game: Game, who: Player) kind empirical {
+    label en official "the player completed an action taken under Article 7.5.1, 7.5.2, 7.5.3 or 7.5.4";
+}
+relation win_on_time_claimed(game: Game, claimant: Player, who: Player) kind empirical {
+    label en official "the claimant paused the chessclock and notified the arbiter to claim a win on time";
+}
+relation illegal_position_persists_after_next_move(game: Game) kind empirical {
+    label en official "both kings are in check or a pawn stands on the furthest rank, and after the next move is completed an illegal position is still on the board";
+}
+
+pub relation rapid_game(game: Game) kind institutional {
+    label en official "the game is a 'rapid chess' game";
+}
+pub relation blitz_game(game: Game) kind institutional {
+    label en official "the game is a 'blitz' game";
+}
+pub relation standard_game(game: Game) kind institutional {
+    label en official "the game is neither a rapid nor a blitz game (time plus 60 increments of 60 minutes or more)";
+}
+pub relation competitive_rules_apply(game: Game) kind institutional {
+    label en official "the Competitive Rules of Play apply to the rapid or blitz game";
+}
+pub relation appendix_a5_applies(game: Game) kind institutional {
+    label en official "Article A.5 (for blitz, Article B.3) governs the rapid or blitz game";
+}
+relation competition_setting_does_not_conform(comp: Competition) kind institutional {
+    label en official "the event chose the Competitive Rules of Play but the conditions of Article A.4 (B.2) are not met";
+}
+pub relation considered_distraction_of_opponent(game: Game, who: Player) kind institutional {
+    label en official "the player's conduct shall be considered a distraction of the opponent";
+}
+relation no_setup_claim_admissible(game: Game) kind institutional {
+    label en official "no claim can be made regarding incorrect set-up or orientation of the chessboard";
+}
+relation castling_not_allowed_after_incorrect_king_placement(game: Game) kind institutional {
+    label en official "castling is not allowed because the king was placed incorrectly";
+}
+relation illegal_move_stands(game: Game, who: Player) kind institutional {
+    label en official "the illegal move shall stand and the game shall continue";
+}
+relation arbiter_acts_under_7_5_5(game: Game, who: Player) kind institutional {
+    label en official "the arbiter shall act according to Article 7.5.5";
+}
+relation illegal_position_has_ended_the_game(game: Game) kind institutional {
+    label en official "the arbiter declared the game drawn because of an illegal position";
+}
+
+// --- Классификация: A.1 и B.1 ---------------------------------------------
+
+@source(FIDE_APP_A)
+rule RapidGame(game: Game, comp: Competition, base: Integer, inc: Integer) strict {
+    label en official "Article A.1. A rapid chess game: the time allotted plus 60 times any increment is more than 10 minutes but less than 60 minutes";
+    when game_in_competition(game, comp)
+        and time_control_base_seconds(comp, base)
+        and time_control_increment_seconds(comp, inc)
+        and ((base + 60 * inc) > 600)
+        and ((base + 60 * inc) < 3600);
+    then rapid_game(game);
+}
+
+@source(FIDE_APP_B)
+rule BlitzGame(game: Game, comp: Competition, base: Integer, inc: Integer) strict {
+    label en official "Article B.1. A blitz game: the allotted time plus 60 times any increment is 10 minutes or less";
+    when game_in_competition(game, comp)
+        and time_control_base_seconds(comp, base)
+        and time_control_increment_seconds(comp, inc)
+        and ((base + 60 * inc) <= 600);
+    then blitz_game(game);
+}
+
+@source(FIDE_APP_A)
+rule StandardGame(game: Game, comp: Competition, base: Integer, inc: Integer) strict {
+    label en official "Articles A.1 and B.1 read together. A game whose time plus 60 increments is 60 minutes or more is neither rapid nor blitz";
+    when game_in_competition(game, comp)
+        and time_control_base_seconds(comp, base)
+        and time_control_increment_seconds(comp, inc)
+        and ((base + 60 * inc) >= 3600);
+    then standard_game(game);
+}
+
+// --- Режим: A.4–A.6, B.2–B.4 ----------------------------------------------
+
+@source(FIDE_APP_A)
+rule RapidCompetitiveRulesApply(game: Game, comp: Competition, n: Integer) strict {
+    label en official "Article A.4. The Competitive Rules of Play shall apply if one arbiter supervises at most three games and each game is recorded";
+    when rapid_game(game)
+        and game_in_competition(game, comp)
+        and event_regulations_choose_competitive_rules(comp)
+        and games_supervised_by_one_arbiter(comp, n)
+        and (n <= 3)
+        and each_game_recorded_by_arbiter(comp);
+    then competitive_rules_apply(game);
+}
+
+@source(FIDE_APP_B)
+rule BlitzCompetitiveRulesApply(game: Game, comp: Competition, n: Integer) strict {
+    label en official "Article B.2. The Competitive Rules of Play shall apply if one arbiter supervises one game and each game is recorded";
+    when blitz_game(game)
+        and game_in_competition(game, comp)
+        and event_regulations_choose_competitive_rules(comp)
+        and games_supervised_by_one_arbiter(comp, n)
+        and (n <= 1)
+        and each_game_recorded_by_arbiter(comp);
+    then competitive_rules_apply(game);
+}
+
+@source(FIDE_APP_A)
+rule RapidAppendixA5Applies(game: Game, comp: Competition) strict {
+    label en official "Articles A.5 and A.6. Otherwise Article A.5 applies for the entire event";
+    when rapid_game(game)
+        and game_in_competition(game, comp)
+        and event_regulations_choose_appendix_a5(comp);
+    then appendix_a5_applies(game);
+}
+
+@source(FIDE_APP_B)
+rule BlitzAppendixA5Applies(game: Game, comp: Competition) strict {
+    label en official "Articles B.3 and B.4. Otherwise play shall be governed by the Rapid chess Laws as in Articles A.2, A.3 and A.5";
+    when blitz_game(game)
+        and game_in_competition(game, comp)
+        and event_regulations_choose_appendix_a5(comp);
+    then appendix_a5_applies(game);
+}
+
+@source(FIDE_APP_A)
+rule RapidSupervisionTooWide(comp: Competition, n: Integer) strict {
+    label en official "Articles A.4.1 and A.6. The event chose Article A.4, but one arbiter supervises more than three games";
+    when event_regulations_choose_competitive_rules(comp)
+        and games_supervised_by_one_arbiter(comp, n)
+        and (n > 3);
+    then competition_setting_does_not_conform(comp);
+}
+
+// --- A.4.3 / B.2.3: просьбы показать бланк ---------------------------------
+
+@source(FIDE_APP_A)
+rule MoreThanFiveScoresheetRequestsDistract(game: Game, who: Player, n: Integer) strict {
+    label en official "Article A.4.3. A request to see the scoresheet may be made a maximum of five times in a game; more requests shall be considered as a distraction of the opponent";
+    when competitive_rules_apply(game)
+        and scoresheet_view_requests(game, who, n)
+        and (n > 5);
+    then considered_distraction_of_opponent(game, who);
+}
+
+// --- A.5 ------------------------------------------------------------------
+
+@source(FIDE_APP_A)
+rule NoSetupClaimAfterTenMoves(game: Game, n: Integer) strict {
+    label en official "Article A.5.1.2. Once 10 moves have been completed by each player, no claim can be made regarding incorrect set-up or orientation of the chessboard";
+    when appendix_a5_applies(game)
+        and moves_completed_by_each_player(game, n)
+        and (n >= 10);
+    then no_setup_claim_admissible(game);
+}
+
+@source(FIDE_APP_A)
+rule NoCastlingAfterIncorrectKingPlacement(game: Game) strict {
+    label en official "Article A.5.1.2. In case of incorrect king placement, castling is not allowed";
+    when no_setup_claim_admissible(game)
+        and king_placement_incorrect(game);
+    then castling_not_allowed_after_incorrect_king_placement(game);
+}
+
+@source(FIDE_APP_A)
+rule ArbiterActsBeforeOpponentMoves(game: Game, who: Player) defeasible {
+    label en official "Article A.5.2. The arbiter shall act according to Article 7.5.5, provided the opponent has not made his/her next move";
+    when appendix_a5_applies(game)
+        and illegal_move_completed_by(game, who);
+    then arbiter_acts_under_7_5_5(game, who);
+}
+
+@source(FIDE_APP_A)
+rule OpponentMovedIllegalMoveStandsNoAction(game: Game, who: Player) defeasible {
+    label en official "Article A.5.2. Once the opponent has made his/her next move, an illegal move cannot be corrected";
+    when appendix_a5_applies(game)
+        and illegal_move_completed_by(game, who)
+        and opponent_made_next_move(game, who);
+    then not arbiter_acts_under_7_5_5(game, who);
+}
+
+@source(FIDE_APP_A)
+priority OpponentsNextMoveClosesCorrection {
+    label en official "Article A.5.2. Once the opponent has made his/her next move, the arbiter no longer acts under Article 7.5.5";
+    prefer OpponentMovedIllegalMoveStandsNoAction over ArbiterActsBeforeOpponentMoves;
+    reason lex_specialis;
+}
+
+@source(FIDE_APP_A)
+rule IllegalMoveStands(game: Game, who: Player) strict {
+    label en official "Article A.5.2. If the opponent does not claim and the arbiter does not intervene, the illegal move shall stand and the game shall continue";
+    when appendix_a5_applies(game)
+        and illegal_move_completed_by(game, who)
+        and opponent_made_next_move(game, who);
+    then illegal_move_stands(game, who);
+}
+
+@source(FIDE_APP_A)
+rule WinOnTimeClaimWins(game: Game, claimant: Player, who: Player) strict {
+    label en official "Article A.5.3. To claim a win on time, the claimant may pause the chessclock and notify the arbiter";
+    when appendix_a5_applies(game)
+        and win_on_time_claimed(game, claimant, who)
+        and flag_considered_fallen(game, who)
+        and not king_cannot_be_checkmated(who);
+    then game_lost_by(game, who);
+}
+
+@source(FIDE_APP_A)
+rule WinOnTimeClaimDrawnIfClaimantCannotMate(game: Game, claimant: Player, who: Player) strict {
+    label en official "Article A.5.3. The game is drawn if the claimant cannot checkmate the player's king by any possible series of legal moves";
+    when appendix_a5_applies(game)
+        and win_on_time_claimed(game, claimant, who)
+        and flag_considered_fallen(game, who)
+        and king_cannot_be_checkmated(who);
+    then game_drawn(game);
+}
+
+@source(FIDE_APP_A)
+rule IllegalPositionDraws(game: Game) strict {
+    label en official "Article A.5.4. If an illegal position is still on the board after the next move is completed, the arbiter shall declare the game drawn";
+    when appendix_a5_applies(game)
+        and illegal_position_persists_after_next_move(game);
+    then game_drawn(game);
+}
+
+@source(FIDE_APP_A)
+rule IllegalPositionEndsTheGame(game: Game) strict {
+    label en official "Article A.5.4. The declared draw for an illegal position ends the game";
+    when appendix_a5_applies(game)
+        and illegal_position_persists_after_next_move(game);
+    then illegal_position_has_ended_the_game(game);
+}

@@ -1,0 +1,15 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Приложение B.1. Контроль 3+2: 180 + 60·2 = 300 с ≤ 600 — блиц.
+test "urn:query:fide-blitz-classification" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": game_in_competition(entity_ref("urn:fide:g11"), entity_ref("urn:fide:c11")) { origin case_input; }
+        assert "a1": time_control_base_seconds(entity_ref("urn:fide:c11"), 180) { origin case_input; }
+        assert "a2": time_control_increment_seconds(entity_ref("urn:fide:c11"), 2) { origin case_input; }
+    }
+    evaluate truth(blitz_game(entity_ref("urn:fide:g11")));
+    expect truth_status == TRUE_ONLY;
+}

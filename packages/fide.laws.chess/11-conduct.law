@@ -1,0 +1,243 @@
+// Статья 11: поведение игроков.
+//
+// Факты нарушений (уход из зала, записи, устройство) — протокол арбитра.
+// Оценочные признаки — канал суждения §47.3 (DECISION-0194): «навлечь
+// дурную славу на шахматы» (11.1), «отвлекать или раздражать соперника»
+// (11.5) и «упорный отказ» (11.7) Законы не определяют и оставляют арбитру.
+//
+// 11.3.2.2 — единственная норма статьи с жёсткой санкцией (поражение).
+// Регламент соревнования вправе установить санкцию мягче: спор двух
+// побеждаемых правил над `device_loss_applies`, приоритет §116 у регламента.
+// Упорядочение санкций 12.9 — модуль `12-arbiter.law`.
+//
+// Суждение запрашивается только по предъявленному эпизоду
+// (`conduct_complaint_reported`, `refusal_to_comply_reported`): без
+// эпизода вопрос «проиграна ли партия» арбитру о поведении не задаётся.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    Competition,
+    FIDE_APP_A,
+    FIDE_ART_11,
+    Game,
+    Player,
+    considered_distraction_of_opponent,
+    game_in_competition,
+    game_lost_by,
+    game_won_by,
+    opponent_of,
+    penalty_under_12_9_due,
+    player_of,
+};
+
+relation left_venue_without_permission(game: Game, who: Player) kind empirical {
+    label en official "the player left the playing venue (or, having the move, the playing area) without the permission of the arbiter";
+}
+relation used_notes_or_advice(game: Game, who: Player) kind empirical {
+    label en official "the player used notes, sources of information or advice, or analysed a game on another chessboard";
+}
+pub relation electronic_device_evident_on_person(game: Game, who: Player) kind empirical {
+    label en official "it is evident that the player has a non-approved electronic device on his/her person in the playing venue";
+}
+relation event_specifies_less_severe_device_penalty(comp: Competition) kind empirical {
+    label en official "the regulations of the event specify a different, less severe, penalty for an electronic device";
+}
+relation refused_inspection(game: Game, who: Player) kind empirical {
+    label en official "the player refused to cooperate with an inspection required by the arbiter";
+}
+relation smoked_outside_designated_section(game: Game, who: Player) kind empirical {
+    label en official "the player smoked outside the section of the venue designated by the arbiter";
+}
+relation player_game_finished(game: Game, who: Player) kind empirical {
+    label en official "the player has finished his/her game";
+}
+relation refusal_to_comply_reported(game: Game, who: Player) kind empirical {
+    label en official "the arbiter has on record the player's refusal to comply with the Laws of Chess";
+}
+relation conduct_complaint_reported(game: Game, who: Player) kind empirical {
+    label en official "conduct of the player alleged to distract the opponent or to bring the game into disrepute has been reported to the arbiter";
+}
+relation event_excludes_appeal(comp: Competition) kind empirical {
+    label en official "the regulations of the event specify that decisions of the arbiter cannot be appealed";
+}
+
+external judgment relation action_brings_chess_into_disrepute(game: Game, who: Player) {
+    authority FIDEArbiter;
+    label en official "the player took action that brings the game of chess into disrepute";
+}
+external judgment relation opponent_distracted_or_annoyed(game: Game, who: Player) {
+    authority FIDEArbiter;
+    label en official "the player distracted or annoyed the opponent";
+}
+external judgment relation persistent_refusal_to_comply(game: Game, who: Player) {
+    authority FIDEArbiter;
+    label en official "the player persistently refused to comply with the Laws of Chess";
+}
+
+pub relation infraction_of_11_1_to_11_5(game: Game, who: Player) kind institutional {
+    label en official "the player infringed Articles 11.1 to 11.5";
+}
+relation device_loss_applies(game: Game, who: Player) kind institutional {
+    label en official "the player shall lose the game for having an electronic device";
+}
+pub relation prescribed_loss_under_the_laws(game: Game, who: Player) kind institutional {
+    label en official "the Laws prescribe the loss of the game as the penalty";
+}
+relation considered_spectator(who: Player) kind institutional {
+    label en official "the player who has finished the game shall be considered a spectator";
+}
+relation may_appeal_arbiter_decision(game: Game, who: Player) kind institutional {
+    label en official "the player may appeal against any decision of the arbiter";
+}
+
+@source(FIDE_ART_11)
+rule DisreputeIsInfraction(game: Game, who: Player) strict {
+    label en official "Article 11.1. The players shall take no action that will bring the game of chess into disrepute";
+    when conduct_complaint_reported(game, who)
+        and action_brings_chess_into_disrepute(game, who);
+    then infraction_of_11_1_to_11_5(game, who);
+}
+
+@source(FIDE_ART_11)
+rule LeavingWithoutPermissionIsInfraction(game: Game, who: Player) strict {
+    label en official "Article 11.2.3. Only with the permission of the arbiter can a player leave the playing venue";
+    when left_venue_without_permission(game, who);
+    then infraction_of_11_1_to_11_5(game, who);
+}
+
+@source(FIDE_ART_11)
+rule NotesOrAdviceIsInfraction(game: Game, who: Player) strict {
+    label en official "Article 11.3.1. During play the players are forbidden to use any notes, sources of information or advice";
+    when used_notes_or_advice(game, who);
+    then infraction_of_11_1_to_11_5(game, who);
+}
+
+@source(FIDE_ART_11)
+rule RefusedInspectionIsInfraction(game: Game, who: Player) strict {
+    label en official "Article 11.3.3. If a player refuses to cooperate with an inspection, the arbiter shall take measures in accordance with Article 12.9";
+    when refused_inspection(game, who);
+    then infraction_of_11_1_to_11_5(game, who);
+}
+
+@source(FIDE_ART_11)
+rule SmokingOutsideSectionIsInfraction(game: Game, who: Player) strict {
+    label en official "Article 11.3.4. Smoking is permitted only in the section of the venue designated by the arbiter";
+    when smoked_outside_designated_section(game, who);
+    then infraction_of_11_1_to_11_5(game, who);
+}
+
+@source(FIDE_ART_11)
+rule DistractionIsInfraction(game: Game, who: Player) strict {
+    label en official "Article 11.5. It is forbidden to distract or annoy the opponent in any manner whatsoever";
+    when conduct_complaint_reported(game, who)
+        and opponent_distracted_or_annoyed(game, who);
+    then infraction_of_11_1_to_11_5(game, who);
+}
+
+@source(FIDE_APP_A)
+rule ExcessScoresheetRequestsAreInfraction(game: Game, who: Player) strict {
+    label en official "Articles A.4.3 and 11.5. More than five requests to see the scoresheet shall be considered a distraction of the opponent";
+    when considered_distraction_of_opponent(game, who);
+    then infraction_of_11_1_to_11_5(game, who);
+}
+
+@source(FIDE_ART_11)
+rule InfractionPenalisedUnder12_9(game: Game, who: Player) strict {
+    label en official "Article 11.6. Infraction of any part of Articles 11.1 – 11.5 shall lead to penalties in accordance with Article 12.9";
+    when infraction_of_11_1_to_11_5(game, who);
+    then penalty_under_12_9_due(game, who);
+}
+
+@source(FIDE_ART_11)
+rule DeviceOnPersonLoses(game: Game, who: Player) defeasible {
+    label en official "Article 11.3.2.2. If it is evident that a player has such a device on their person in the playing venue, the player shall lose the game";
+    when electronic_device_evident_on_person(game, who);
+    then device_loss_applies(game, who);
+}
+
+@source(FIDE_ART_11)
+rule EventLessSevereDevicePenalty(game: Game, who: Player, comp: Competition) defeasible {
+    label en official "Article 11.3.2.2. The regulations of an event may specify a different, less severe, penalty";
+    when electronic_device_evident_on_person(game, who)
+        and game_in_competition(game, comp)
+        and event_specifies_less_severe_device_penalty(comp);
+    then not device_loss_applies(game, who);
+}
+
+@source(FIDE_ART_11)
+priority EventDevicePenaltyOverLoss {
+    label en official "Article 11.3.2.2. A less severe penalty specified by the regulations of an event prevails over the loss of the game";
+    prefer EventLessSevereDevicePenalty over DeviceOnPersonLoses;
+    reason lex_specialis;
+}
+
+@source(FIDE_ART_11)
+rule DeviceLossLoses(game: Game, who: Player) defeasible {
+    label en official "Article 11.3.2.2. The player shall lose the game";
+    when device_loss_applies(game, who);
+    then game_lost_by(game, who);
+}
+
+@source(FIDE_ART_11)
+rule DeviceLossOpponentWins(game: Game, who: Player, opp: Player) defeasible {
+    label en official "Article 11.3.2.2. The opponent shall win";
+    when device_loss_applies(game, who)
+        and opponent_of(game, who, opp);
+    then game_won_by(game, opp);
+}
+
+@source(FIDE_ART_11)
+rule DeviceLossIsPrescribed(game: Game, who: Player) defeasible {
+    label en official "Article 11.3.2.2. The loss of the game is the penalty prescribed for an electronic device";
+    when device_loss_applies(game, who);
+    then prescribed_loss_under_the_laws(game, who);
+}
+
+@source(FIDE_ART_11)
+rule PersistentRefusalLoses(game: Game, who: Player) strict {
+    label en official "Article 11.7. Persistent refusal by a player to comply with the Laws of Chess shall be penalised by loss of the game";
+    when refusal_to_comply_reported(game, who)
+        and persistent_refusal_to_comply(game, who);
+    then game_lost_by(game, who);
+}
+
+@source(FIDE_ART_11)
+rule PersistentRefusalIsPrescribedLoss(game: Game, who: Player) strict {
+    label en official "Article 11.7. The loss of the game is the penalty prescribed for persistent refusal";
+    when refusal_to_comply_reported(game, who)
+        and persistent_refusal_to_comply(game, who);
+    then prescribed_loss_under_the_laws(game, who);
+}
+
+@source(FIDE_ART_11)
+rule FinishedPlayerIsSpectator(game: Game, who: Player) strict {
+    label en official "Article 11.4. Players who have finished their games shall be considered to be spectators";
+    when player_game_finished(game, who);
+    then considered_spectator(who);
+}
+
+@source(FIDE_ART_11)
+rule PlayerMayAppeal(game: Game, who: Player) defeasible {
+    label en official "Article 11.10. A player may appeal against any decision of the arbiter, even if the player has signed the scoresheet";
+    when player_of(game, who);
+    then may_appeal_arbiter_decision(game, who);
+}
+
+@source(FIDE_ART_11)
+rule EventExcludesAppeal(game: Game, who: Player, comp: Competition) defeasible {
+    label en official "Article 11.10. Unless the regulations of an event specify otherwise";
+    when player_of(game, who)
+        and game_in_competition(game, comp)
+        and event_excludes_appeal(comp);
+    then not may_appeal_arbiter_decision(game, who);
+}
+
+@source(FIDE_ART_11)
+priority EventRegulationsOverAppealRight {
+    label en official "Article 11.10. The regulations of an event may exclude the appeal";
+    prefer EventExcludesAppeal over PlayerMayAppeal;
+    reason lex_specialis;
+}

@@ -1,0 +1,14 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 7.3. Цвета перепутаны, сделано 7 ходов: партия прерывается и переигрывается.
+test "urn:query:fide-colours-reversed-replay" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": colours_reversed(entity_ref("urn:fide:g19")) { origin case_input; }
+        assert "a1": moves_completed_by_each_player(entity_ref("urn:fide:g19"), 7) { origin case_input; }
+    }
+    evaluate truth(discontinued_and_replayed_with_correct_colours(entity_ref("urn:fide:g19")));
+    expect truth_status == TRUE_ONLY;
+}

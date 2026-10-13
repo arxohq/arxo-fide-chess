@@ -1,0 +1,1404 @@
+{
+  "$comment": "Каталог вопросов пакета (DECISION-0190, law.package-questions/0.1). Карточка — параметризованный шаблон запроса §172, не ответ: наличие карточки не означает положительного ответа по делу. Проверяется verify/ci/gates/coverage/check_package_questions.py: предикат объявлен и выводим правилами, параметры совпадают с объявлением, каждый названный тест исполняет запрос именно этого шаблона, каждый выводимый предикат либо назван карточкой, либо стоит в `internal` с причиной; строка `limitation` границы — дословно из package-info.json. QUESTIONS.md порождается из этого файла (`--emit`).",
+  "format": "law.package-questions/0.1",
+  "package": "fide.laws.chess",
+  "tasks": [
+    {
+      "id": "basics",
+      "title": "Природа игры и расстановка",
+      "source_units": [
+        "FIDE_ART_1",
+        "FIDE_ART_2"
+      ]
+    },
+    {
+      "id": "moves",
+      "title": "Ходы фигур: рокировка и взятие на проходе",
+      "source_units": [
+        "FIDE_ART_3"
+      ]
+    },
+    {
+      "id": "touch",
+      "title": "Тронутая фигура и суждение арбитра",
+      "source_units": [
+        "FIDE_ART_4"
+      ]
+    },
+    {
+      "id": "completion",
+      "title": "Завершение партии: победа, поражение, ничья",
+      "source_units": [
+        "FIDE_ART_1",
+        "FIDE_ART_5",
+        "FIDE_ART_6",
+        "FIDE_ART_7",
+        "FIDE_ART_9",
+        "FIDE_ART_11"
+      ]
+    },
+    {
+      "id": "clock",
+      "title": "Шахматные часы: падение флага и время неявки",
+      "source_units": [
+        "FIDE_ART_6"
+      ]
+    },
+    {
+      "id": "irregularities",
+      "title": "Нарушения порядка и невозможные ходы",
+      "source_units": [
+        "FIDE_ART_7",
+        "FIDE_APP_A",
+        "FIDE_APP_B"
+      ]
+    },
+    {
+      "id": "recording",
+      "title": "Запись ходов",
+      "source_units": [
+        "FIDE_ART_8",
+        "FIDE_APP_A"
+      ]
+    },
+    {
+      "id": "drawn",
+      "title": "Требования ничьей: повторение позиции и правило 50 ходов",
+      "source_units": [
+        "FIDE_ART_9"
+      ]
+    },
+    {
+      "id": "points",
+      "title": "Очки за партию",
+      "source_units": [
+        "FIDE_ART_10"
+      ]
+    },
+    {
+      "id": "conduct",
+      "title": "Поведение игроков и санкции",
+      "source_units": [
+        "FIDE_ART_11",
+        "FIDE_ART_12"
+      ]
+    },
+    {
+      "id": "rapid-blitz",
+      "title": "Рапид и блиц",
+      "source_units": [
+        "FIDE_APP_A",
+        "FIDE_APP_B"
+      ]
+    },
+    {
+      "id": "arbiter",
+      "title": "Арбитр",
+      "source_units": [
+        "FIDE_ART_12",
+        "FIDE_PREFACE"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "castling-legal",
+      "task": "moves",
+      "question": "Допустима ли рокировка игрока на эту сторону?",
+      "kind": "truth",
+      "predicate": "castling_legal",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        },
+        {
+          "name": "side",
+          "type": "CastlingSide",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(castling_legal(game: <game>, who: <who>, side: <side>));",
+      "branches": [
+        {
+          "summary": "право на рокировку не утрачено (король и ладья не ходили) и не приостановлено (поле короля и путь не под ударом, путь свободен)",
+          "rule": "CastlingLegal"
+        }
+      ],
+      "tests": [
+        "FIDE-04-CASTLING-LEGAL-WHEN-NEITHER-MOVED",
+        "FIDE-05-CASTLING-NOT-DERIVED-IF-KING-MOVED"
+      ],
+      "source_units": [
+        "FIDE_ART_3"
+      ],
+      "notes": "Позиция на доске не вычисляется: удар по пути и занятость полей предъявляются фактами; факт о ходе короля снимает вывод, а не даёт отрицание."
+    },
+    {
+      "id": "en-passant-capture-legal",
+      "task": "moves",
+      "question": "Допустимо ли взятие на проходе этой пешкой?",
+      "kind": "truth",
+      "predicate": "en_passant_capture_legal",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "pawn",
+          "type": "Piece",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(en_passant_capture_legal(game: <game>, pawn: <pawn>));",
+      "branches": [
+        {
+          "summary": "право на взятие открыто только на ходе, следующем за ходом пешки через два поля",
+          "rule": "EnPassantCaptureLegal"
+        }
+      ],
+      "tests": [
+        "FIDE-06-EN-PASSANT-OPEN-ON-THE-FOLLOWING-MOVE",
+        "FIDE-07-EN-PASSANT-GONE-ON-THE-NEXT-FRAME"
+      ],
+      "source_units": [
+        "FIDE_ART_3"
+      ]
+    },
+    {
+      "id": "must-move-first-touched-piece",
+      "task": "touch",
+      "question": "Обязан ли игрок сделать ход первой тронутой фигурой?",
+      "kind": "truth",
+      "predicate": "must_move_first_touched_piece",
+      "parameters": [
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        },
+        {
+          "name": "piece",
+          "type": "Piece",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(must_move_first_touched_piece(who: <who>, piece: <piece>)); — при отсутствии суждения о намеренном касании ответ REQUIRES_JUDGMENT с запросом арбитру (§47.3)",
+      "branches": [
+        {
+          "summary": "игрок при своём ходе намеренно коснулся своей фигуры, которая может ходить (намеренность — суждение арбитра)",
+          "rule": "MustMoveFirstTouchedPiece"
+        }
+      ],
+      "tests": [
+        "FIDE-15-TOUCH-MOVE-REQUIRES-JUDGMENT",
+        "urn:query:fide-touch-move-requires-judgment"
+      ],
+      "cases": [
+        "TouchIntentUnknown"
+      ],
+      "queries": [
+        "must-move"
+      ],
+      "source_units": [
+        "FIDE_ART_4"
+      ],
+      "related_boundaries": [
+        "namerennost-kasaniya"
+      ]
+    },
+    {
+      "id": "game-won-by",
+      "task": "completion",
+      "question": "Выиграл ли игрок партию?",
+      "kind": "truth",
+      "predicate": "game_won_by",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(game_won_by(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "игрок поставил мат королю соперника (статья 5.1.1)",
+          "rule": "CheckmateWins"
+        },
+        {
+          "summary": "соперник проиграл партию, если только оба не проиграли или поражение не наложено санкцией (статьи 5, 10.1, 11.8, 12.9.6)",
+          "rule": "OpponentOfLoserWins"
+        },
+        {
+          "summary": "у соперника в зале очевидно электронное устройство (статья 11.3.2.2)",
+          "rule": "DeviceLossOpponentWins"
+        }
+      ],
+      "tests": [
+        "FIDE-16-CHECKMATE-WINS",
+        "urn:query:fide-both-persistent-refusal-no-winner"
+      ],
+      "source_units": [
+        "FIDE_ART_5",
+        "FIDE_ART_10",
+        "FIDE_ART_11"
+      ]
+    },
+    {
+      "id": "game-lost-by",
+      "task": "completion",
+      "question": "Проиграл ли игрок партию?",
+      "kind": "truth",
+      "predicate": "game_lost_by",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(game_lost_by(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "игрок сдался, и соперник мог поставить мат (статья 5.1.2)",
+          "rule": "ResignationLoses"
+        },
+        {
+          "summary": "второй завершённый невозможный ход того же игрока при возможности мата (статья 7.5.5)",
+          "rule": "SecondIllegalMoveLoses"
+        },
+        {
+          "summary": "королю игрока поставлен мат (статья 1.4.2)",
+          "rule": "CheckmatedPlayerLoses"
+        },
+        {
+          "summary": "флаг игрока упал без выполнения контроля и мат возможен (статья 6.9)",
+          "rule": "TimeForfeitLoses"
+        },
+        {
+          "summary": "игрок пришёл после времени неявки, и арбитр не решил иначе (статья 6.7.1, суждение §47.3)",
+          "rule": "ArrivalAfterDefaultTimeLoses"
+        },
+        {
+          "summary": "очевидное электронное устройство при игроке (статья 11.3.2.2)",
+          "rule": "DeviceLossLoses"
+        },
+        {
+          "summary": "упорный отказ соблюдать Законы (статья 11.7, суждение §47.3)",
+          "rule": "PersistentRefusalLoses"
+        },
+        {
+          "summary": "арбитр объявил партию проигранной как санкцию (статья 12.9.6)",
+          "rule": "DeclaredLossLoses"
+        },
+        {
+          "summary": "выигрыш по времени по заявке в рапиде и блице по A.5 (статья A.5.3)",
+          "rule": "WinOnTimeClaimWins"
+        }
+      ],
+      "tests": [
+        "FIDE-13-SECOND-ILLEGAL-MOVE-LOSES",
+        "urn:query:fide-second-illegal-move-loses",
+        "urn:query:fide-flag-fall-loses",
+        "urn:query:fide-late-arrival-requires-arbiter",
+        "urn:query:fide-late-arrival-loses-after-arbiter"
+      ],
+      "cases": [
+        "FirstIllegal",
+        "SecondIllegal",
+        "SecondIllegalNoMate",
+        "FlagFall",
+        "FlagFallNoMate",
+        "DeviceWarning"
+      ],
+      "queries": [
+        "loss"
+      ],
+      "source_units": [
+        "FIDE_ART_1",
+        "FIDE_ART_5",
+        "FIDE_ART_6",
+        "FIDE_ART_7",
+        "FIDE_ART_11",
+        "FIDE_ART_12",
+        "FIDE_APP_A"
+      ],
+      "related_boundaries": [
+        "vozmozhnost-mata",
+        "sudzhenie-arbitra-bez-kriteriev"
+      ]
+    },
+    {
+      "id": "game-drawn",
+      "task": "completion",
+      "question": "Закончилась ли партия вничью?",
+      "kind": "truth",
+      "predicate": "game_drawn",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(game_drawn(game: <game>));",
+      "branches": [
+        {
+          "summary": "соглашение игроков после хотя бы одного хода каждого (статья 5.2.3)",
+          "rule": "AgreedDraw"
+        },
+        {
+          "summary": "пат: у игрока при своём ходе нет допустимого хода, король не под шахом (статья 5.2.1)",
+          "rule": "StalemateDraws"
+        },
+        {
+          "summary": "мёртвая позиция: никто не может поставить мат (статья 5.2.2)",
+          "rule": "DeadPositionDraws"
+        },
+        {
+          "summary": "сдача при невозможности мата со стороны соперника (статья 5.1.2)",
+          "rule": "ResignationDrawnIfMateImpossible"
+        },
+        {
+          "summary": "второй невозможный ход при невозможности мата со стороны соперника (статья 7.5.5)",
+          "rule": "SecondIllegalMoveDrawnIfMateImpossible"
+        },
+        {
+          "summary": "правильное требование по троекратному повторению (статьи 9.2, 9.5.2)",
+          "rule": "ThreefoldClaimDraws"
+        },
+        {
+          "summary": "правильное требование по правилу 50 ходов (статьи 9.3, 9.5.2)",
+          "rule": "FiftyMoveClaimDraws"
+        },
+        {
+          "summary": "пятикратное повторение позиции без требования (статья 9.6.1)",
+          "rule": "FivefoldAutomaticDraw"
+        },
+        {
+          "summary": "75 ходов каждого без хода пешкой и взятия (статья 9.6.2), поражаемое правило",
+          "rule": "SeventyFiveAutomaticDraw"
+        },
+        {
+          "summary": "мат последним ходом имеет преимущество над правилом 75 ходов (статья 9.6.2)",
+          "rule": "CheckmateTakesPrecedenceOverSeventyFive"
+        },
+        {
+          "summary": "ни один игрок не может поставить мат (статья 1.5)",
+          "rule": "NoPossibleCheckmateDraws"
+        },
+        {
+          "summary": "флаг упал, но соперник не может поставить мат (статья 6.9)",
+          "rule": "TimeForfeitDrawnIfMateImpossible"
+        },
+        {
+          "summary": "заявка выигрыша по времени при невозможности мата у заявителя (статья A.5.3)",
+          "rule": "WinOnTimeClaimDrawnIfClaimantCannotMate"
+        },
+        {
+          "summary": "невозможная позиция осталась после следующего хода (статья A.5.4)",
+          "rule": "IllegalPositionDraws"
+        }
+      ],
+      "tests": [
+        "FIDE-08-THREEFOLD-WITH-CLAIM-DRAWS",
+        "FIDE-09-THREEFOLD-WITHOUT-CLAIM-NOT-YET",
+        "FIDE-10-FIVEFOLD-AUTOMATIC-DRAW",
+        "FIDE-11-FIFTY-MOVE-WITH-CLAIM-DRAWS",
+        "FIDE-12-SEVENTY-FIVE-AUTOMATIC-DRAW",
+        "FIDE-14-SECOND-ILLEGAL-DRAWN-IF-MATE-IMPOSSIBLE",
+        "urn:query:fide-threefold-without-claim-not-yet",
+        "urn:query:fide-flag-fall-drawn-mate-impossible"
+      ],
+      "cases": [
+        "FirstIllegal",
+        "SecondIllegal",
+        "SecondIllegalNoMate",
+        "FlagFall",
+        "FlagFallNoMate"
+      ],
+      "queries": [
+        "draw"
+      ],
+      "source_units": [
+        "FIDE_ART_1",
+        "FIDE_ART_5",
+        "FIDE_ART_6",
+        "FIDE_ART_7",
+        "FIDE_ART_9",
+        "FIDE_APP_A"
+      ],
+      "related_boundaries": [
+        "vozmozhnost-mata"
+      ]
+    },
+    {
+      "id": "time-forfeit",
+      "task": "clock",
+      "question": "Проиграл ли игрок по времени (не выполнил контроль до падения флага)?",
+      "kind": "truth",
+      "predicate": "time_forfeit",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(time_forfeit(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "флаг считается упавшим, проверка 6.4 не нашла положенного числа ходов (статья 6.9)",
+          "rule": "FlagFallForfeitsOnTime"
+        },
+        {
+          "summary": "исход по статье 5 наступил раньше падения флага — приоритет §116 (статья 6.9)",
+          "rule": "EarlierResultPrevailsOverFlagFall"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-checkmate-before-flag-prevails"
+      ],
+      "source_units": [
+        "FIDE_ART_6"
+      ],
+      "notes": "Моменты исхода и падения флага — Instant протокола; порядок — сравнение мгновений."
+    },
+    {
+      "id": "extra-time-awarded",
+      "task": "irregularities",
+      "question": "Сколько секунд арбитр прибавляет игроку за нарушение соперника?",
+      "kind": "truth",
+      "predicate": "extra_time_awarded_seconds",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        },
+        {
+          "name": "secs",
+          "type": "Integer",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(extra_time_awarded_seconds(game: <game>, who: <who>, secs: <secs>));",
+      "branches": [
+        {
+          "summary": "первый невозможный ход соперника в стандартной партии — 120 с (статья 7.5.5)",
+          "rule": "FirstIllegalMoveTwoMinutesToOpponent"
+        },
+        {
+          "summary": "то же в рапиде — 60 с (статья A.3)",
+          "rule": "FirstIllegalMoveOneMinuteInRapid"
+        },
+        {
+          "summary": "блиц по B.3 — 60 с",
+          "rule": "FirstIllegalMoveOneMinuteInBlitzUnderB3"
+        },
+        {
+          "summary": "блиц по соревновательным правилам B.2 — 120 с",
+          "rule": "FirstIllegalMoveTwoMinutesInBlitzUnderB2"
+        },
+        {
+          "summary": "неверная заявка ничьей соперника — 120 с (статья 9.5.3)",
+          "rule": "IncorrectClaimTwoMinutesToOpponent"
+        },
+        {
+          "summary": "неверная заявка в рапиде — 60 с",
+          "rule": "IncorrectClaimOneMinuteInRapid"
+        },
+        {
+          "summary": "неверная заявка в блице по B.3 — 60 с",
+          "rule": "IncorrectClaimOneMinuteInBlitzUnderB3"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-rapid-first-illegal-one-minute",
+        "urn:query:fide-standard-first-illegal-two-minutes",
+        "urn:query:fide-incorrect-threefold-claim-penalty"
+      ],
+      "cases": [
+        "RapidFirstIllegal",
+        "BlitzFirstIllegalCompetitive"
+      ],
+      "queries": [
+        "extra-time-black-60",
+        "extra-time-black-120"
+      ],
+      "source_units": [
+        "FIDE_ART_7",
+        "FIDE_ART_9",
+        "FIDE_APP_A",
+        "FIDE_APP_B"
+      ]
+    },
+    {
+      "id": "blitz-game",
+      "task": "rapid-blitz",
+      "question": "Является ли партия блицем по контролю времени?",
+      "kind": "truth",
+      "predicate": "blitz_game",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(blitz_game(game: <game>));",
+      "branches": [
+        {
+          "summary": "основное время плюс 60 добавлений не больше 600 секунд (статья B.1)",
+          "rule": "BlitzGame"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-blitz-classification"
+      ],
+      "source_units": [
+        "FIDE_APP_B"
+      ]
+    },
+    {
+      "id": "must-record-moves",
+      "task": "recording",
+      "question": "Обязан ли игрок записывать ходы?",
+      "kind": "truth",
+      "predicate": "must_record_moves",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(must_record_moves(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "общая обязанность записи (статья 8.1.1)",
+          "rule": "EachPlayerMustRecord"
+        },
+        {
+          "summary": "меньше 300 с на часах без добавления 30 с и более — обязанность снята (статья 8.4)",
+          "rule": "ShortOfTimeRelievesRecording"
+        },
+        {
+          "summary": "рапид и блиц по A.5 — записывать не обязательно (статья A.2)",
+          "rule": "RapidPlayersNeedNotRecord"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-short-of-time-relieves-recording",
+        "urn:query:fide-increment-keeps-recording-duty"
+      ],
+      "cases": [
+        "ShortOfTimeRecording"
+      ],
+      "queries": [
+        "must-record"
+      ],
+      "source_units": [
+        "FIDE_ART_8",
+        "FIDE_APP_A"
+      ]
+    },
+    {
+      "id": "points-scored",
+      "task": "points",
+      "question": "Сколько очков набрал игрок в партии?",
+      "kind": "truth",
+      "predicate": "points_scored",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        },
+        {
+          "name": "pts",
+          "type": "Decimal",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(points_scored(game: <game>, who: <who>, pts: <pts>));",
+      "branches": [
+        {
+          "summary": "победа — 1 (статья 10.1)",
+          "rule": "WinScoresOnePoint"
+        },
+        {
+          "summary": "поражение — 0",
+          "rule": "LossScoresNoPoints"
+        },
+        {
+          "summary": "ничья — ½",
+          "rule": "DrawScoresHalfPoint"
+        },
+        {
+          "summary": "неявка — 0",
+          "rule": "ForfeitScoresNoPoints"
+        },
+        {
+          "summary": "победа неявкой — 1",
+          "rule": "WinByForfeitScoresOnePoint"
+        },
+        {
+          "summary": "очки соперника решил арбитр (статья 12.9.6)",
+          "rule": "ArbiterDecidedOpponentScore"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-device-loses",
+        "urn:query:fide-resignation-scores-opponent"
+      ],
+      "source_units": [
+        "FIDE_ART_10",
+        "FIDE_ART_12"
+      ],
+      "notes": "Шкала 1/½/0 уступает регламенту соревнования (приоритет §116 над default_scoring_applies)."
+    },
+    {
+      "id": "recorded-score-not-normal",
+      "task": "points",
+      "question": "Соответствует ли записанный счёт игрока обычным очкам партии?",
+      "kind": "truth",
+      "predicate": "recorded_score_not_normally_associated",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(recorded_score_not_normally_associated(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "записанные очки не кратны половине (статья 10.2)",
+          "rule": "RecordedScoreNotHalfPointMultiple"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-quarter-point-score-not-normal"
+      ],
+      "source_units": [
+        "FIDE_ART_10"
+      ]
+    },
+    {
+      "id": "device-loss-applies",
+      "task": "conduct",
+      "question": "Проигрывает ли игрок партию из-за электронного устройства?",
+      "kind": "truth",
+      "predicate": "device_loss_applies",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(device_loss_applies(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "устройство при игроке очевидно (статья 11.3.2.2)",
+          "rule": "DeviceOnPersonLoses"
+        },
+        {
+          "summary": "регламент соревнования установил санкцию мягче — приоритет §116",
+          "rule": "EventLessSevereDevicePenalty"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-event-less-severe-device-penalty"
+      ],
+      "source_units": [
+        "FIDE_ART_11"
+      ]
+    },
+    {
+      "id": "penalty-differs-from-prescribed-loss",
+      "task": "conduct",
+      "question": "Отличается ли наложенная арбитром санкция от поражения, предписанного Законами?",
+      "kind": "truth",
+      "predicate": "penalty_differs_from_prescribed_loss",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(penalty_differs_from_prescribed_loss(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "Законы предписали поражение, а наложена иная санкция (статьи 11.3.2.2, 11.7, 12.9)",
+          "rule": "OtherPenaltyThanPrescribedLoss"
+        },
+        {
+          "summary": "среди наложенных санкций есть объявление поражения (статья 12.9.6)",
+          "rule": "LossAmongImposedPenalties"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-warning-instead-of-prescribed-loss"
+      ],
+      "cases": [
+        "DeviceWarning"
+      ],
+      "queries": [
+        "penalty-differs"
+      ],
+      "source_units": [
+        "FIDE_ART_11",
+        "FIDE_ART_12"
+      ],
+      "notes": "Пакет не отменяет решение арбитра: он называет расхождение с предписанной санкцией и доказательство."
+    },
+    {
+      "id": "penalty-under-12-9-due",
+      "task": "conduct",
+      "question": "Подлежит ли игрок санкции по статье 12.9?",
+      "kind": "truth",
+      "predicate": "penalty_under_12_9_due",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(penalty_under_12_9_due(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "нарушение статей 11.1–11.5 (статья 11.6)",
+          "rule": "InfractionPenalisedUnder12_9"
+        },
+        {
+          "summary": "неправильное обращение с часами (статья 6.2.4)",
+          "rule": "ImproperClockHandlingPenalised"
+        },
+        {
+          "summary": "остановка часов без уважительной причины (статья 6.11.4, суждение §47.3)",
+          "rule": "PauseWithoutValidReasonPenalised"
+        },
+        {
+          "summary": "средство связи без разрешения арбитра (статья 12.8)",
+          "rule": "UnauthorisedCommunicationDevicePenalised"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-excess-scoresheet-requests-penalised"
+      ],
+      "source_units": [
+        "FIDE_ART_6",
+        "FIDE_ART_11",
+        "FIDE_ART_12"
+      ]
+    },
+    {
+      "id": "colours-reversed-replay",
+      "task": "irregularities",
+      "question": "Переигрывается ли партия с перепутанными цветами?",
+      "kind": "truth",
+      "predicate": "discontinued_and_replayed_with_correct_colours",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(discontinued_and_replayed_with_correct_colours(game: <game>));",
+      "branches": [
+        {
+          "summary": "сделано меньше 10 ходов каждым (статья 7.3)",
+          "rule": "ReversedColoursUnderTenMovesReplayed"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-colours-reversed-replay"
+      ],
+      "source_units": [
+        "FIDE_ART_7"
+      ]
+    },
+    {
+      "id": "arbiter-acts-under-7-5-5",
+      "task": "rapid-blitz",
+      "question": "Действует ли арбитр рапида по статье 7.5.5 после невозможного хода?",
+      "kind": "truth",
+      "predicate": "arbiter_acts_under_7_5_5",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "who",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(arbiter_acts_under_7_5_5(game: <game>, who: <who>));",
+      "branches": [
+        {
+          "summary": "невозможный ход по A.5 до следующего хода соперника (статья A.5.2)",
+          "rule": "ArbiterActsBeforeOpponentMoves"
+        },
+        {
+          "summary": "соперник уже сделал следующий ход — исправление закрыто, приоритет §116",
+          "rule": "OpponentMovedIllegalMoveStandsNoAction"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-rapid-illegal-move-stands"
+      ],
+      "source_units": [
+        "FIDE_APP_A"
+      ]
+    },
+    {
+      "id": "signed-result-stands",
+      "task": "recording",
+      "question": "Остаётся ли в силе итог, подписанный обоими игроками?",
+      "kind": "truth",
+      "predicate": "signed_result_stands",
+      "parameters": [
+        {
+          "name": "game",
+          "type": "Game",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(signed_result_stands(game: <game>));",
+      "branches": [
+        {
+          "summary": "итог подписан обоими, и арбитр не решил иначе (статья 8.7, суждение §47.3)",
+          "rule": "SignedResultStands"
+        }
+      ],
+      "tests": [
+        "urn:query:fide-signed-result-requires-arbiter"
+      ],
+      "source_units": [
+        "FIDE_ART_8"
+      ]
+    },
+    {
+      "id": "observed-mate-possible",
+      "task": "clock",
+      "question": "Есть ли вычисленная легальная серия до мата в полном кадре?",
+      "kind": "truth",
+      "predicate": "observed_mate_possible",
+      "parameters": [
+        {
+          "name": "g",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "victim",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(observed_mate_possible(g: <g>, victim: <victim>));",
+      "branches": [
+        {
+          "summary": "Source-bound computed geometry or exhaustive material; absence is unknown, not impossibility.",
+          "rule": "LegalMateWitnessShowsPossibility"
+        }
+      ],
+      "tests": [
+        "observed-possible",
+        "observed-missing-wq",
+        "observed-mixed-both-owner"
+      ],
+      "source_units": [
+        "FIDE_ART_1",
+        "FIDE_ART_3",
+        "FIDE_ART_6"
+      ],
+      "notes": "Existence of any legal series differs from forced mate. Complete known four-piece K/Q/R board; unknown or ambiguous observations block production."
+    },
+    {
+      "id": "observed-mate-impossible",
+      "task": "clock",
+      "question": "Весь ли материал соперника — один король, не способный дать мат никакой легальной серией?",
+      "kind": "truth",
+      "predicate": "observed_mate_impossible",
+      "parameters": [
+        {
+          "name": "g",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "victim",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(observed_mate_impossible(g: <g>, victim: <victim>));",
+      "branches": [
+        {
+          "summary": "Source-bound computed geometry or exhaustive material; absence is unknown, not impossibility.",
+          "rule": "ExhaustiveBareWhiteKingCannotMate"
+        }
+      ],
+      "tests": [
+        "observed-bare-impossible",
+        "observed-bare-unknown-queen-not-impossible"
+      ],
+      "source_units": [
+        "FIDE_ART_1",
+        "FIDE_ART_3",
+        "FIDE_ART_6"
+      ],
+      "notes": "Existence of any legal series differs from forced mate. Complete known four-piece K/Q/R board; unknown or ambiguous observations block production."
+    },
+    {
+      "id": "observed-two-ply-mate",
+      "task": "clock",
+      "question": "Заканчивается ли вычисленная двухполуходовая геометрическая серия матом?",
+      "kind": "truth",
+      "predicate": "observed_two_ply_mate",
+      "parameters": [
+        {
+          "name": "g",
+          "type": "Game",
+          "role": "bound"
+        },
+        {
+          "name": "victim",
+          "type": "Player",
+          "role": "bound"
+        }
+      ],
+      "template": "evaluate truth(observed_two_ply_mate(g: <g>, victim: <victim>));",
+      "branches": [
+        {
+          "summary": "Source-bound computed geometry or exhaustive material; absence is unknown, not impossibility.",
+          "rule": "CalculateTwoPlyMate"
+        }
+      ],
+      "tests": [
+        "observed-witness"
+      ],
+      "source_units": [
+        "FIDE_ART_1",
+        "FIDE_ART_3",
+        "FIDE_ART_6"
+      ],
+      "notes": "Existence of any legal series differs from forced mate. Complete known four-piece K/Q/R board; unknown or ambiguous observations block production."
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "pozitsiya-doski",
+      "task": "moves",
+      "question": "Допустим ли конкретный ход в данной позиции на доске?",
+      "reason_kind": "not_formalized",
+      "limitation": "Общий шахматный движок и полная достижимость позиции не вычисляются. Новый producer вычисляет геометрию известного полного четырёхфигурного K/Q/R кадра, один двухполуходовой свидетель мата и невозможность мата у одинокого белого короля; вне этого среза остаётся протокольный режим.",
+      "source_units": [
+        "FIDE_ART_3"
+      ],
+      "related_question": "castling-legal"
+    },
+    {
+      "id": "vozmozhnost-mata",
+      "task": "completion",
+      "question": "Может ли соперник поставить мат какой-либо последовательностью допустимых ходов?",
+      "reason_kind": "case_data",
+      "limitation": "Legacy king_cannot_be_checkmated/checked_player сохраняются для статей 5.1.2 и 7.5.5. Новый Game-keyed producer статьи 6.9 не требует готовых mate/capability/safety фактов; неизвестные или конфликтные записи не дают заключения.",
+      "source_units": [
+        "FIDE_ART_5",
+        "FIDE_ART_7"
+      ],
+      "related_question": "game-drawn"
+    },
+    {
+      "id": "namerennost-kasaniya",
+      "task": "touch",
+      "question": "Было ли касание фигуры намеренным?",
+      "reason_kind": "open_reading",
+      "limitation": "Намеренность касания фигуры — внешнее суждение арбитра (piece_touched_intentionally, §47.3): без суждения ответ REQUIRES_JUDGMENT, отсутствие суждения не превращается в утверждение о намеренности.",
+      "source_units": [
+        "FIDE_ART_4"
+      ],
+      "related_question": "must-move-first-touched-piece"
+    },
+    {
+      "id": "notatsiya",
+      "task": "recording",
+      "question": "Правильно ли записан ход в алгебраической нотации?",
+      "reason_kind": "not_formalized",
+      "limitation": "Текст нотации (приложение C) не разбирается: запись хода на бланке — предъявленный факт протокола, а не строка, которую пакет читает.",
+      "source_units": [
+        "FIDE_APP_C"
+      ],
+      "related_question": "must-record-moves"
+    },
+    {
+      "id": "nezryachie-igroki",
+      "task": "arbiter",
+      "question": "Как проводится партия с незрячим или слабовидящим игроком?",
+      "reason_kind": "not_formalized",
+      "limitation": "Приложение D (игра с незрячими и слабовидящими) — организационные обязанности ассистента и устройства без исполнимых последствий для исхода; закреплено фрагментом, не формализовано.",
+      "source_units": [
+        "FIDE_APP_D"
+      ]
+    },
+    {
+      "id": "sudzhenie-arbitra-bez-kriteriev",
+      "task": "clock",
+      "question": "Какое время выставить на часах после нарушения порядка или замены неисправных часов?",
+      "reason_kind": "open_reading",
+      "limitation": "Решения арбитра «по наилучшему суждению» без критериев в Законах (статьи 6.10, 6.11.3, 7.1) не исполняются; оценочные признаки с последствиями (6.7.1, 6.11.4, 8.7, 11.1, 11.5, 11.7) — внешнее суждение арбитра §47.3.",
+      "source_units": [
+        "FIDE_ART_6",
+        "FIDE_ART_7"
+      ],
+      "related_question": "game-lost-by"
+    }
+  ],
+  "internal": [
+    {
+      "predicate": "legal_move",
+      "reason": "Квалификация хода по статье 3.10.1 (все требования статей 3.1–3.9 соблюдены); сценарии FIDE-02 и FIDE-03 проверяют её через переход состояния партии valid_transition, отдельной карточки нет."
+    },
+    {
+      "predicate": "illegal_move",
+      "reason": "Квалификация хода по статье 3.10.2; проверяется теми же сценариями перехода состояния FIDE-02/FIDE-03."
+    },
+    {
+      "predicate": "checkmate_has_been_delivered",
+      "reason": "Звено окончания партии матом (статья 5.1.1); спрашивается через game_won_by (FIDE-16)."
+    },
+    {
+      "predicate": "resignation_has_ended_the_game",
+      "reason": "Звено окончания партии сдачей (статья 5.1.2); исход спрашивается через game_lost_by и game_drawn."
+    },
+    {
+      "predicate": "stalemate_has_ended_the_game",
+      "reason": "Звено окончания партии патом (статья 5.2.1); исход спрашивается через game_drawn."
+    },
+    {
+      "predicate": "dead_position_has_ended_the_game",
+      "reason": "Звено окончания партии мёртвой позицией (статья 5.2.2); исход спрашивается через game_drawn."
+    },
+    {
+      "predicate": "agreed_draw_has_ended_the_game",
+      "reason": "Звено окончания партии соглашением (статья 5.2.3); исход спрашивается через game_drawn."
+    },
+    {
+      "predicate": "second_illegal_move_has_ended_the_game",
+      "reason": "Звено окончания партии вторым невозможным ходом (статья 7.5.5); исход спрашивается через game_lost_by и game_drawn (FIDE-13, FIDE-14)."
+    },
+    {
+      "predicate": "threefold_claim_correct",
+      "reason": "Правильность требования по троекратному повторению (статья 9.2); спрашивается через game_drawn (FIDE-08, FIDE-09)."
+    },
+    {
+      "predicate": "fifty_move_claim_correct",
+      "reason": "Правильность требования по правилу 50 ходов (статья 9.3); спрашивается через game_drawn (FIDE-11)."
+    },
+    {
+      "predicate": "arbiter_shall_see_laws_observed",
+      "reason": "Общая обязанность арбитра по статье 12.1; в срезе нет сценария, который бы её спрашивал, — карточка появится вместе с тестом."
+    },
+    {
+      "predicate": "arbiter_competent_to_decide",
+      "reason": "Компетенция арбитра по предисловию 0.2 над не урегулированным случаем; сам факт неурегулированности — внешнее суждение (case_not_precisely_regulated), сценария в срезе нет."
+    },
+    {
+      "predicate": "appendix_a5_applies",
+      "reason": "Режим A.5/B.3 (приложения A.5–A.6, B.3–B.4): звено посылок A.2, A.5.2–A.5.4 и прибавок B.3; проверяется через arbiter-acts-under-7-5-5 (fide-rapid-illegal-move-stands)."
+    },
+    {
+      "predicate": "arbiter_chooses_among_12_9_options",
+      "reason": "Общий выбор санкции арбитром по 12.9 — звено спора §116 с предписанным поражением; спрашивается через penalty-differs-from-prescribed-loss."
+    },
+    {
+      "predicate": "arrived_after_default_time",
+      "reason": "Звено 6.7.1 (приход после времени неявки); исход спрашивается через game-lost-by (fide-late-arrival-*)."
+    },
+    {
+      "predicate": "castling_not_allowed_after_incorrect_king_placement",
+      "reason": "Следствие A.5.1.2 при неверной расстановке короля; вспомогательный запрет без отдельного сценария — рокировка спрашивается через castling-legal."
+    },
+    {
+      "predicate": "chessboard_placed_contrary_to_2_1",
+      "reason": "Квалификация положения доски по 2.1 — посылка 7.2.2 (position_transferred_to_correct_board)."
+    },
+    {
+      "predicate": "claim_not_admissible_on_display_only",
+      "reason": "Недопустимость заявки только по табло (6.12.2): процессуальный вывод без влияния на исход партии."
+    },
+    {
+      "predicate": "clock_started_for",
+      "reason": "Старт часов белых (6.6): процессуальный вывод без влияния на исход; порядок хода — факт протокола."
+    },
+    {
+      "predicate": "competition_setting_does_not_conform",
+      "reason": "Несоответствие выбора A.4 условиям надзора (A.4.1, A.6): проверка регламента соревнования, не исход партии."
+    },
+    {
+      "predicate": "competitive_rules_apply",
+      "reason": "Режим соревновательных правил A.4/B.2: звено прибавки времени в блице (дело BlitzFirstIllegalCompetitive) и A.4.3."
+    },
+    {
+      "predicate": "considered_distraction_of_opponent",
+      "reason": "Звено A.4.3 → 11.5; спрашивается через penalty-under-12-9-due (fide-excess-scoresheet-requests-penalised)."
+    },
+    {
+      "predicate": "considered_spectator",
+      "reason": "Статус зрителя по 11.4 — посылка 12.7 (may_be_expelled_from_venue)."
+    },
+    {
+      "predicate": "default_has_ended_the_game",
+      "reason": "Звено окончания партии неявкой для перехода ConcludeByDefault; исход — game-lost-by."
+    },
+    {
+      "predicate": "default_scoring_applies",
+      "reason": "Спор §116 шкалы 10.1 с регламентом соревнования; спрашивается через points-scored."
+    },
+    {
+      "predicate": "draw_agreement_contrary_to_regulations",
+      "reason": "Проверка соглашения о ничьей против регламента соревнования (9.1.1): не меняет исход, называет несоответствие."
+    },
+    {
+      "predicate": "draw_claim_incorrect",
+      "reason": "Звено 9.5.3; спрашивается через extra-time-awarded (fide-incorrect-threefold-claim-penalty)."
+    },
+    {
+      "predicate": "draw_claim_right_lost_on_that_move",
+      "reason": "Утрата права заявки на этом ходу (9.4): вывод о праве, исход не пересматривает."
+    },
+    {
+      "predicate": "flag_considered_fallen",
+      "reason": "Звено 6.8; спрашивается через time-forfeit и game-lost-by (fide-flag-fall-*)."
+    },
+    {
+      "predicate": "game_cancelled_and_replayed",
+      "reason": "Последствие 7.2.1 неверной начальной расстановки; процессуальный вывод, симметричный colours-reversed-replay."
+    },
+    {
+      "predicate": "game_continues_despite_reversed_colours",
+      "reason": "Вторая ветвь 7.3 (10 ходов и более); пара к colours-reversed-replay."
+    },
+    {
+      "predicate": "illegal_move_stands",
+      "reason": "Следствие A.5.2 после следующего хода соперника; пара к arbiter-acts-under-7-5-5."
+    },
+    {
+      "predicate": "illegal_position_has_ended_the_game",
+      "reason": "Звено окончания партии по A.5.4 для перехода ConcludeByIllegalPosition; исход — game-drawn."
+    },
+    {
+      "predicate": "infraction_of_11_1_to_11_5",
+      "reason": "Звено 11.6; спрашивается через penalty-under-12-9-due."
+    },
+    {
+      "predicate": "makes_the_first_move",
+      "reason": "Первый ход белых (1.2): вывод без последствий исхода; очередь хода — факт протокола (решение 1 шапки)."
+    },
+    {
+      "predicate": "may_appeal_arbiter_decision",
+      "reason": "Право апелляции 11.10 с изъятием регламентом (§116): процессуальный вывод; срок апелляции Законы не устанавливают."
+    },
+    {
+      "predicate": "may_be_expelled_from_venue",
+      "reason": "Полномочие удалить мешающего зрителя (12.7): процессуальный вывод без влияния на исход."
+    },
+    {
+      "predicate": "move_completed",
+      "reason": "Завершение хода (6.2.1): вывод для протокола; счёт завершённых ходов — факт протокола (барьер §111)."
+    },
+    {
+      "predicate": "no_setup_claim_admissible",
+      "reason": "Недопустимость заявки о расстановке после 10 ходов (A.5.1.2): процессуальный вывод."
+    },
+    {
+      "predicate": "pawn_replaced_by_queen",
+      "reason": "Замена пешки ферзём по 7.5.2: процессуальный вывод без влияния на исход."
+    },
+    {
+      "predicate": "penalised_as_illegal_move",
+      "reason": "Квалификация 7.5.3/7.5.4 как невозможного хода; число невозможных ходов приходит фактом протокола."
+    },
+    {
+      "predicate": "penalty_conforms_to_laws",
+      "reason": "Соответствие наложенной санкции Законам — пара к penalty-differs-from-prescribed-loss."
+    },
+    {
+      "predicate": "position_transferred_to_correct_board",
+      "reason": "Последствие 7.2.2 неверно положенной доски: процессуальный вывод."
+    },
+    {
+      "predicate": "prescribed_loss_under_the_laws",
+      "reason": "Предписанное поражение (11.3.2.2, 11.7) — звено спора §116 и проверки санкции; спрашивается через penalty-differs-from-prescribed-loss."
+    },
+    {
+      "predicate": "rapid_game",
+      "reason": "Классификация A.1; спрашивается через extra-time-awarded (fide-rapid-first-illegal-one-minute), пара к blitz-game."
+    },
+    {
+      "predicate": "recorded_scores_exceed_maximum",
+      "reason": "Проверка суммы записанного счёта (10.2): пара к recorded-score-not-normal."
+    },
+    {
+      "predicate": "recording_in_advance_forbidden_breached",
+      "reason": "Запрет записи ходов заранее (8.1.2) с изъятием для заявки ничьей: нарушение без санкции в самой статье."
+    },
+    {
+      "predicate": "standard_game",
+      "reason": "Партия вне A.1/B.1; спрашивается через extra-time-awarded (fide-standard-first-illegal-two-minutes)."
+    },
+    {
+      "predicate": "time_forfeit_has_ended_the_game",
+      "reason": "Звено окончания партии по времени для перехода ConcludeOnTime; исход — game-lost-by."
+    },
+    {
+      "predicate": "checked_board_piece",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "piece_known",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "checked_side",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "occupied_twice",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "complete_geometric_frame",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "witness_shape",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "board_initial",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "board_after_black",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "board_after_white",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "board_at",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "tested_square",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "ray_blocker",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "attack_blocker",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "attacks_square",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "adjacent_kings",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "initially_valid_frame",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "legal_black_step",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "legal_white_step",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "legal_black_escape",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    },
+    {
+      "predicate": "rook_can_capture_checker",
+      "reason": "Внутренняя стадия полного исходного кадра, геометрии последовательности, атак, путей или полного перебора ответов; проверяется через три новые карточки и input-only tests25."
+    }
+  ]
+}

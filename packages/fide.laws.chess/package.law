@@ -1,0 +1,118 @@
+// FIDE Laws of Chess (в силе с 1 января 2023 года). Оверлей, не шахматный
+// движок: доска, очередь хода, геометрическая легальность, флаг en passant,
+// счётчик 50 ходов, число повторений позиции и показания часов приходят
+// ФАКТАМИ ПРОТОКОЛА — как `match_won_by` у регламента УЕФА. Право решает
+// рокировку, окно взятия на проходе, заявки ничьей, санкции за невозможный
+// ход и нарушения поведения, «тронул — ходи», падение флага, обязанность
+// записи, очки и канал арбитра.
+//
+// Охват — полный свод (DECISION-0294): статьи 1–12 и приложения A (рапид),
+// B (блиц); приложения C (нотация) и D (игра с незрячими) — объявленные
+// границы с причиной в README. Руководства (GUIDELINES) частью Законов не
+// являются. Геометрия 3.1–3.6 и расстановка 2.2–2.4 названы в шапке, а не
+// `declared`-границей: из статей выводятся 1.2, 1.4, 2.1 (через 7.2.2),
+// 3.7.3, 3.8, 3.10.
+//
+// ЧЕГО В ПАКЕТЕ НЕТ, И ЭТО РЕШЕНИЕ:
+//
+// 1. **Автомат не чередует цвет.** Состояния `NotStarted → Playing → Ended`.
+//    `WhiteToMove`/`BlackToMove` положить в состояния нельзя: `current_state`
+//    вне среза (DECISION-0013 §2.2), `entered_state` монотонен. Очередь хода —
+//    факт `player_has_the_move`.
+// 2. **Полуход ≠ календарные сутки.** Окно §124 — гражданская дата; en passant
+//    истекает следующим ходом соперника. Журнал несёт флаг
+//    `en_passant_right_open` на одном кадре, а не дату.
+// 3. **Счётчики не выводятся из журнала ходов.** Агрегат по выведенной истории
+//    — барьер §111 (`NON_EXECUTABLE_RULE`). `position_occurrence_count`,
+//    `moves_by_each_without_pawn_or_capture`, `completed_illegal_move_count`,
+//    число ходов, остаток времени и число просьб показать бланк приходят
+//    фактом протокола.
+// 4. **`not` выведенного предиката в открытом мире не берётся.** Историческое
+//    «король не ходил» — `closure` §70 с `derive_explicit_negative`, не
+//    `not_known` в strict (тот дал бы `NON_EXECUTABLE_RULE`).
+// 5. **Часы — мгновения `Instant`, не календарь §86** (DECISION-0294 §1.2).
+//    Момент падения флага, окончания партии, прихода игрока и истечения
+//    времени неявки — `Instant`; порядок событий — сравнение мгновений.
+//    Остаток времени на часах — факт `Decimal` в секундах: тип `Duration`
+//    в ядре без конструктора (§84.4), и арифметики над ним пакет не ведёт.
+//    Настройка контроля времени (основное время и добавление) — целые
+//    секунды регламента соревнования, не показания часов.
+//
+// ЮРИДИЧЕСКАЯ ОГОВОРКА. Пакет описывает Правила ФИДЕ как регулятивный акт
+// международной федерации. Это не движок партии и не замена арбитру: вывод
+// формулируется как «соответствует Правилам / не соответствует» с
+// доказательством.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// --- Типы, нужные двум и более модулям (docs/PACKAGE-LAYOUT.ru.md) ---------
+
+pub entity Game { label en official "game of chess"; }
+pub entity Player { label en official "player"; }
+pub entity Piece { label en official "chess piece"; }
+entity Arbiter { label en official "arbiter"; }
+pub entity Competition { label en official "competition (event) in which the game is played"; }
+
+// Перечень санкций 12.9 в порядке статьи: читают 10.1 (очки при поражении
+// как санкции) и 12.9 (соответствие наложенной санкции предписанной).
+pub enum PenaltyOption {
+    label en official "options available to the arbiter concerning penalties (Article 12.9)";
+    warning;
+    increasing_opponent_time;
+    reducing_offender_time;
+    increasing_opponent_points;
+    reducing_offender_points;
+    declaring_game_lost;
+    fine_announced_in_advance;
+    exclusion_from_rounds;
+    expulsion_from_competition;
+}
+entity CastlingSide { label en official "side of castling"; }
+entity Situation { label en official "situation arising during a game"; }
+
+pub relation player_of(game: Game, who: Player) kind empirical {
+    label en official "the player takes part in the game";
+}
+relation king_of(who: Player, king: Piece) kind empirical {
+    label en official "the piece is that player's king";
+}
+relation rook_of(who: Player, rook: Piece) kind empirical {
+    label en official "the piece is that player's rook";
+}
+pub relation own_piece_of(who: Player, piece: Piece) kind empirical {
+    label en official "the piece belongs to the player";
+}
+relation arbiter_of(game: Game, arb: Arbiter) kind empirical {
+    label en official "the arbiter is appointed for the game";
+}
+pub relation opponent_of(game: Game, who: Player, opp: Player) kind empirical {
+    label en official "the other player is the player's opponent in the game";
+}
+pub relation plays_white(game: Game, who: Player) kind empirical {
+    label en official "the player has the light-coloured pieces (White)";
+}
+pub relation game_in_competition(game: Game, comp: Competition) kind empirical {
+    label en official "the game is played in the competition";
+}
+pub relation player_has_the_move(game: Game, who: Player) kind empirical {
+    label en official "the player has the move";
+}
+relation play_started(game: Game) kind empirical {
+    label en official "the game has been started";
+}
+
+// Домены closure §70: v1 закрывает только унарный предикат.
+relation checked_game(game: Game) kind empirical {
+    label en official "the game is in the closed domain of protocol facts";
+}
+relation checked_piece(piece: Piece) kind empirical {
+    label en official "the piece is in the closed domain of move history";
+}
+pub relation checked_player(who: Player) kind empirical {
+    label en official "the player is in the closed domain of mate-possibility facts";
+}
+relation checked_castling_side(side: CastlingSide) kind empirical {
+    label en official "the castling side is in the closed domain of path facts";
+}

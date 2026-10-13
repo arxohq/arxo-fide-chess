@@ -1,0 +1,17 @@
+language "law.core" version "0.2";
+package examples.chess.arbiter version "0.1.0";
+namespace "urn:law:examples:chess:arbiter";
+
+// Статья 7.5.5 и приложение B.2: блиц 3+2 по соревновательным правилам
+// (один арбитр на партию, партия записывается) — прибавка остаётся две минуты.
+case BlitzFirstIllegalCompetitive {
+    context { legal_time @2026-09-01; knowledge_time @2026-09-08T12:00:00Z; decision_time @2026-09-08T12:00:00Z; timezone "UTC"; }
+    assert "opponent": fide.laws.chess::opponent_of(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:white"), entity_ref("urn:example:chess:black")) { origin case_input; }
+    assert "competition": fide.laws.chess::game_in_competition(entity_ref("urn:example:chess:game"), entity_ref("urn:example:chess:final")) { origin case_input; }
+    assert "base": fide.laws.chess::time_control_base_seconds(entity_ref("urn:example:chess:final"), 180) { origin case_input; }
+    assert "increment": fide.laws.chess::time_control_increment_seconds(entity_ref("urn:example:chess:final"), 2) { origin case_input; }
+    assert "regime": fide.laws.chess::event_regulations_choose_competitive_rules(entity_ref("urn:example:chess:final")) { origin case_input; }
+    assert "supervision": fide.laws.chess::games_supervised_by_one_arbiter(entity_ref("urn:example:chess:final"), 1) { origin case_input; }
+    assert "recorded": fide.laws.chess::each_game_recorded_by_arbiter(entity_ref("urn:example:chess:final")) { origin case_input; }
+    assert "illegal-count": fide.laws.chess::completed_illegal_move_count(entity_ref("urn:example:chess:white"), 1) { origin case_input; }
+}

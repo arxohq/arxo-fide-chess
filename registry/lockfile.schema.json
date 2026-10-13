@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:law-dsl-core:0.1:schema:lockfile",
+  "title": "Law DSL Core 0.1 canonical law.lock",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "lockVersion": {
+      "enum": [
+        "0.1",
+        "0.2"
+      ]
+    },
+    "languageSemantics": {
+      "type": "string",
+      "pattern": "^law\\.core/0\\.1(?:\\.[0-9]+)?$"
+    },
+    "root": {
+      "$ref": "#/$defs/LockedPackageRef"
+    },
+    "packages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LockedPackage"
+      }
+    },
+    "dependencyEdges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DependencyEdge"
+      }
+    },
+    "resolutionHash": {
+      "$ref": "#/$defs/Digest"
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LockedResource"
+      },
+      "uniqueItems": true
+    },
+    "semanticLayer": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "description": "Семантический слой (spec/LAYERS.ru.md; DECISION-0007). Имя `semanticLayer`, а не `layer`: короткое имя занято package profile онтологических пакетов. Слой — потолок: объявление выше выведенного допустимо, ниже — LDC-E8101. В lockfile — ЭФФЕКТИВНЫЙ слой сборки: максимум по корню и всем закреплённым зависимостям."
+    }
+  },
+  "required": [
+    "lockVersion",
+    "languageSemantics",
+    "root",
+    "packages",
+    "dependencyEdges",
+    "resolutionHash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lockVersion": {
+            "const": "0.2"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "resources"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "Digest": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+:[A-Fa-f0-9]+$"
+    },
+    "PackageName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*$"
+    },
+    "Version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[0-9A-Za-z][0-9A-Za-z._+-]*$"
+    },
+    "Feature": {
+      "type": "string",
+      "minLength": 1
+    },
+    "LockedResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "parameter-dataset",
+            "decision-table",
+            "label-overlay",
+            "calendar-dataset"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Digest"
+        },
+        "capability": {
+          "description": "A3-ресурсы участвуют в компиляции (compile_time); оверлеи меток §218 — презентационный слой вне CLIR (presentation, DECISION-0070); наборы календаря §85 разрешаются при исполнении (law.calendar/0.1, DECISION-0110).",
+          "enum": [
+            "compile_time",
+            "presentation",
+            "law.calendar/0.1"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "path",
+        "contentHash",
+        "capability"
+      ]
+    },
+    "LockedPackageRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/PackageName"
+        },
+        "version": {
+          "$ref": "#/$defs/Version"
+        },
+        "namespace": {
+          "type": "string",
+          "format": "uri",
+          "description": "Пространство имён пакета §10 — URN. `format` в Draft 2020-12 есть аннотация, а не проверка (E-0060), поэтому форму держит `pattern`.",
+          "pattern": "^urn:[A-Za-z0-9][A-Za-z0-9-]{0,31}(?::[A-Za-z0-9._~%!$&'()*+,;=@-]+)+$"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Digest"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "namespace",
+        "contentHash"
+      ]
+    },
+    "LockedPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/PackageName"
+        },
+        "version": {
+          "$ref": "#/$defs/Version"
+        },
+        "namespace": {
+          "type": "string",
+          "format": "uri",
+          "description": "Пространство имён пакета §10 — URN. `format` в Draft 2020-12 есть аннотация, а не проверка (E-0060), поэтому форму держит `pattern`.",
+          "pattern": "^urn:[A-Za-z0-9][A-Za-z0-9-]{0,31}(?::[A-Za-z0-9._~%!$&'()*+,;=@-]+)+$"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Digest"
+        },
+        "registryId": {
+          "type": "string"
+        },
+        "resolverUri": {
+          "type": "string",
+          "format": "uri",
+          "description": "Откуда пакет разрешён. `pattern` требует хотя бы схему URI и полным разбором не притворяется (E-0060).",
+          "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:[^\\s]+$"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Feature"
+          },
+          "uniqueItems": true
+        },
+        "signature": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "algorithm": {
+              "type": "string"
+            },
+            "keyId": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "algorithm",
+            "keyId",
+            "value"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "namespace",
+        "contentHash",
+        "features"
+      ]
+    },
+    "DependencyEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/PackageName"
+        },
+        "to": {
+          "$ref": "#/$defs/PackageName"
+        },
+        "requested": {
+          "$ref": "#/$defs/Version"
+        },
+        "resolved": {
+          "$ref": "#/$defs/Version"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Feature"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "requested",
+        "resolved",
+        "features"
+      ]
+    }
+  }
+}

@@ -1,0 +1,147 @@
+// Статья 3: ходы фигур — оверлей, не геометрия.
+//
+// 3.1–3.6 (лучи, конь, взятие на занятую клетку) в пакет не кодируются:
+// «ход геометрически легален» приходит фактом протокола
+// `move_meets_articles_3_1_to_3_9`. Из статьи 3 выводятся три института,
+// которых протокол сам не решает: взятие на проходе (3.7.3.1–2), рокировка
+// (3.8.2) и квалификация легального/нелегального хода (3.10).
+//
+// Историческое «король не ходил» — closure §70, не `not_known`: в strict
+// `not_known` даёт NON_EXECUTABLE_RULE. Домен унарный (`checked_piece`) —
+// v1 closure бинарного предиката не закрывает.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    CastlingSide,
+    FIDE_ART_3,
+    Game,
+    Piece,
+    Player,
+    checked_castling_side,
+    checked_game,
+    checked_piece,
+    king_of,
+    player_has_the_move,
+    rook_of,
+};
+
+relation piece_has_moved(piece: Piece) kind empirical {
+    label en official "the piece has already moved";
+}
+relation en_passant_right_open(game: Game) kind empirical {
+    label en official "an en passant capture is available on this move";
+}
+relation capturing_pawn_on_adjacent_file(game: Game, pawn: Piece) kind empirical {
+    label en official "the pawn occupies a square on the same rank and an adjacent file to the pawn that has just advanced two squares";
+}
+relation move_meets_articles_3_1_to_3_9(game: Game) kind empirical {
+    label en official "the attempted move meets the relevant requirements of Articles 3.1 to 3.9";
+}
+relation castling_side_of(game: Game, who: Player, side: CastlingSide, rook: Piece) kind empirical {
+    label en official "the player is considering castling with that rook on that side";
+}
+relation castling_path_attacked(side: CastlingSide) kind empirical {
+    label en official "the king's square, the square it must cross, or the square it is to occupy is attacked";
+}
+relation castling_path_blocked(side: CastlingSide) kind empirical {
+    label en official "there is a piece between the king and the rook with which castling is to be effected";
+}
+
+relation en_passant_capture_legal(game: Game, pawn: Piece) kind institutional {
+    label en official "an en passant capture by this pawn is legal";
+}
+relation legal_move(game: Game) kind institutional {
+    label en official "the attempted move is legal";
+}
+relation illegal_move(game: Game) kind institutional {
+    label en official "the attempted move is illegal";
+}
+relation castling_legal(game: Game, who: Player, side: CastlingSide) kind institutional {
+    label en official "castling on that side is legal";
+}
+
+closure PieceMovedClosure {
+    label en official "a piece that is not recorded as having moved has not moved";
+    predicate piece_has_moved;
+    domain checked_piece;
+    snapshot "urn:fide:snapshot:move-history:2023-01-01";
+    complete_as_of @2023-01-01T00:00:00Z;
+    derive_explicit_negative true;
+}
+
+closure EnPassantFlagClosure {
+    label en official "an en passant right not recorded on this frame is not open";
+    predicate en_passant_right_open;
+    domain checked_game;
+    snapshot "urn:fide:snapshot:en-passant:2023-01-01";
+    complete_as_of @2023-01-01T00:00:00Z;
+    derive_explicit_negative true;
+}
+
+closure MoveLegalityClosure {
+    label en official "a move not recorded as meeting Articles 3.1 to 3.9 does not meet them";
+    predicate move_meets_articles_3_1_to_3_9;
+    domain checked_game;
+    snapshot "urn:fide:snapshot:move-legality:2023-01-01";
+    complete_as_of @2023-01-01T00:00:00Z;
+    derive_explicit_negative true;
+}
+
+closure CastlingAttackClosure {
+    label en official "a castling path not recorded as attacked is not attacked";
+    predicate castling_path_attacked;
+    domain checked_castling_side;
+    snapshot "urn:fide:snapshot:castling-attack:2023-01-01";
+    complete_as_of @2023-01-01T00:00:00Z;
+    derive_explicit_negative true;
+}
+
+closure CastlingBlockClosure {
+    label en official "a castling path not recorded as blocked is not blocked";
+    predicate castling_path_blocked;
+    domain checked_castling_side;
+    snapshot "urn:fide:snapshot:castling-block:2023-01-01";
+    complete_as_of @2023-01-01T00:00:00Z;
+    derive_explicit_negative true;
+}
+
+@source(FIDE_ART_3)
+rule EnPassantCaptureLegal(game: Game, who: Player, pawn: Piece) strict {
+    label en official "Article 3.7.3.1–2. En passant capture is legal only on the move following the two-square advance";
+    when player_has_the_move(game, who)
+        and en_passant_right_open(game)
+        and capturing_pawn_on_adjacent_file(game, pawn);
+    then en_passant_capture_legal(game, pawn);
+}
+
+@source(FIDE_ART_3)
+rule MoveIsLegal(game: Game) strict {
+    label en official "Article 3.10.1. A move is legal when all the relevant requirements of Articles 3.1 – 3.9 have been fulfilled";
+    when move_meets_articles_3_1_to_3_9(game);
+    then legal_move(game);
+}
+
+@source(FIDE_ART_3)
+rule MoveIsIllegal(game: Game) strict {
+    label en official "Article 3.10.2. A move is illegal when it fails to meet the relevant requirements of Articles 3.1 – 3.9";
+    when checked_game(game)
+        and not move_meets_articles_3_1_to_3_9(game);
+    then illegal_move(game);
+}
+
+@source(FIDE_ART_3)
+rule CastlingLegal(game: Game, who: Player, side: CastlingSide, king: Piece, rook: Piece) strict {
+    label en official "Article 3.8.2. Castling is legal if the right has not been lost and is not temporarily prevented";
+    when player_has_the_move(game, who)
+        and king_of(who, king)
+        and rook_of(who, rook)
+        and castling_side_of(game, who, side, rook)
+        and not piece_has_moved(king)
+        and not piece_has_moved(rook)
+        and not castling_path_attacked(side)
+        and not castling_path_blocked(side);
+    then castling_legal(game, who, side);
+}

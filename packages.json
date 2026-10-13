@@ -1,0 +1,18 @@
+{
+  "format": "arxo.fide-chess-export/1",
+  "sourceRevision": "8fd03509d66c12d4eaf55fdae7d13fbea4a64e56",
+  "packages": [
+    {
+      "name": "fide.laws.chess",
+      "version": "0.1.1",
+      "contentHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+      "worldHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+      "declaredScenarios": 103,
+      "passed": 103,
+      "failed": 0,
+      "outcome": "passed"
+    }
+  ],
+  "releaseVerified": false,
+  "corpus": "not_checked"
+}

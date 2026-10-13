@@ -1,0 +1,15 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 8.7. Итог подписан обоими; устоит ли он — «если только арбитр не решит иначе»:
+// канал суждения §47.3.
+test "urn:query:fide-signed-result-requires-arbiter" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": result_signed_by_both(entity_ref("urn:fide:g22")) { origin case_input; }
+    }
+    evaluate truth(signed_result_stands(entity_ref("urn:fide:g22")));
+    expect evaluation_status == REQUIRES_JUDGMENT;
+    expect judgment_request(arbiter_decides_otherwise_on_signed_result, FIDEArbiter);
+}

@@ -1,0 +1,18 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Второй завершённый невозможный ход одним игроком — поражение (7.5.5),
+// если противник может поставить мат. Closure замыкает «мат возможен».
+
+test "urn:query:fide-second-illegal-move-loses" {
+    given {
+        context { decision_time @2023-06-01T12:00:00Z; knowledge_time @2023-06-01T12:00:00Z; legal_time @2023-06-01; timezone "UTC"; }
+        assert "fide-il1": player_of(entity_ref("urn:fide:game:il"), entity_ref("urn:fide:white:il")) { origin case_input; }
+        assert "fide-il2": checked_player(entity_ref("urn:fide:white:il")) { origin case_input; }
+        assert "fide-il3": completed_illegal_move_count(entity_ref("urn:fide:white:il"), 2) { origin case_input; }
+    }
+    evaluate truth(game_lost_by(entity_ref("urn:fide:game:il"), entity_ref("urn:fide:white:il")));
+    expect result_kind == PROPOSITION;
+    expect truth_status == TRUE_ONLY;
+}

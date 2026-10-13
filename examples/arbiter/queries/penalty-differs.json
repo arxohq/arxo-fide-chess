@@ -1,0 +1,19 @@
+{
+  "queryId": "penalty-differs",
+  "kind": "truth",
+  "literal": {
+    "kind": "literal",
+    "polarity": "positive",
+    "predicate": "urn:fide:laws:clir:chess#penalty_differs_from_prescribed_loss",
+    "args": [
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:game"
+      },
+      {
+        "kind": "entity_ref",
+        "id": "urn:example:chess:white"
+      }
+    ]
+  }
+}

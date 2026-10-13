@@ -1,0 +1,20 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// КАНАЛ СУЖДЕНИЯ §47.3. Игрок, имеющий ход, касается своей фигуры; намерение
+// двигать решает арбитр (ст. 4.3, предисловие 0.2). Спрашивается СТРОГИЙ шаг:
+// через побеждаемое правило судья невидим.
+
+test "urn:query:fide-touch-move-requires-judgment" {
+    given {
+        context { decision_time @2023-06-01T12:00:00Z; knowledge_time @2023-06-01T12:00:00Z; legal_time @2023-06-01; timezone "UTC"; }
+        assert "fide-t1": player_of(entity_ref("urn:fide:game:t"), entity_ref("urn:fide:white:t")) { origin case_input; }
+        assert "fide-t2": player_has_the_move(entity_ref("urn:fide:game:t"), entity_ref("urn:fide:white:t")) { origin case_input; }
+        assert "fide-t3": own_piece_of(entity_ref("urn:fide:white:t"), entity_ref("urn:fide:king:t")) { origin case_input; }
+        assert "fide-t4": piece_can_be_moved(entity_ref("urn:fide:king:t")) { origin case_input; }
+    }
+    evaluate truth(must_move_first_touched_piece(entity_ref("urn:fide:white:t"), entity_ref("urn:fide:king:t")));
+    expect result_kind == PROPOSITION;
+    expect evaluation_status == REQUIRES_JUDGMENT;
+}

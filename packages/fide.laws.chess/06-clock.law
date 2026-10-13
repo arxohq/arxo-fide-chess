@@ -1,0 +1,271 @@
+// Статья 6: шахматные часы.
+//
+// Часы не симулируются. Момент падения флага, момент исхода партии, момент
+// прихода к доске и момент истечения времени неявки — `Instant` протокола
+// (решение 5 шапки `package.law`); порядок событий — сравнение мгновений,
+// без календаря §86 и без арифметики над длительностями. Проверка 6.4
+// («выполнено ли 6.3.1») — факт протокола: число ходов выводится из журнала
+// только агрегатом по выведенной истории (барьер §111).
+//
+// «Кроме случаев 5.1.1–5.2.3» в 6.9 — приоритет §116: исход, наступивший
+// раньше падения флага, побеждает поражение по времени. Это не `not`
+// выведенного предиката, а спор двух побеждаемых правил с явным порядком.
+//
+// Решения арбитра по «наилучшему суждению» (6.10, 6.11.3) и допустимость
+// ассистента (6.2.6) — вне исполнения: Законы не дают критериев. Отсутствие
+// уважительной причины остановить часы (6.11.4) и отказ считать неявку
+// (6.7.1, «unless the arbiter decides otherwise») — канал суждения §47.3.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    FIDE_ART_6,
+    Game,
+    Player,
+    game_drawn,
+    game_lost_by,
+    king_cannot_be_checkmated,
+    plays_white,
+};
+
+relation clock_pressed_after_move(game: Game, who: Player) kind empirical {
+    label en official "the player, having made his/her move on the chessboard, paused his/her own clock and started the opponent's clock";
+}
+relation move_ended_the_game(game: Game, who: Player) kind empirical {
+    label en official "the player's move ended the game (Articles 5.1.1, 5.2.1, 5.2.2, 9.2.1, 9.6.1, 9.6.2)";
+}
+relation next_move_made_before_completion(game: Game, who: Player) kind empirical {
+    label en official "the player has made his/her next move when the previous move was not completed";
+}
+relation clock_handled_improperly(game: Game, who: Player) kind empirical {
+    label en official "the player pressed the clock forcibly, picked it up, pressed it before moving or knocked it over";
+}
+pub relation flag_fall_observed_by_arbiter(game: Game, who: Player) kind empirical {
+    label en official "the arbiter observed the fall of the player's flag";
+}
+relation flag_fall_validly_claimed(game: Game, claimant: Player, who: Player) kind empirical {
+    label en official "a player made a valid claim that the flag of the player has fallen";
+}
+relation flag_fell_at(game: Game, who: Player, at: Instant) kind empirical {
+    label en official "the moment the allotted time of the player expired";
+}
+relation game_result_arose_at(game: Game, at: Instant) kind empirical {
+    label en official "the moment a result under Articles 5.1.1, 5.1.2, 5.2.1, 5.2.2 or 5.2.3 arose";
+}
+pub relation prescribed_moves_not_completed(game: Game, who: Player) kind empirical {
+    label en official "the check under Article 6.4 found that the player did not complete the prescribed number of moves in the allotted time";
+}
+relation scheduled_start_at(game: Game, at: Instant) kind empirical {
+    label en official "the time determined for the start of the game";
+}
+relation default_time_expires_at(game: Game, at: Instant) kind empirical {
+    label en official "the moment the default time specified by the regulations of the event expires";
+}
+relation default_time_not_specified(game: Game) kind empirical {
+    label en official "the regulations of the event do not specify a default time";
+}
+relation arrived_at_chessboard_at(game: Game, who: Player, at: Instant) kind empirical {
+    label en official "the moment the player arrived at the chessboard";
+}
+relation clock_paused_by_player(game: Game, who: Player) kind empirical {
+    label en official "the player paused the chessclock in order to seek the arbiter's assistance";
+}
+relation claim_relied_only_on_display(game: Game, who: Player) kind empirical {
+    label en official "the player's claim relies only on information shown on screens, monitors, demonstration boards or move-counting clocks";
+}
+
+external judgment relation arbiter_decides_otherwise_on_default(game: Game, who: Player) {
+    authority FIDEArbiter;
+    label en official "the arbiter decides otherwise on the loss of the game by a player arriving after the default time";
+}
+external judgment relation valid_reason_for_pausing_clock(game: Game, who: Player) {
+    authority FIDEArbiter;
+    label en official "the player had a valid reason for pausing the chessclock";
+}
+
+relation move_completed(game: Game, who: Player) kind institutional {
+    label en official "the player's move is completed";
+}
+pub relation flag_considered_fallen(game: Game, who: Player) kind institutional {
+    label en official "the player's flag is considered to have fallen";
+}
+relation time_forfeit(game: Game, who: Player) kind institutional {
+    label en official "the player did not complete the prescribed number of moves in the allotted time";
+}
+relation time_forfeit_has_ended_the_game(game: Game) kind institutional {
+    label en official "the fall of a flag has ended the game";
+}
+relation arrived_after_default_time(game: Game, who: Player) kind institutional {
+    label en official "the player arrived at the chessboard after the default time";
+}
+relation default_has_ended_the_game(game: Game) kind institutional {
+    label en official "a player's arrival after the default time has ended the game";
+}
+relation clock_started_for(game: Game, who: Player) kind institutional {
+    label en official "the player's clock is started at the time determined for the start of the game";
+}
+pub relation penalty_under_12_9_due(game: Game, who: Player) kind institutional {
+    label en official "the player shall be penalised in accordance with Article 12.9";
+}
+relation claim_not_admissible_on_display_only(game: Game, who: Player) kind institutional {
+    label en official "the player may not make a claim relying only on information shown in this manner";
+}
+
+// --- 6.2: завершение хода -------------------------------------------------
+
+@source(FIDE_ART_6)
+rule PressingTheClockCompletesTheMove(game: Game, who: Player) strict {
+    label en official "Article 6.2.1. Pressing the clock after making the move completes the move";
+    when clock_pressed_after_move(game, who);
+    then move_completed(game, who);
+}
+
+@source(FIDE_ART_6)
+rule GameEndingMoveIsCompleted(game: Game, who: Player) strict {
+    label en official "Article 6.2.1.1. A move is also completed if the move ends the game";
+    when move_ended_the_game(game, who);
+    then move_completed(game, who);
+}
+
+@source(FIDE_ART_6)
+rule NextMoveCompletesThePrevious(game: Game, who: Player) strict {
+    label en official "Article 6.2.1.2. A move is also completed if the player has made his/her next move, when the previous move was not completed";
+    when next_move_made_before_completion(game, who);
+    then move_completed(game, who);
+}
+
+@source(FIDE_ART_6)
+rule ImproperClockHandlingPenalised(game: Game, who: Player) strict {
+    label en official "Article 6.2.4. Improper clock handling shall be penalised in accordance with Article 12.9";
+    when clock_handled_improperly(game, who);
+    then penalty_under_12_9_due(game, who);
+}
+
+// --- 6.6: старт часов белых -----------------------------------------------
+
+@source(FIDE_ART_6)
+rule WhitesClockStarted(game: Game, who: Player, at: Instant) strict {
+    label en official "Article 6.6. At the time determined for the start of the game White's clock is started";
+    when plays_white(game, who)
+        and scheduled_start_at(game, at);
+    then clock_started_for(game, who);
+}
+
+// --- 6.7: время неявки ----------------------------------------------------
+
+@source(FIDE_ART_6)
+rule ArrivalAfterSpecifiedDefaultTime(game: Game, who: Player, arrived: Instant, expiry: Instant) strict {
+    label en official "Article 6.7.1. A player who arrives at the chessboard after the default time specified by the regulations";
+    when arrived_at_chessboard_at(game, who, arrived)
+        and default_time_expires_at(game, expiry)
+        and (arrived > expiry);
+    then arrived_after_default_time(game, who);
+}
+
+@source(FIDE_ART_6)
+rule ArrivalAfterZeroDefaultTime(game: Game, who: Player, arrived: Instant, start: Instant) strict {
+    label en official "Article 6.7.1. If the default time is not specified, then it is zero";
+    when default_time_not_specified(game)
+        and scheduled_start_at(game, start)
+        and arrived_at_chessboard_at(game, who, arrived)
+        and (arrived > start);
+    then arrived_after_default_time(game, who);
+}
+
+@source(FIDE_ART_6)
+rule ArrivalAfterDefaultTimeLoses(game: Game, who: Player) strict {
+    label en official "Article 6.7.1. Any player who arrives at the chessboard after the default time shall lose the game unless the arbiter decides otherwise";
+    when arrived_after_default_time(game, who)
+        and not arbiter_decides_otherwise_on_default(game, who);
+    then game_lost_by(game, who);
+}
+
+@source(FIDE_ART_6)
+rule ArrivalAfterDefaultTimeEndsTheGame(game: Game, who: Player) strict {
+    label en official "Article 6.7.1. The loss by default ends the game";
+    when arrived_after_default_time(game, who)
+        and not arbiter_decides_otherwise_on_default(game, who);
+    then default_has_ended_the_game(game);
+}
+
+// --- 6.8–6.9: падение флага -----------------------------------------------
+
+@source(FIDE_ART_6)
+rule FlagFallObservedByArbiter(game: Game, who: Player) strict {
+    label en official "Article 6.8. A flag is considered to have fallen when the arbiter observes the fact";
+    when flag_fall_observed_by_arbiter(game, who);
+    then flag_considered_fallen(game, who);
+}
+
+@source(FIDE_ART_6)
+rule FlagFallValidlyClaimed(game: Game, claimant: Player, who: Player) strict {
+    label en official "Article 6.8. A flag is considered to have fallen when either player has made a valid claim to that effect";
+    when flag_fall_validly_claimed(game, claimant, who);
+    then flag_considered_fallen(game, who);
+}
+
+@source(FIDE_ART_6)
+rule FlagFallForfeitsOnTime(game: Game, who: Player) defeasible {
+    label en official "Article 6.9. If a player does not complete the prescribed number of moves in the allotted time, the game is lost by that player";
+    when flag_considered_fallen(game, who)
+        and prescribed_moves_not_completed(game, who);
+    then time_forfeit(game, who);
+}
+
+@source(FIDE_ART_6)
+rule EarlierResultPrevailsOverFlagFall(game: Game, who: Player, ended: Instant, fell: Instant) defeasible {
+    label en official "Article 6.9. Except where one of Articles 5.1.1, 5.1.2, 5.2.1, 5.2.2, 5.2.3 applies";
+    when flag_fell_at(game, who, fell)
+        and game_result_arose_at(game, ended)
+        and (ended < fell);
+    then not time_forfeit(game, who);
+}
+
+@source(FIDE_ART_6)
+priority ResultBeforeFlagFallPrevails {
+    label en official "Article 6.9. A result under Article 5 that arose before the flag fell takes precedence over the loss on time";
+    prefer EarlierResultPrevailsOverFlagFall over FlagFallForfeitsOnTime;
+    reason lex_specialis;
+}
+
+@source(FIDE_ART_6)
+rule TimeForfeitLoses(game: Game, who: Player) defeasible {
+    label en official "Article 6.9. The game is lost by the player who did not complete the prescribed moves in the allotted time";
+    when time_forfeit(game, who)
+        and not king_cannot_be_checkmated(who);
+    then game_lost_by(game, who);
+}
+
+@source(FIDE_ART_6)
+rule TimeForfeitDrawnIfMateImpossible(game: Game, who: Player) defeasible {
+    label en official "Article 6.9. The game is drawn if the opponent cannot checkmate the player's king by any possible series of legal moves";
+    when time_forfeit(game, who)
+        and king_cannot_be_checkmated(who);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_6)
+rule TimeForfeitEndsTheGame(game: Game, who: Player) defeasible {
+    label en official "Article 6.9. The fall of the flag without the prescribed moves ends the game";
+    when time_forfeit(game, who);
+    then time_forfeit_has_ended_the_game(game);
+}
+
+// --- 6.11.4 и 6.12.2 ------------------------------------------------------
+
+@source(FIDE_ART_6)
+rule PauseWithoutValidReasonPenalised(game: Game, who: Player) strict {
+    label en official "Article 6.11.4. If the player has no valid reason for pausing the chessclock, the player shall be penalised in accordance with Article 12.9";
+    when clock_paused_by_player(game, who)
+        and not valid_reason_for_pausing_clock(game, who);
+    then penalty_under_12_9_due(game, who);
+}
+
+@source(FIDE_ART_6)
+rule ClaimOnDisplayOnlyInadmissible(game: Game, who: Player) strict {
+    label en official "Article 6.12.2. The player may not make a claim relying only on information shown in this manner";
+    when claim_relied_only_on_display(game, who);
+    then claim_not_admissible_on_display_only(game, who);
+}

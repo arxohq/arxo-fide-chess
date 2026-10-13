@@ -1,0 +1,205 @@
+// Статья 10: очки за партию.
+//
+// Шкала 1 / ½ / 0 действует, «если регламент соревнования не установил
+// иное» — спор двух побеждаемых правил над `default_scoring_applies`, а не
+// над самими очками: приоритет над двумя значениями одного предиката не
+// действует (§116 вытесняет литерал, а не соседнее значение).
+//
+// Победа соперника проигравшего выводится побеждаемо: оба игрока могут
+// проиграть (11.8), и тогда никто не выиграл; при поражении как санкции
+// (11.7, 12.9.6) очки соперника решает арбитр — это факт его решения.
+//
+// 10.2 — проверка записанного счёта: сумма не больше максимума и очки,
+// «обычно связанные с партией» (кратные половине). Пакет не исправляет
+// счёт, он называет несоответствие.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    Competition,
+    FIDE_ART_10,
+    FIDE_ART_11,
+    FIDE_ART_12,
+    Game,
+    PenaltyOption,
+    Player,
+    game_drawn,
+    game_in_competition,
+    game_lost_by,
+    game_won_by,
+    opponent_of,
+    player_of,
+    plays_white,
+};
+
+relation event_specifies_other_scoring(comp: Competition) kind empirical {
+    label en official "the regulations of the event specify a scoring other than 1, ½ and 0";
+}
+relation game_forfeited_by(game: Game, who: Player) kind empirical {
+    label en official "the player forfeits the game";
+}
+pub relation penalty_imposed(game: Game, who: Player, p: PenaltyOption) kind empirical {
+    label en official "the penalty the arbiter imposed on the player";
+}
+relation arbiter_decided_opponent_score(game: Game, who: Player, pts: Decimal) kind empirical {
+    label en official "the score of the opponent decided by the arbiter";
+}
+pub relation points_recorded(game: Game, who: Player, pts: Decimal) kind empirical {
+    label en official "the points recorded for the player in the game";
+}
+
+relation default_scoring_applies(game: Game) kind institutional {
+    label en official "the scoring of Article 10.1 applies to the game";
+}
+pub relation points_scored(game: Game, who: Player, pts: Decimal) kind institutional {
+    label en official "the points scored by the player in the game";
+}
+relation recorded_scores_exceed_maximum(game: Game) kind institutional {
+    label en official "the total score of the game exceeds the maximum score normally given for that game";
+}
+relation recorded_score_not_normally_associated(game: Game, who: Player) kind institutional {
+    label en official "the score given to the player is not one normally associated with the game";
+}
+
+@source(FIDE_ART_10)
+rule DefaultScoringApplies(game: Game, comp: Competition) defeasible {
+    label en official "Article 10.1. Unless the regulations of an event specify otherwise, the scoring 1, ½, 0 applies";
+    when game_in_competition(game, comp);
+    then default_scoring_applies(game);
+}
+
+@source(FIDE_ART_10)
+rule EventScoringDisplacesDefault(game: Game, comp: Competition) defeasible {
+    label en official "Article 10.1. The regulations of an event specify otherwise";
+    when game_in_competition(game, comp)
+        and event_specifies_other_scoring(comp);
+    then not default_scoring_applies(game);
+}
+
+@source(FIDE_ART_10)
+priority EventRegulationsOverDefaultScoring {
+    label en official "Article 10.1. The scoring specified by the regulations of an event prevails";
+    prefer EventScoringDisplacesDefault over DefaultScoringApplies;
+    reason lex_specialis;
+}
+
+@source(FIDE_ART_10)
+rule OpponentOfLoserWins(game: Game, who: Player, opp: Player) defeasible {
+    label en official "Articles 5 and 10.1. When a player loses the game, the opponent wins it";
+    when game_lost_by(game, who)
+        and opponent_of(game, who, opp);
+    then game_won_by(game, opp);
+}
+
+@source(FIDE_ART_11)
+rule BothLosersWinNothing(game: Game, who: Player, opp: Player) defeasible {
+    label en official "Article 11.8. If both players are found guilty, the game shall be declared lost by both players";
+    when game_lost_by(game, who)
+        and opponent_of(game, who, opp)
+        and game_lost_by(game, opp);
+    then not game_won_by(game, opp);
+}
+
+@source(FIDE_ART_12)
+rule PenaltyLossLeavesOpponentScoreToArbiter(game: Game, who: Player, opp: Player, p: PenaltyOption) defeasible {
+    label en official "Article 12.9.6. When the game is declared lost as a penalty, the arbiter shall decide the opponent's score";
+    when penalty_imposed(game, who, p)
+        and (p == declaring_game_lost)
+        and opponent_of(game, who, opp);
+    then not game_won_by(game, opp);
+}
+
+@source(FIDE_ART_11)
+priority BothLostOverOpponentWins {
+    label en official "Article 11.8. A game lost by both players is won by neither";
+    prefer BothLosersWinNothing over OpponentOfLoserWins;
+    reason lex_specialis;
+}
+
+@source(FIDE_ART_12)
+priority PenaltyLossOverOpponentWins {
+    label en official "Article 12.9.6. The opponent's score after a penalty loss is the arbiter's decision";
+    prefer PenaltyLossLeavesOpponentScoreToArbiter over OpponentOfLoserWins;
+    reason lex_specialis;
+}
+
+@source(FIDE_ART_10)
+rule WinScoresOnePoint(game: Game, who: Player) defeasible {
+    label en official "Article 10.1. A player who wins his/her game scores one point (1)";
+    when default_scoring_applies(game)
+        and game_won_by(game, who);
+    then points_scored(game, who, 1.0);
+}
+
+@source(FIDE_ART_10)
+rule LossScoresNoPoints(game: Game, who: Player) defeasible {
+    label en official "Article 10.1. A player who loses his/her game scores no points (0)";
+    when default_scoring_applies(game)
+        and game_lost_by(game, who);
+    then points_scored(game, who, 0.0);
+}
+
+@source(FIDE_ART_10)
+rule DrawScoresHalfPoint(game: Game, who: Player) defeasible {
+    label en official "Article 10.1. A player who draws his/her game scores a half point (½)";
+    when default_scoring_applies(game)
+        and game_drawn(game)
+        and player_of(game, who);
+    then points_scored(game, who, 0.5);
+}
+
+@source(FIDE_ART_10)
+rule ForfeitScoresNoPoints(game: Game, who: Player) defeasible {
+    label en official "Article 10.1. A player who forfeits scores no points (0)";
+    when default_scoring_applies(game)
+        and game_forfeited_by(game, who);
+    then points_scored(game, who, 0.0);
+}
+
+@source(FIDE_ART_10)
+rule WinByForfeitScoresOnePoint(game: Game, who: Player, opp: Player) defeasible {
+    label en official "Article 10.1. A player who wins by forfeit scores one point (1)";
+    when default_scoring_applies(game)
+        and game_forfeited_by(game, opp)
+        and opponent_of(game, opp, who);
+    then points_scored(game, who, 1.0);
+}
+
+@source(FIDE_ART_12)
+rule ArbiterDecidedOpponentScore(game: Game, who: Player, pts: Decimal) strict {
+    label en official "Article 12.9.6. The arbiter shall also decide the opponent's score";
+    when arbiter_decided_opponent_score(game, who, pts);
+    then points_scored(game, who, pts);
+}
+
+@source(FIDE_ART_10)
+rule RecordedScoresExceedMaximum(game: Game, a: Player, b: Player, pa: Decimal, pb: Decimal) strict {
+    label en official "Article 10.2. The total score of any game can never exceed the maximum score normally given for that game";
+    when opponent_of(game, a, b)
+        and plays_white(game, a)
+        and points_recorded(game, a, pa)
+        and points_recorded(game, b, pb)
+        and ((pa + pb) > 1.0);
+    then recorded_scores_exceed_maximum(game);
+}
+
+// §10.2: keep exact Decimal half-point units at round's input.
+// Literal arithmetic produces Number; the typed relation head narrows it
+// exactly (§58, E-0334). This preserves the half-point-multiple criterion.
+relation recorded_half_point_units(game: Game, who: Player, units: Decimal) kind institutional;
+
+@source(FIDE_ART_10)
+rule RecordedHalfPointUnits(game: Game, who: Player, pts: Decimal) strict {
+    when points_recorded(game, who, pts);
+    then recorded_half_point_units(game, who, pts * 2.0);
+}
+
+@source(FIDE_ART_10)
+rule RecordedScoreNotHalfPointMultiple(game: Game, who: Player, pts: Decimal) strict {
+    label en official "Article 10.2. Scores given to an individual player must be those normally associated with the game; a score of ¾ - ¼ is not allowed";
+    when recorded_half_point_units(game, who, pts)
+        and (pts != round(pts, 0, "HALF_UP"));
+    then recorded_score_not_normally_associated(game, who);
+}

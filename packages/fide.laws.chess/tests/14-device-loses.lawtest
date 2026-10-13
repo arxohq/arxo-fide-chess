@@ -1,0 +1,24 @@
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+// Статья 11.3.2.2. Телефон при игроке очевиден: поражение, соперник побеждает и
+// получает очко по 10.1.
+test "urn:query:fide-device-loses" {
+    given {
+        context { decision_time @2026-09-01T12:00:00Z; knowledge_time @2026-09-01T12:00:00Z; legal_time @2026-09-01; timezone "UTC"; }
+        assert "a0": player_of(entity_ref("urn:fide:g14"), entity_ref("urn:fide:w14")) { origin case_input; }
+        assert "a1": player_of(entity_ref("urn:fide:g14"), entity_ref("urn:fide:b14")) { origin case_input; }
+        assert "a2": opponent_of(entity_ref("urn:fide:g14"), entity_ref("urn:fide:w14"), entity_ref("urn:fide:b14")) { origin case_input; }
+        assert "a3": opponent_of(entity_ref("urn:fide:g14"), entity_ref("urn:fide:b14"), entity_ref("urn:fide:w14")) { origin case_input; }
+        assert "a4": plays_white(entity_ref("urn:fide:g14"), entity_ref("urn:fide:w14")) { origin case_input; }
+        assert "a5": checked_player(entity_ref("urn:fide:w14")) { origin case_input; }
+        assert "a6": checked_player(entity_ref("urn:fide:b14")) { origin case_input; }
+        assert "a7": game_in_competition(entity_ref("urn:fide:g14"), entity_ref("urn:fide:c14")) { origin case_input; }
+        assert "a8": time_control_base_seconds(entity_ref("urn:fide:c14"), 5400) { origin case_input; }
+        assert "a9": time_control_increment_seconds(entity_ref("urn:fide:c14"), 30) { origin case_input; }
+        assert "a10": electronic_device_evident_on_person(entity_ref("urn:fide:g14"), entity_ref("urn:fide:b14")) { origin case_input; }
+    }
+    evaluate truth(points_scored(entity_ref("urn:fide:g14"), entity_ref("urn:fide:w14"), 1.0));
+    expect truth_status == TRUE_ONLY;
+}

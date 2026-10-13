@@ -1,0 +1,201 @@
+// Статья 7.5: невозможный ход. Счёт завершённых невозможных ходов — факт
+// протокола, не агрегат по журналу (барьер §111). Первый ход — штраф времени,
+// который пакет не считает (часы — статья 6, вне охвата). Второй — поражение,
+// если только противник не лишён возможности поставить мат.
+
+language "law.core" version "0.2";
+package fide.laws.chess version "0.1.1";
+namespace "urn:fide:laws:clir:chess";
+
+use self::{
+    FIDE_APP_A,
+    FIDE_APP_B,
+    FIDE_ART_7,
+    Game,
+    Player,
+    appendix_a5_applies,
+    blitz_game,
+    chessboard_placed_contrary_to_2_1,
+    competitive_rules_apply,
+    game_drawn,
+    game_lost_by,
+    initial_position_incorrect,
+    king_cannot_be_checkmated,
+    moves_completed_by_each_player,
+    opponent_of,
+    player_of,
+    rapid_game,
+    standard_game,
+};
+
+pub relation completed_illegal_move_count(who: Player, n: Integer) kind empirical {
+    label en official "number of completed illegal moves by the player";
+}
+
+relation second_illegal_move_has_ended_the_game(game: Game) kind institutional {
+    label en official "the second completed illegal move has ended the game";
+}
+
+@source(FIDE_ART_7)
+rule SecondIllegalMoveLoses(game: Game, who: Player, n: Integer) strict {
+    label en official "Article 7.5.5. For the second completed illegal move by the same player the arbiter shall declare the game lost by this player";
+    when player_of(game, who)
+        and completed_illegal_move_count(who, n)
+        and (n >= 2)
+        and not king_cannot_be_checkmated(who);
+    then game_lost_by(game, who);
+}
+
+@source(FIDE_ART_7)
+rule SecondIllegalMoveDrawnIfMateImpossible(game: Game, who: Player, n: Integer) strict {
+    label en official "Article 7.5.5. The game is drawn if the opponent cannot checkmate the player's king by any possible series of legal moves";
+    when player_of(game, who)
+        and completed_illegal_move_count(who, n)
+        and (n >= 2)
+        and king_cannot_be_checkmated(who);
+    then game_drawn(game);
+}
+
+@source(FIDE_ART_7)
+rule SecondIllegalMoveEndsTheGame(game: Game, who: Player, n: Integer) strict {
+    label en official "Article 7.5.5. The second completed illegal move immediately ends the game";
+    when player_of(game, who)
+        and completed_illegal_move_count(who, n)
+        and (n >= 2);
+    then second_illegal_move_has_ended_the_game(game);
+}
+
+// --- 7.2–7.3: расстановка, доска, цвета -----------------------------------
+//
+// Статья 7 с расширением свода (DECISION-0294): неверная начальная
+// расстановка, неверно положенная доска, перепутанные цвета, нажатие часов
+// без хода и ход двумя руками, прибавка времени сопернику за первый
+// завершённый невозможный ход. Размер прибавки — две минуты, в рапиде и
+// блице по A.3 (и B.3) — одна: три положительных вывода классификации
+// `standard_game`, `rapid_game`, `blitz_game`, а не отрицание выведенного.
+
+relation colours_reversed(game: Game) kind empirical {
+    label en official "the game has started with colours reversed";
+}
+relation clock_pressed_without_move(game: Game, who: Player) kind empirical {
+    label en official "the player pressed the clock without making a move";
+}
+relation two_hands_used_for_single_move(game: Game, who: Player) kind empirical {
+    label en official "the player used two hands to make a single move and pressed the clock";
+}
+relation promotion_pawn_not_replaced(game: Game, who: Player) kind empirical {
+    label en official "the player moved a pawn to the furthest distant rank, pressed the clock, but did not replace the pawn with a new piece";
+}
+
+relation game_cancelled_and_replayed(game: Game) kind institutional {
+    label en official "the game shall be cancelled and a new game shall be played";
+}
+relation position_transferred_to_correct_board(game: Game) kind institutional {
+    label en official "the game shall continue but the position reached must be transferred to a correctly placed chessboard";
+}
+relation discontinued_and_replayed_with_correct_colours(game: Game) kind institutional {
+    label en official "the game shall be discontinued and a new game played with the correct colours";
+}
+relation game_continues_despite_reversed_colours(game: Game) kind institutional {
+    label en official "the game with colours reversed shall continue";
+}
+relation penalised_as_illegal_move(game: Game, who: Player) kind institutional {
+    label en official "the action shall be considered and penalised as if an illegal move";
+}
+relation pawn_replaced_by_queen(game: Game, who: Player) kind institutional {
+    label en official "the pawn shall be replaced by a queen of the same colour";
+}
+pub relation extra_time_awarded_seconds(game: Game, who: Player, secs: Integer) kind institutional {
+    label en official "the arbiter shall give the player extra time, in seconds";
+}
+
+@source(FIDE_ART_7)
+rule IncorrectInitialPositionCancelsGame(game: Game) strict {
+    label en official "Article 7.2.1. If during a game it is found that the initial position of the pieces was incorrect, the game shall be cancelled and a new game shall be played";
+    when initial_position_incorrect(game);
+    then game_cancelled_and_replayed(game);
+}
+
+@source(FIDE_ART_7)
+rule MisplacedChessboardTransfersPosition(game: Game) strict {
+    label en official "Article 7.2.2. If the chessboard has been placed contrary to Article 2.1, the game shall continue but the position reached must be transferred to a correctly placed chessboard";
+    when chessboard_placed_contrary_to_2_1(game);
+    then position_transferred_to_correct_board(game);
+}
+
+@source(FIDE_ART_7)
+rule ReversedColoursUnderTenMovesReplayed(game: Game, n: Integer) strict {
+    label en official "Article 7.3. If a game has started with colours reversed and less than 10 moves have been made by both players, it shall be discontinued and a new game played with the correct colours";
+    when colours_reversed(game)
+        and moves_completed_by_each_player(game, n)
+        and (n < 10);
+    then discontinued_and_replayed_with_correct_colours(game);
+}
+
+@source(FIDE_ART_7)
+rule ReversedColoursAfterTenMovesContinues(game: Game, n: Integer) strict {
+    label en official "Article 7.3. After 10 moves or more, the game shall continue";
+    when colours_reversed(game)
+        and moves_completed_by_each_player(game, n)
+        and (n >= 10);
+    then game_continues_despite_reversed_colours(game);
+}
+
+@source(FIDE_ART_7)
+rule PromotionWithoutNewPieceReplacedByQueen(game: Game, who: Player) strict {
+    label en official "Article 7.5.2. If the player has pressed the clock without replacing the promoted pawn, the move is illegal and the pawn shall be replaced by a queen";
+    when promotion_pawn_not_replaced(game, who);
+    then pawn_replaced_by_queen(game, who);
+}
+
+@source(FIDE_ART_7)
+rule ClockWithoutMovePenalisedAsIllegal(game: Game, who: Player) strict {
+    label en official "Article 7.5.3. If the player presses the clock without making a move, it shall be considered and penalised as if an illegal move";
+    when clock_pressed_without_move(game, who);
+    then penalised_as_illegal_move(game, who);
+}
+
+@source(FIDE_ART_7)
+rule TwoHandsPenalisedAsIllegal(game: Game, who: Player) strict {
+    label en official "Article 7.5.4. If a player uses two hands to make a single move and pressed the clock, it shall be considered and penalised as if an illegal move";
+    when two_hands_used_for_single_move(game, who);
+    then penalised_as_illegal_move(game, who);
+}
+
+@source(FIDE_ART_7)
+rule FirstIllegalMoveTwoMinutesToOpponent(game: Game, who: Player, opp: Player) strict {
+    label en official "Article 7.5.5. For the first completed illegal move by a player, the arbiter shall give two minutes extra time to his/her opponent";
+    when opponent_of(game, who, opp)
+        and completed_illegal_move_count(who, 1)
+        and standard_game(game);
+    then extra_time_awarded_seconds(game, opp, 120);
+}
+
+@source(FIDE_APP_A)
+rule FirstIllegalMoveOneMinuteInRapid(game: Game, who: Player, opp: Player) strict {
+    label en official "Articles 7.5.5 and A.3. In rapid chess the penalty shall be one minute instead of two minutes";
+    when opponent_of(game, who, opp)
+        and completed_illegal_move_count(who, 1)
+        and rapid_game(game);
+    then extra_time_awarded_seconds(game, opp, 60);
+}
+
+@source(FIDE_APP_B)
+rule FirstIllegalMoveOneMinuteInBlitzUnderB3(game: Game, who: Player, opp: Player) strict {
+    label en official "Articles 7.5.5, B.3 and A.3. In blitz governed by the Rapid chess Laws the penalty shall be one minute";
+    when opponent_of(game, who, opp)
+        and completed_illegal_move_count(who, 1)
+        and blitz_game(game)
+        and appendix_a5_applies(game);
+    then extra_time_awarded_seconds(game, opp, 60);
+}
+
+@source(FIDE_APP_B)
+rule FirstIllegalMoveTwoMinutesInBlitzUnderB2(game: Game, who: Player, opp: Player) strict {
+    label en official "Articles 7.5.5 and B.2. In blitz under the Competitive Rules of Play the penalty remains two minutes";
+    when opponent_of(game, who, opp)
+        and completed_illegal_move_count(who, 1)
+        and blitz_game(game)
+        and competitive_rules_apply(game);
+    then extra_time_awarded_seconds(game, opp, 120);
+}
