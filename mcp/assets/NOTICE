@@ -1,0 +1,22 @@
+Arxo FIDE Laws of Chess demonstration
+
+Arxo-authored model and distribution code: Apache-2.0.
+FIDE Laws of Chess: publisher FIDE, edition effective 1 January 2023,
+adopted 7 August 2022; authentic language English.
+Official address: https://handbook.fide.com/chapter/E012023
+Captured visible-text extraction: 29 August 2026; PINNED_UNOFFICIAL_COPY.
+Document SHA-256: d24adcdaec8b46dc37d5dcc74d52052d314d804870d5d5402e2434aa1bfda836.
+
+FIDE text and source quotations are attributed to FIDE and retain their
+publisher terms. The Apache-2.0 licence for Arxo code does not grant or
+replace rights in the publisher text. No separate permission from FIDE is
+claimed. This is an independent noncommercial teaching demonstration,
+not endorsed or supplied by FIDE. No FIDE logo or manual commentary is used.
+Source rules and examples were retained from arxohq/arxo-corpus at
+30b247f6e9aae8eb08ca6057b413c9f0133945d3.
+
+Pinned Arxo MCP host support assets
+
+Host source: https://github.com/arxohq/law-archive/commit/0a07391da494237f3c2d911a6df867cb871277fc
+Arxo-authored host code and verb packs: Apache-2.0; see LICENSE.host.
+The publisher-text boundary above also applies to this standalone runtime.

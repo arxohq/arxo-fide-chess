@@ -1,0 +1,145 @@
+{
+  "extra-time-black-120.json": {
+    "queryId": "extra-time-black-120",
+    "kind": "truth",
+    "literal": {
+      "kind": "literal",
+      "polarity": "positive",
+      "predicate": "urn:fide:laws:clir:chess#extra_time_awarded_seconds",
+      "args": [
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:game"
+        },
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:black"
+        },
+        {
+          "kind": "value",
+          "type": {
+            "name": "urn:law:std#Integer"
+          },
+          "value": 120
+        }
+      ]
+    }
+  },
+  "penalty-differs.json": {
+    "queryId": "penalty-differs",
+    "kind": "truth",
+    "literal": {
+      "kind": "literal",
+      "polarity": "positive",
+      "predicate": "urn:fide:laws:clir:chess#penalty_differs_from_prescribed_loss",
+      "args": [
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:game"
+        },
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:white"
+        }
+      ]
+    }
+  },
+  "draw.json": {
+    "queryId": "draw",
+    "kind": "truth",
+    "literal": {
+      "kind": "literal",
+      "polarity": "positive",
+      "predicate": "urn:fide:laws:clir:chess#game_drawn",
+      "args": [
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:game"
+        }
+      ]
+    }
+  },
+  "loss.json": {
+    "queryId": "loss",
+    "kind": "truth",
+    "literal": {
+      "kind": "literal",
+      "polarity": "positive",
+      "predicate": "urn:fide:laws:clir:chess#game_lost_by",
+      "args": [
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:game"
+        },
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:white"
+        }
+      ]
+    }
+  },
+  "must-record.json": {
+    "queryId": "must-record",
+    "kind": "truth",
+    "literal": {
+      "kind": "literal",
+      "polarity": "positive",
+      "predicate": "urn:fide:laws:clir:chess#must_record_moves",
+      "args": [
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:game"
+        },
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:white"
+        }
+      ]
+    }
+  },
+  "must-move.json": {
+    "queryId": "must-move",
+    "kind": "truth",
+    "literal": {
+      "kind": "literal",
+      "polarity": "positive",
+      "predicate": "urn:fide:laws:clir:chess#must_move_first_touched_piece",
+      "args": [
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:white"
+        },
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:king"
+        }
+      ]
+    }
+  },
+  "extra-time-black-60.json": {
+    "queryId": "extra-time-black-60",
+    "kind": "truth",
+    "literal": {
+      "kind": "literal",
+      "polarity": "positive",
+      "predicate": "urn:fide:laws:clir:chess#extra_time_awarded_seconds",
+      "args": [
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:game"
+        },
+        {
+          "kind": "entity_ref",
+          "id": "urn:example:chess:black"
+        },
+        {
+          "kind": "value",
+          "type": {
+            "name": "urn:law:std#Integer"
+          },
+          "value": 60
+        }
+      ]
+    }
+  }
+}

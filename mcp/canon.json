@@ -1,0 +1,77 @@
+{
+  "format": "arxo.mcp-canon/0.1",
+  "id": "fide.chess",
+  "version": "0.1.0",
+  "title": "Independent Arxo model of the FIDE Laws of Chess",
+  "kind": "jurisdiction",
+  "asOf": "2026-10-13",
+  "sourceCommit": "3550570cef14da097ae92250f8e1b953f8a040e6",
+  "sourceRepository": "https://github.com/arxohq/arxo-fide-chess",
+  "origin": {
+    "format": "arxo.fide-chess-source-origin/1",
+    "repository": "https://github.com/arxohq/arxo-corpus",
+    "revision": "6225feb5cc3960bc251426b45b83e065456ba5be",
+    "originalRevision": "30b247f6e9aae8eb08ca6057b413c9f0133945d3",
+    "model": "fide.laws.chess@0.1.1",
+    "semantics": "law.core/0.2.11",
+    "originalFiles": null,
+    "deliveryChanges": [
+      "Public source profile replaces authoring notes; model .law and declared .lawtest bytes preserved.",
+      "Package metadata adds Arxo code licence, maintainer and public repository; source text terms remain separate.",
+      "Arbiter example dependency lock regenerated against this frozen model; case, query and expectation bytes preserved.",
+      "Question catalog retained as its original content-addressed registry resource."
+    ],
+    "omissions": [
+      "Authoring audit, notes and rendered question documentation",
+      "Tournament cases requiring four unselected models",
+      "Caches and generated runs"
+    ],
+    "compiler": {
+      "binaryHash": "sha256:02cdcd662449bbfb6ac252d92c3a34d7849df5343162d457f59692847dde6a25",
+      "lawql": {
+        "language": "lawql/1",
+        "queryResult": "0.1"
+      },
+      "semantics": [
+        "law.core/0.2"
+      ],
+      "std": [
+        {
+          "language": "0.2",
+          "std": "0.2.0"
+        }
+      ],
+      "tool": "0.2.3"
+    },
+    "corpusRuntime": "unpublished; explicit LAW_BIN override, reported UNPINNED relative to corpus runtime lock",
+    "acceptance": "103 addressed source scenarios pass on CLI 0.2.3 through package.py build, replay and rebuild; original expected outcomes unchanged.",
+    "fixes": [
+      "Typed Decimal half-point units preserve the existing score criterion before round.",
+      "Procedure scenarios address the scoped GamePlay__ predicates.",
+      "Six numeric boundary scenarios added.",
+      "The question catalog classifies the new intermediate producer as internal."
+    ]
+  },
+  "expectedRootCount": 1,
+  "publications": [
+    {
+      "name": "fide.laws.chess",
+      "version": "0.1.1",
+      "namespace": "urn:fide:laws:clir:chess",
+      "runtimeKey": "fide-laws-chess",
+      "packagePath": "corpus/laws/org/fide/laws-chess",
+      "role": "root",
+      "hashes": {
+        "artifactHash": null,
+        "contentHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+        "languageSemantics": "law.core/0.2.11",
+        "semanticHash": null,
+        "sourceHash": "sha256:45de26d5aa0d2f5445b801d7cd739ad8922a01a59da7d12a4453bd9ffa2a3956",
+        "worldHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+        "questionCatalogHash": "sha256:78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad"
+      }
+    }
+  ],
+  "fullCorpus": "not_checked",
+  "releaseVerified": false
+}

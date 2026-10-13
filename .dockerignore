@@ -1,0 +1,6 @@
+*
+!runtime/
+!runtime/**
+!mcp_entrypoint.sh
+!NOTICE
+!Dockerfile

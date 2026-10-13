@@ -1,0 +1,61 @@
+# Supply FIDE_CHESS_MCP_IMAGE as a registry reference ending in @sha256:<accepted digest>.
+services:
+  fide-chess-mcp:
+    image: ${FIDE_CHESS_MCP_IMAGE:?Set the accepted image digest}
+    platform: linux/amd64
+    user: "65532:65532"
+    read_only: true
+    init: true
+    restart: unless-stopped
+    environment:
+      FIDE_CHESS_MCP_TOKEN: ${FIDE_CHESS_MCP_TOKEN:?Set an access token}
+      FIDE_CHESS_MCP_ALLOWED_ORIGINS: ${FIDE_CHESS_MCP_ALLOWED_ORIGINS:-}
+      FIDE_CHESS_MCP_CALL_TIMEOUT: "30"
+    tmpfs:
+      - /state:rw,noexec,nosuid,nodev,size=64m,mode=0700,uid=65532,gid=65532
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0
+    networks: [fide-chess]
+  fide-chess-ingress:
+    image: nginx:1.27-alpine@sha256:62223d644fa234c3a1cc785ee14242ec47a77364226f1c811d2f669f96dc2ac8
+    platform: linux/amd64
+    user: "65532:65532"
+    read_only: true
+    init: true
+    restart: unless-stopped
+    entrypoint: ["/usr/sbin/nginx"]
+    command: ["-g", "daemon off;"]
+    depends_on:
+      fide-chess-mcp:
+        condition: service_healthy
+    ports: ["127.0.0.1:${FIDE_CHESS_MCP_PORT:-8725}:8080"]
+    volumes:
+      - ./mcp/ingress.conf:/etc/nginx/nginx.conf:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    pids_limit: 64
+    mem_limit: 64m
+    cpus: 0.5
+    networks: [fide-chess, ingress]
+networks:
+  fide-chess:
+    internal: true
+  ingress:
+    driver: bridge
+    internal: false

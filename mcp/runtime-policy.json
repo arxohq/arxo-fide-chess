@@ -1,0 +1,54 @@
+{
+  "format": "arxo.mcp-runtime-policy/0.1",
+  "dataset": "read-only",
+  "binary": "read-only",
+  "state": {
+    "path": "/state",
+    "type": "bounded-tmpfs",
+    "retention": "process lifetime; no external publication",
+    "maxBytes": 67108864
+  },
+  "environment": {
+    "allow": [
+      "FIDE_CHESS_MCP_TOKEN",
+      "FIDE_CHESS_MCP_ALLOWED_ORIGINS",
+      "FIDE_CHESS_MCP_CALL_TIMEOUT",
+      "FIDE_CHESS_MCP_PORT"
+    ],
+    "fixed": {
+      "profile": "fide-chess",
+      "LAW_MCP_LOG": "0",
+      "LAW_MCP_ARTIFACT_DIR": "/state/artifacts",
+      "PATH": "/usr/bin:/bin",
+      "HOME": "/state",
+      "LANG": "C.UTF-8"
+    },
+    "denyPrefixes": [
+      "LAW_ANSWERS_",
+      "LAW_NEURAL_",
+      "LAW_MCP_OTLP_"
+    ],
+    "transport": {
+      "FIDE_CHESS_MCP_TOKEN": "LAW_MCP_TOKEN",
+      "FIDE_CHESS_MCP_ALLOWED_ORIGINS": "LAW_MCP_ALLOWED_ORIGINS",
+      "FIDE_CHESS_MCP_CALL_TIMEOUT": "LAW_MCP_CALL_TIMEOUT"
+    }
+  },
+  "network": {
+    "runtimeEgress": "disabled by internal Docker network",
+    "servicesRequired": []
+  },
+  "http": {
+    "mode": "bearer backend; public HTTPS edge configured by ops inventory",
+    "endpoint": "/mcp",
+    "health": "/healthz"
+  },
+  "context": {
+    "legalTime": "required per execution",
+    "timezone": "explicit caller IANA timezone",
+    "decisionTime": "explicit caller instant",
+    "knowledgeTime": "explicit caller instant"
+  },
+  "fullCorpus": "not_checked",
+  "releaseVerified": false
+}
