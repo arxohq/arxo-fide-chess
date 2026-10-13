@@ -19,6 +19,68 @@ function canonical(value) {
   }
   return JSON.stringify(value);
 }
+function parseProcStat(raw, expectedPid) {
+  const text = raw.toString(), open = text.indexOf('('), close = text.lastIndexOf(')');
+  const pidText = text.slice(0, open).trim();
+  const fields = text.slice(close + 1).trim().split(/\s+/);
+  if (open < 1 || close <= open || !/^[1-9][0-9]*$/.test(pidText) ||
+      Number(pidText) !== expectedPid || fields.length < 20 ||
+      !/^[RSDZTXtKWPxI]$/.test(fields[0]) || !/^[0-9]+$/.test(fields[1]) ||
+      !Number.isSafeInteger(Number(fields[1])) || !/^[0-9]+$/.test(fields[19])) {
+    throw Error('invalid Linux process identity');
+  }
+  return Object.freeze({ pid: expectedPid, parentPid: Number(fields[1]), state: fields[0], startTime: fields[19] });
+}
+function readProcStat(pid, readFile) {
+  if (!Number.isSafeInteger(pid) || pid < 1) throw Error('invalid Linux process ID');
+  return parseProcStat(readFile('/proc/' + pid + '/stat'), pid);
+}
+function isNpmAncestor(raw) {
+  const args = raw.toString().split('\0').filter(Boolean);
+  return /^(?:npm|npx)(?:\s|$)/.test(args[0] || '') ||
+    args.some(arg => /(?:^|\/)(?:npm|npx)(?:-cli\.js)?$/.test(arg));
+}
+function linuxAncestorsAlive(ancestors, readFile = fs.readFileSync) {
+  return ancestors.every(identity => {
+    try {
+      const current = readProcStat(identity.pid, readFile);
+      return current.startTime === identity.startTime && !['Z', 'X', 'x'].includes(current.state);
+    } catch { return false; }
+  });
+}
+function captureLinuxAncestors(selfPid, parentPid, readFile = fs.readFileSync, requireNpmAncestor = false) {
+  const self = readProcStat(selfPid, readFile);
+  if (!Number.isSafeInteger(parentPid) || parentPid < 0 || self.parentPid !== parentPid ||
+      (parentPid === 0 && selfPid !== 1)) throw Error('Linux parent changed during launcher startup');
+  const lineage = [], watched = [], seen = new Set();
+  let pid = parentPid, foundNpmAncestor = false;
+  while (pid !== 0) {
+    if (seen.has(pid) || seen.size >= 64) throw Error('invalid Linux ancestor chain');
+    seen.add(pid);
+    const identity = readProcStat(pid, readFile);
+    lineage.push(identity);
+    const npmAncestor = isNpmAncestor(readFile('/proc/' + pid + '/cmdline'));
+    foundNpmAncestor = foundNpmAncestor || npmAncestor;
+    if (pid === parentPid || npmAncestor) watched.push(identity);
+    pid = identity.parentPid;
+  }
+  // Capture before hashing the installation; recheck to reject disappearance or PID reuse during that capture.
+  if (readProcStat(selfPid, readFile).parentPid !== parentPid || !linuxAncestorsAlive(lineage, readFile)) {
+    throw Error('Linux ancestor changed during launcher startup');
+  }
+  if (requireNpmAncestor && !foundNpmAncestor) throw Error('npm/npx ancestor exited before launcher startup');
+  return Object.freeze(watched);
+}
+function watchLinuxAncestors(ancestors, onDeath, readFile = fs.readFileSync) {
+  let timer, stopped = false;
+  function stop() { stopped = true; if (timer) clearInterval(timer); }
+  function check() {
+    if (!stopped && !linuxAncestorsAlive(ancestors, readFile)) { stop(); onDeath(); }
+  }
+  check();
+  if (!stopped) { timer = setInterval(check, 250); timer.unref(); }
+  return stop;
+}
 function verifySlice(root, pin) {
   if (!fs.lstatSync(root).isDirectory() || fs.lstatSync(root).isSymbolicLink()) throw Error('slice must be a real directory');
   const entries = pin.data.entries;
@@ -87,7 +149,10 @@ function main() {
   if (args.length) throw Error('only --help or --version is accepted; start without arguments for stdio');
   const timeout = process.env.FIDE_CHESS_MCP_CALL_TIMEOUT || '30';
   if (!/^[1-9][0-9]*$/.test(timeout) || Number(timeout) > 110) throw Error('FIDE_CHESS_MCP_CALL_TIMEOUT must be an integer from 1 to 110');
+  const ancestors = process.platform === 'linux' ? captureLinuxAncestors(process.pid, process.ppid, fs.readFileSync,
+    process.env.npm_command === 'exec' || process.env.npm_lifecycle_event === 'npx') : null;
   const { binary, slice } = verifyInstallation(packageRoot);
+  if (ancestors && !linuxAncestorsAlive(ancestors)) throw Error('Linux launcher parent exited during installation verification');
   const state = fs.mkdtempSync(path.join(os.tmpdir(), 'arxo-fide-chess-mcp-'));
   fs.chmodSync(state, 0o700);
   let cleaned = false;
@@ -95,6 +160,7 @@ function main() {
     if (!cleaned) { cleaned = true; fs.rmSync(state, { recursive: true, force: true }); }
   }
   process.on('exit', cleanup);
+  if (ancestors && !linuxAncestorsAlive(ancestors)) throw Error('Linux launcher parent exited before host startup');
   const child = spawn(binary, ['--root', slice, '--profile', 'fide-chess'], {
     stdio: 'inherit',
     env: {
@@ -103,22 +169,25 @@ function main() {
       LAW_MCP_CALL_TIMEOUT: timeout,
     },
   });
-  let requestedSignal, timer;
-  for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
-    process.on(signal, () => {
-      requestedSignal = signal;
-      child.kill(signal);
-      if (!timer) timer = setTimeout(() => { child.kill('SIGKILL'); cleanup(); process.exit(128 + os.constants.signals[signal]); }, 5000);
-    });
+  let requestedSignal, timer, stopAncestorGuard = () => {};
+  function shutdown(signal) {
+    requestedSignal = requestedSignal || signal;
+    child.kill(signal);
+    if (!timer) timer = setTimeout(() => { child.kill('SIGKILL'); cleanup(); process.exit(128 + os.constants.signals[requestedSignal]); }, 5000);
   }
-  child.on('error', error => { console.error(PACKAGE + ': ' + error.message); cleanup(); process.exit(2); });
+  for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
+    process.on(signal, () => shutdown(signal));
+  }
+  child.on('error', error => { stopAncestorGuard(); console.error(PACKAGE + ': ' + error.message); cleanup(); process.exit(2); });
   child.on('exit', (code, signal) => {
+    stopAncestorGuard();
     if (timer) clearTimeout(timer);
     cleanup();
     process.exit(code ?? (128 + (os.constants.signals[signal || requestedSignal] || 1)));
   });
+  if (ancestors) stopAncestorGuard = watchLinuxAncestors(ancestors, () => shutdown('SIGTERM'));
 }
 if (require.main === module) {
   try { main(); } catch (error) { console.error(PACKAGE + ': ' + error.message); process.exitCode = 2; }
 }
-module.exports = { sha, canonical, verifySlice, verifyInstallation };
+module.exports = { sha, canonical, verifySlice, verifyInstallation, parseProcStat, isNpmAncestor, captureLinuxAncestors, linuxAncestorsAlive, watchLinuxAncestors };
