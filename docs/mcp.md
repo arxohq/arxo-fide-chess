@@ -37,3 +37,5 @@ No board simulation or move search is provided. Rating, titles, tie-breaks and S
 [OCI reproduction](mcp-release.md) · [npm reproduction](mcp-npm-release.md)
 
 This is an independent technical preview. Arxo code licensing does not replace FIDE publisher-text terms; see NOTICE. Full corpus `not_checked`; `releaseVerified: false`. Native and delivery acceptance does not establish completeness or official FIDE endorsement.
+
+On Linux, an additional read-only `/proc` check stops the native host if its invoking npm/npx process disappears while stdin remains open; a missing or changed parent identity fails closed. EOF, direct signals and outer-client termination are accepted as separate lifecycle checks.
