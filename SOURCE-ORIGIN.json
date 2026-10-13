@@ -1,7 +1,7 @@
 {
   "format": "arxo.fide-chess-source-origin/1",
   "repository": "https://github.com/arxohq/arxo-corpus",
-  "revision": "8fd03509d66c12d4eaf55fdae7d13fbea4a64e56",
+  "revision": "6225feb5cc3960bc251426b45b83e065456ba5be",
   "originalRevision": "30b247f6e9aae8eb08ca6057b413c9f0133945d3",
   "model": "fide.laws.chess@0.1.1",
   "semantics": "law.core/0.2.11",
@@ -75,8 +75,8 @@
       "sha256": "sha256:5e979ba9d52269379b70239e1a2a2106451dec6feae5ce8c33be81bd05cea986"
     },
     "analysis/questions.json": {
-      "bytes": 59187,
-      "sha256": "sha256:7d5218658212fc19cb13b46ef8ccb808d0c2a7ed85ba5fbf8e5dc205269516f6"
+      "bytes": 59390,
+      "sha256": "sha256:78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad"
     },
     "tests/15-event-less-severe-device-penalty.lawtest": {
       "bytes": 2045,
@@ -280,6 +280,7 @@
   "fixes": [
     "Typed Decimal half-point units preserve the existing score criterion before round.",
     "Procedure scenarios address the scoped GamePlay__ predicates.",
-    "Six numeric boundary scenarios added."
+    "Six numeric boundary scenarios added.",
+    "The question catalog classifies the new intermediate producer as internal."
   ]
 }

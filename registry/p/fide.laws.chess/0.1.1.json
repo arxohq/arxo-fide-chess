@@ -8,7 +8,7 @@
  "languageSemantics": "law.core/0.2.11",
  "name": "fide.laws.chess",
  "namespace": "urn:fide:laws:clir:chess",
- "questionCatalogHash": "sha256:7d5218658212fc19cb13b46ef8ccb808d0c2a7ed85ba5fbf8e5dc205269516f6",
+ "questionCatalogHash": "sha256:78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad",
  "registryId": "arxo",
  "resolverUri": "registry://arxo/fide.laws.chess/0.1.1",
  "sourceHash": "sha256:45de26d5aa0d2f5445b801d7cd739ad8922a01a59da7d12a4453bd9ffa2a3956",
