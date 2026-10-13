@@ -119,7 +119,16 @@
     "bytes": 524353,
     "sha256": "0d81c3be34783400ac1f35774fbc13ea22285b2412cb8159c9c2914cedecc9d1"
   },
-  "published": false,
+  "published": true,
   "releaseVerified": false,
-  "corpus": "not_checked"
+  "corpus": "not_checked",
+  "publication": {
+    "version": "0.1.0",
+    "tag": "latest",
+    "workflow": "https://github.com/arxo-io/law/actions/runs/38453113544",
+    "dryRun": "https://github.com/arxo-io/law/actions/runs/38452941907",
+    "publicCI": "https://github.com/arxohq/arxo-fide-chess/actions/runs/38452471203",
+    "tarballVerifiedAnonymously": true,
+    "assetsVerifiedAnonymously": true
+  }
 }
