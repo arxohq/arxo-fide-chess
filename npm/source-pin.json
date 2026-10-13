@@ -1,0 +1,210 @@
+{
+  "format": "arxo.fide-chess-source-pin/1",
+  "repository": "https://github.com/arxohq/arxo-fide-chess",
+  "revision": "3550570cef14da097ae92250f8e1b953f8a040e6",
+  "origin": {
+    "format": "arxo.fide-chess-source-origin/1",
+    "repository": "https://github.com/arxohq/arxo-corpus",
+    "revision": "6225feb5cc3960bc251426b45b83e065456ba5be",
+    "originalRevision": "30b247f6e9aae8eb08ca6057b413c9f0133945d3",
+    "model": "fide.laws.chess@0.1.1",
+    "semantics": "law.core/0.2.11",
+    "originalFiles": null,
+    "deliveryChanges": [
+      "Public source profile replaces authoring notes; model .law and declared .lawtest bytes preserved.",
+      "Package metadata adds Arxo code licence, maintainer and public repository; source text terms remain separate.",
+      "Arbiter example dependency lock regenerated against this frozen model; case, query and expectation bytes preserved.",
+      "Question catalog retained as its original content-addressed registry resource."
+    ],
+    "omissions": [
+      "Authoring audit, notes and rendered question documentation",
+      "Tournament cases requiring four unselected models",
+      "Caches and generated runs"
+    ],
+    "compiler": {
+      "binaryHash": "sha256:02cdcd662449bbfb6ac252d92c3a34d7849df5343162d457f59692847dde6a25",
+      "lawql": {
+        "language": "lawql/1",
+        "queryResult": "0.1"
+      },
+      "semantics": [
+        "law.core/0.2"
+      ],
+      "std": [
+        {
+          "language": "0.2",
+          "std": "0.2.0"
+        }
+      ],
+      "tool": "0.2.3"
+    },
+    "corpusRuntime": "unpublished; explicit LAW_BIN override, reported UNPINNED relative to corpus runtime lock",
+    "acceptance": "103 addressed source scenarios pass on CLI 0.2.3 through package.py build, replay and rebuild; original expected outcomes unchanged.",
+    "fixes": [
+      "Typed Decimal half-point units preserve the existing score criterion before round.",
+      "Procedure scenarios address the scoped GamePlay__ predicates.",
+      "Six numeric boundary scenarios added.",
+      "The question catalog classifies the new intermediate producer as internal."
+    ]
+  },
+  "examplesSource": {
+    "repository": "https://github.com/arxohq/arxo-fide-chess",
+    "revision": "3550570cef14da097ae92250f8e1b953f8a040e6",
+    "files": {
+      "examples/arbiter/cases/blitz-first-illegal-competitive.lawcase": {
+        "bytes": 1733,
+        "sha256": "sha256:c7b8b03828aaf7e72789e62fa37019cb0aa1932aac49a44d9cfa30cf7a889910"
+      },
+      "examples/arbiter/cases/device-warning.lawcase": {
+        "bytes": 1040,
+        "sha256": "sha256:c583c09ffd850c5544cdfd2c2b198bda074bbff81f6f6ff9d31d8f619dfe7bc9"
+      },
+      "examples/arbiter/cases/first-illegal.lawcase": {
+        "bytes": 854,
+        "sha256": "sha256:6e1eabd932d376bc55d0e72a39f57a24fad8d128894b70abf987a101e577c0ab"
+      },
+      "examples/arbiter/cases/flag-fall-no-mate.lawcase": {
+        "bytes": 1442,
+        "sha256": "sha256:098c528a139f87a479572cbbdb229d3c8665ba463ddf4ff1ced0bcc8a0460904"
+      },
+      "examples/arbiter/cases/flag-fall.lawcase": {
+        "bytes": 1194,
+        "sha256": "sha256:b4b8880d6f0b739bf4c328ba5c5de9e3f9527a70764f200180badbd2cf8c33fc"
+      },
+      "examples/arbiter/cases/rapid-first-illegal.lawcase": {
+        "bytes": 1167,
+        "sha256": "sha256:23044a8cfed149ff8b123f76ce934e66604a201112c1250ac0cf94b70a1f0348"
+      },
+      "examples/arbiter/cases/second-illegal-no-mate.lawcase": {
+        "bytes": 996,
+        "sha256": "sha256:fcfb49472d0039a28d6f0745cfbcaa4069f3ef22268c049ea96a02f8697a1837"
+      },
+      "examples/arbiter/cases/second-illegal.lawcase": {
+        "bytes": 855,
+        "sha256": "sha256:e4ea890c9fe961f5a7f80b6f71118404c5f6afb66ab0c0b7116343b9abb39052"
+      },
+      "examples/arbiter/cases/short-of-time-recording.lawcase": {
+        "bytes": 1257,
+        "sha256": "sha256:c4bcfce8895c09e6db8804e71e32cc1a44d776a6ca00a14783ef5e7c57030435"
+      },
+      "examples/arbiter/cases/touch-intent-unknown.lawcase": {
+        "bytes": 996,
+        "sha256": "sha256:ae19f8746539eda209edc814abac639d10d334eeaeea7ed955d549dc06cb4eaf"
+      },
+      "examples/arbiter/expectations.json": {
+        "bytes": 3739,
+        "sha256": "sha256:ec6130d83aa0c06533424b38f86a9ed65257ff8a2b6fa523458961fc23e24f90"
+      },
+      "examples/arbiter/law.lock": {
+        "bytes": 1266,
+        "sha256": "sha256:cedfb9eb0c18b987196ee3cece7dc38974a8d0218c729460b37c886a97bd0697"
+      },
+      "examples/arbiter/law.toml": {
+        "bytes": 1053,
+        "sha256": "sha256:38fe69f7b163d098ab32706e7a4257c0052952b1f2a04b33ccf8a49f46ef9b45"
+      },
+      "examples/arbiter/package.law": {
+        "bytes": 168,
+        "sha256": "sha256:a3a105300a0598faaaaa97bc3057e67a4104185b43173ad60ad027b6427db4a4"
+      },
+      "examples/arbiter/queries/draw.json": {
+        "bytes": 275,
+        "sha256": "sha256:7b0ff4e3c8afa844d857b4afc854845c4363a722d2a926e87a0b39d56281e59a"
+      },
+      "examples/arbiter/queries/extra-time-black-120.json": {
+        "bytes": 526,
+        "sha256": "sha256:5bf46ee3c924d895aa18d4e41829847b8dd2d7ecb17c403fe6ed31fe2b851276"
+      },
+      "examples/arbiter/queries/extra-time-black-60.json": {
+        "bytes": 524,
+        "sha256": "sha256:be79e4538a4e63db71bb857ad16a05e82ad1304ecc2106ffe44e115438a7e6aa"
+      },
+      "examples/arbiter/queries/loss.json": {
+        "bytes": 364,
+        "sha256": "sha256:d540ca6e7f8bbe289e76608e10f3d50b0d6390e9d5b31b422d6f5f67483bde0a"
+      },
+      "examples/arbiter/queries/must-move.json": {
+        "bytes": 386,
+        "sha256": "sha256:3b2347cac7154f91cfc67292459c7a9e48c1337e1b4bd692c82300e42bf488ef"
+      },
+      "examples/arbiter/queries/must-record.json": {
+        "bytes": 376,
+        "sha256": "sha256:7843f253025e1cafa03afc5e516eb011f96b67bda6932fa5fd9761fb0003c79d"
+      },
+      "examples/arbiter/queries/penalty-differs.json": {
+        "bytes": 399,
+        "sha256": "sha256:997ccad33aa1d25481cb96ac5e1434cae40ac960b17ba653ff01cfd069d0a8c6"
+      }
+    }
+  },
+  "runtime": {
+    "node": ">=20",
+    "@arxo/law": "0.4.3",
+    "@arxo/law-engine": "0.5.3",
+    "typescript": "5.9.3",
+    "@arxo/cli": "0.2.3"
+  },
+  "models": [
+    {
+      "spec": "fide.laws.chess@0.1.1",
+      "name": "fide.laws.chess",
+      "version": "0.1.1",
+      "subpath": "chess",
+      "namespace": "urn:fide:laws:clir:chess",
+      "worldHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+      "packageHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+      "languageSemantics": "law.core/0.2.11",
+      "questionCatalogHash": "sha256:78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad",
+      "dependencies": []
+    }
+  ],
+  "files": {
+    "data/chess/descriptor.json": {
+      "from": "registry/p/fide.laws.chess/0.1.1.json",
+      "bytes": 695,
+      "sha256": "sha256:2abd9263629f5faee13e733ad8fb6da93b1f4e6267cf873573fc4c23f453b097"
+    },
+    "data/chess/package.lawir.json": {
+      "from": "registry/p/fide.laws.chess/0.1.1/package.lawir.json",
+      "bytes": 603954,
+      "sha256": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe"
+    },
+    "data/chess/world.lawir.json": {
+      "from": "registry/p/fide.laws.chess/0.1.1/world.lawir.json",
+      "bytes": 603954,
+      "sha256": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe"
+    },
+    "data/resources/78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad.json": {
+      "from": "registry/r/sha256/78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad",
+      "bytes": 59390,
+      "sha256": "sha256:78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad"
+    },
+    "LICENSE": {
+      "from": "LICENSE",
+      "bytes": 11358,
+      "sha256": "sha256:cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "NOTICE": {
+      "from": "NOTICE",
+      "bytes": 908,
+      "sha256": "sha256:a5bd0f23392a376aef3fa575aea1b033de4e478717d00eaa7c3f551305422550"
+    },
+    "canon-packages.json": {
+      "from": "packages.json",
+      "bytes": 542,
+      "sha256": "sha256:08d0530d05cc5ab70cddbb316f67e4a0540cf2802a775688684d2f3cd54fc0ed"
+    }
+  },
+  "derivedFixtures": {
+    "examples/arbiter-cases.json": {
+      "bytes": 36574,
+      "sha256": "sha256:e5abe35e11c4a25877c15dedaf991c18ee0a4c273a7c8fe9ef1cf774b0f8d6a5"
+    },
+    "examples/provenance.json": {
+      "bytes": 3631,
+      "sha256": "sha256:6e855c4749f0e3371133dd4ff17ce0fe8231d7a37aaf1ee166a03a6b3ddf178a"
+    }
+  },
+  "releaseVerified": false,
+  "corpus": "not_checked"
+}

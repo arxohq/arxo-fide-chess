@@ -1,0 +1,143 @@
+[
+  {
+    "case": "TouchIntentUnknown",
+    "query": "queries/must-move.json",
+    "evaluationStatus": "REQUIRES_JUDGMENT",
+    "judgmentRequired": true
+  },
+  {
+    "case": "FirstIllegal",
+    "query": "queries/loss.json",
+    "evaluationStatus": "REQUIRES_JUDGMENT",
+    "truthStatus": "NEITHER",
+    "judgmentRequired": true
+  },
+  {
+    "case": "FirstIllegal",
+    "query": "queries/draw.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "NEITHER"
+  },
+  {
+    "case": "SecondIllegal",
+    "query": "queries/loss.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#SecondIllegalMoveLoses"
+    ]
+  },
+  {
+    "case": "SecondIllegal",
+    "query": "queries/draw.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "NEITHER"
+  },
+  {
+    "case": "SecondIllegalNoMate",
+    "query": "queries/loss.json",
+    "evaluationStatus": "REQUIRES_JUDGMENT",
+    "truthStatus": "NEITHER",
+    "judgmentRequired": true
+  },
+  {
+    "case": "SecondIllegalNoMate",
+    "query": "queries/draw.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#SecondIllegalMoveDrawnIfMateImpossible"
+    ]
+  },
+  {
+    "case": "FlagFall",
+    "query": "queries/loss.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#TimeForfeitLoses"
+    ]
+  },
+  {
+    "case": "FlagFall",
+    "query": "queries/draw.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "NEITHER"
+  },
+  {
+    "case": "FlagFallNoMate",
+    "query": "queries/loss.json",
+    "evaluationStatus": "REQUIRES_JUDGMENT",
+    "truthStatus": "NEITHER",
+    "judgmentRequired": true
+  },
+  {
+    "case": "FlagFallNoMate",
+    "query": "queries/draw.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#TimeForfeitDrawnIfMateImpossible"
+    ]
+  },
+  {
+    "case": "RapidFirstIllegal",
+    "query": "queries/extra-time-black-60.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#FirstIllegalMoveOneMinuteInRapid",
+      "urn:fide:laws:clir:chess#RapidGame"
+    ]
+  },
+  {
+    "case": "RapidFirstIllegal",
+    "query": "queries/extra-time-black-120.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "NEITHER"
+  },
+  {
+    "case": "BlitzFirstIllegalCompetitive",
+    "query": "queries/extra-time-black-120.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#FirstIllegalMoveTwoMinutesInBlitzUnderB2",
+      "urn:fide:laws:clir:chess#BlitzCompetitiveRulesApply"
+    ]
+  },
+  {
+    "case": "BlitzFirstIllegalCompetitive",
+    "query": "queries/extra-time-black-60.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "NEITHER"
+  },
+  {
+    "case": "ShortOfTimeRecording",
+    "query": "queries/must-record.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "FALSE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#ShortOfTimeRelievesRecording"
+    ]
+  },
+  {
+    "case": "DeviceWarning",
+    "query": "queries/penalty-differs.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#OtherPenaltyThanPrescribedLoss",
+      "urn:fide:laws:clir:chess#DeviceOnPersonLoses"
+    ]
+  },
+  {
+    "case": "DeviceWarning",
+    "query": "queries/loss.json",
+    "evaluationStatus": "COMPUTED",
+    "truthStatus": "TRUE_ONLY",
+    "requiredRules": [
+      "urn:fide:laws:clir:chess#DeviceLossLoses"
+    ]
+  }
+]

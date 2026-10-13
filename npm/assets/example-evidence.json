@@ -1,0 +1,310 @@
+{
+  "format": "arxo.fide-chess-readme-evidence/1",
+  "spec": "fide.laws.chess@0.1.1",
+  "worldHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+  "sdk": "@arxo/law@0.4.3",
+  "engine": "@arxo/law-engine@0.5.3",
+  "sourceLinks": "Static join of executed producer IDs with anchors in the pinned model; SDK source arrays are empty.",
+  "cases": [
+    {
+      "name": "SecondIllegal",
+      "legalTime": "2023-06-01",
+      "loss": {
+        "evaluationStatus": "COMPUTED",
+        "truthStatus": "TRUE_ONLY",
+        "hashes": {
+          "program": "sha256:b8d688f5acedf064ffdaa692443694fa4f9dad9ebf3835ca87e69f8551cf2ef6",
+          "semantic": "sha256:a6fd038d3b9d3f6129e3da9876cf5f63c5b8ed335bba1a783673eb3e1a3da5ff",
+          "result": "sha256:0de5227bd3dba5219a04092493c60a80f7803f855d7fc1dcd26c746f037a83b6"
+        },
+        "proofNodes": 10,
+        "judgmentRequests": [],
+        "producerRules": [
+          "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+          "urn:fide:laws:clir:chess#PlayerMayAppeal",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveLoses"
+        ],
+        "modelAnchorLinks": [
+          {
+            "rule": "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_8",
+                "locator": "article/8"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#PlayerMayAppeal",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_11",
+                "locator": "article/11"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveLoses",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          }
+        ]
+      },
+      "draw": {
+        "evaluationStatus": "COMPUTED",
+        "truthStatus": "NEITHER",
+        "hashes": {
+          "program": "sha256:b8d688f5acedf064ffdaa692443694fa4f9dad9ebf3835ca87e69f8551cf2ef6",
+          "semantic": "sha256:a6fd038d3b9d3f6129e3da9876cf5f63c5b8ed335bba1a783673eb3e1a3da5ff",
+          "result": "sha256:4d9229480def478ef1bd715dff10b147611be8691b4974478fecf8bcf39f549c"
+        },
+        "proofNodes": 10,
+        "judgmentRequests": [],
+        "producerRules": [
+          "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+          "urn:fide:laws:clir:chess#PlayerMayAppeal",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveLoses"
+        ],
+        "modelAnchorLinks": [
+          {
+            "rule": "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_8",
+                "locator": "article/8"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#PlayerMayAppeal",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_11",
+                "locator": "article/11"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveLoses",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "SecondIllegalNoMate",
+      "legalTime": "2023-06-01",
+      "loss": {
+        "evaluationStatus": "REQUIRES_JUDGMENT",
+        "truthStatus": "NEITHER",
+        "hashes": {
+          "program": "sha256:b8d688f5acedf064ffdaa692443694fa4f9dad9ebf3835ca87e69f8551cf2ef6",
+          "semantic": "sha256:6198bef0e2dad3455c96a670357647303bcc781112395839c83d9bc41b439e8f",
+          "result": "sha256:4add7fe716d044e00c4837446fa1d59aca4aee3ede8d002c4dc5473b17043e7d"
+        },
+        "proofNodes": 12,
+        "judgmentRequests": [
+          {
+            "authority": "urn:fide:laws:clir:chess#FIDEArbiter",
+            "id": "urn:judgment:chess#case/Case/query/game_lost_by:0",
+            "predicate": "urn:fide:laws:clir:chess#arbiter_decides_otherwise_on_default",
+            "proof": "urn:proof:judgment:chess#case/Case/query/game_lost_by:470581ae2021038c71a019c1b11e9ac5e2094ce4488851b920a3b86bc98aace1",
+            "request": {
+              "args": [
+                {
+                  "id": "urn:example:chess:game",
+                  "kind": "entity_ref"
+                },
+                {
+                  "id": "urn:example:chess:white",
+                  "kind": "entity_ref"
+                }
+              ],
+              "polarity": "negative",
+              "relation": "urn:fide:laws:clir:chess#arbiter_decides_otherwise_on_default"
+            }
+          },
+          {
+            "authority": "urn:fide:laws:clir:chess#FIDEArbiter",
+            "id": "urn:judgment:chess#case/Case/query/game_lost_by:1",
+            "predicate": "urn:fide:laws:clir:chess#persistent_refusal_to_comply",
+            "proof": "urn:proof:judgment:chess#case/Case/query/game_lost_by:fa3112f351ef88930d9ff515b2a2f9148763e4e30a5ee0d0b2270d31742383ae",
+            "request": {
+              "args": [
+                {
+                  "id": "urn:example:chess:game",
+                  "kind": "entity_ref"
+                },
+                {
+                  "id": "urn:example:chess:white",
+                  "kind": "entity_ref"
+                }
+              ],
+              "polarity": "positive",
+              "relation": "urn:fide:laws:clir:chess#persistent_refusal_to_comply"
+            }
+          }
+        ],
+        "producerRules": [
+          "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+          "urn:fide:laws:clir:chess#PlayerMayAppeal",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveDrawnIfMateImpossible",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame"
+        ],
+        "modelAnchorLinks": [
+          {
+            "rule": "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_8",
+                "locator": "article/8"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#PlayerMayAppeal",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_11",
+                "locator": "article/11"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveDrawnIfMateImpossible",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          }
+        ]
+      },
+      "draw": {
+        "evaluationStatus": "COMPUTED",
+        "truthStatus": "TRUE_ONLY",
+        "hashes": {
+          "program": "sha256:b8d688f5acedf064ffdaa692443694fa4f9dad9ebf3835ca87e69f8551cf2ef6",
+          "semantic": "sha256:6198bef0e2dad3455c96a670357647303bcc781112395839c83d9bc41b439e8f",
+          "result": "sha256:eab80b8ff40c1b64ea9b190436fde39755327cc3b4c549009712a40251807be0"
+        },
+        "proofNodes": 10,
+        "judgmentRequests": [],
+        "producerRules": [
+          "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+          "urn:fide:laws:clir:chess#PlayerMayAppeal",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveDrawnIfMateImpossible",
+          "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame"
+        ],
+        "modelAnchorLinks": [
+          {
+            "rule": "urn:fide:laws:clir:chess#EachPlayerMustRecord",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_8",
+                "locator": "article/8"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#PlayerMayAppeal",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_11",
+                "locator": "article/11"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveDrawnIfMateImpossible",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          },
+          {
+            "rule": "urn:fide:laws:clir:chess#SecondIllegalMoveEndsTheGame",
+            "anchors": [
+              {
+                "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+                "locator": "article/7"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "touch": {
+    "evaluationStatus": "REQUIRES_JUDGMENT",
+    "truthStatus": "NEITHER",
+    "judgmentRequests": [
+      {
+        "authority": "urn:fide:laws:clir:chess#FIDEArbiter",
+        "id": "urn:judgment:chess#case/Case/query/must_move_first_touched_piece:0",
+        "predicate": "urn:fide:laws:clir:chess#piece_touched_intentionally",
+        "proof": "urn:proof:judgment:chess#case/Case/query/must_move_first_touched_piece:47a2778101e8a911c102fad4d2d68394be758ed3265850b2022a1f677e95ae14",
+        "request": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:king",
+              "kind": "entity_ref"
+            }
+          ],
+          "polarity": "positive",
+          "relation": "urn:fide:laws:clir:chess#piece_touched_intentionally"
+        }
+      }
+    ],
+    "hashes": {
+      "program": "sha256:b8d688f5acedf064ffdaa692443694fa4f9dad9ebf3835ca87e69f8551cf2ef6",
+      "semantic": "sha256:8b03b497d066b0b8b4726edc5d1768203e3b75b50ef1d230fe4e2ba6cfe32f29",
+      "result": "sha256:ff28380ca7b14e31858e45d554d73e9a142b41f8dcc6002ef4f52f117316166f"
+    }
+  }
+}

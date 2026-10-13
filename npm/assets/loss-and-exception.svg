@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc"><title id="title">The exception changes the result</title><desc id="desc">Both cases contain two illegal moves. An explicit inability to checkmate changes the established conclusion from loss to draw. A separate loss query may still require judgments for other reachable grounds.</desc><style>text{font-family:Arial,Helvetica,sans-serif}.mono{font-family:Menlo,Consolas,monospace}</style><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#315d84"/></marker></defs><rect x="0" y="0" width="1000" height="470" rx="16" fill="#f8f4eb"/><text x="38" y="56" font-size="32" font-weight="700" fill="#122d4c">The same incident. One explicit exception.</text>
+<rect x="38" y="88" width="444" height="336" rx="16" fill="#e6f1eb"/>
+<text x="61" y="131" font-size="22" font-weight="650" fill="#122d4c" class="mono">SecondIllegal</text>
+<text x="61" y="177" font-size="22" font-weight="400" fill="#122d4c">Two completed illegal moves</text>
+<text x="61" y="217" font-size="20" font-weight="400" fill="#53677d">No inability-to-mate exception</text>
+<text x="61" y="276" font-size="44" font-weight="750" fill="#14644b">LOSS</text>
+<text x="61" y="318" font-size="24" font-weight="650" fill="#14644b" class="mono">TRUE_ONLY</text>
+<text x="61" y="359" font-size="19" font-weight="400" fill="#53677d">Article 7.5.5 · model conclusion</text>
+<text x="61" y="398" font-size="16" font-weight="400" fill="#53677d">Proof names SecondIllegalMoveLoses</text>
+<rect x="518" y="88" width="444" height="336" rx="16" fill="#fbefd9"/>
+<text x="541" y="131" font-size="22" font-weight="650" fill="#122d4c" class="mono">SecondIllegalNoMate</text>
+<text x="541" y="177" font-size="22" font-weight="400" fill="#122d4c">Two completed illegal moves</text>
+<text x="541" y="217" font-size="20" font-weight="400" fill="#53677d">Opponent cannot checkmate</text>
+<text x="541" y="276" font-size="44" font-weight="750" fill="#875617">DRAW</text>
+<text x="541" y="318" font-size="24" font-weight="650" fill="#875617" class="mono">TRUE_ONLY</text>
+<text x="541" y="359" font-size="19" font-weight="400" fill="#53677d">Article 7.5.5 · explicit exception</text>
+<text x="541" y="398" font-size="16" font-weight="400" fill="#53677d">Loss query: judgment for other grounds</text></svg>

@@ -1,0 +1,71 @@
+{
+  "name": "@arxo/canon-fide-chess",
+  "version": "0.1.0",
+  "description": "A pinned FIDE Laws of Chess demonstration: arbiter cases, typed Node.js loading and inspectable answers with @arxo/law.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "node": "./src/index.js"
+    },
+    "./chess": {
+      "types": "./types/chess.d.ts",
+      "node": "./src/chess.js"
+    },
+    "./examples/arbiter": {
+      "types": "./examples/arbiter.d.ts",
+      "node": "./examples/arbiter.js"
+    },
+    "./package.json": "./package.json",
+    "./source-pin.json": "./source-pin.json"
+  },
+  "files": [
+    "src",
+    "types",
+    "data",
+    "models.json",
+    "index.d.ts",
+    "source-pin.json",
+    "canon-packages.json",
+    "examples",
+    "assets",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "PUBLISHING.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "@arxo/law": "0.4.3"
+  },
+  "devDependencies": {
+    "@arxo/law": "0.4.3",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:types": "tsc --noEmit --strict --target ES2022 --module NodeNext --moduleResolution NodeNext --lib ES2022,DOM,ESNext.Disposable test/types.fixture.ts",
+    "candidate": "node tools/prepare-candidate.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arxohq/arxo-fide-chess.git",
+    "directory": "npm"
+  },
+  "homepage": "https://www.npmjs.com/package/@arxo/canon-fide-chess",
+  "keywords": [
+    "arxo",
+    "law-as-code",
+    "fide",
+    "chess",
+    "arbiter",
+    "proof",
+    "formalization"
+  ]
+}

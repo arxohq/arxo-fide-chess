@@ -1,0 +1,61 @@
+{
+  "format": "arxo.fide-chess-readme-assets/1",
+  "worldHash": "sha256:20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe",
+  "publicAssets": {
+    "repository": "arxohq/arxo-fide-chess",
+    "tag": "npm-v0.1.0"
+  },
+  "tree": {
+    "predicate": "must_move_first_touched_piece",
+    "depth": 2,
+    "lang": "en",
+    "quote": 0,
+    "caseSelected": false
+  },
+  "files": {
+    "formalization-depth.json": {
+      "bytes": 6379,
+      "sha256": "sha256:21037124097ffd307c402025bb788bc5869e8af8b37cd2ea9c168c653ff2b62c"
+    },
+    "touch-unfold.json": {
+      "bytes": 3285,
+      "sha256": "sha256:cdefd9b046112a1042588b8176adbf0361097b90299dd2340b5f940037d16ed4"
+    },
+    "example-evidence.json": {
+      "bytes": 10963,
+      "sha256": "sha256:d6104357fd1046acefd97506ac5f48f3fcef8b26c3eaa184dd45cc7bb98685a5"
+    },
+    "cover.svg": {
+      "bytes": 2873,
+      "sha256": "sha256:9b2fc7bf105f549deb1ecb17d23f5ab3f36d87387552dba3573deac18f3ec5f2"
+    },
+    "cover.png": {
+      "bytes": 84992,
+      "sha256": "sha256:1815f309ef82bb9696b60bd5ea4b5820b19b4cad41530d1d6c205ad23bc9610e"
+    },
+    "model-to-answer.svg": {
+      "bytes": 3131,
+      "sha256": "sha256:f324fcc4b3300c0b84f80a97f683eb8653fb3425181ac34398af25e0e55cb8ea"
+    },
+    "model-to-answer.png": {
+      "bytes": 112808,
+      "sha256": "sha256:416bf451c97c9b7a59af5409a51ed2a4217e007652a86b7552647869083bf7fb"
+    },
+    "loss-and-exception.svg": {
+      "bytes": 2441,
+      "sha256": "sha256:c1a569802240b48887ff64c956b3d6d88a4ba4f58aaad147f97e97ba8f2cc918"
+    },
+    "loss-and-exception.png": {
+      "bytes": 87622,
+      "sha256": "sha256:44dcbbf3bbf61512155cc74f90b434c32037c2c2a206f53ffc3be1905c264bf5"
+    },
+    "knows-touch.svg": {
+      "bytes": 2735,
+      "sha256": "sha256:50cb73e6d85aa0a21c57a999955eb95d5787c81e0f6a4326f9229031eff86232"
+    },
+    "knows-touch.png": {
+      "bytes": 65066,
+      "sha256": "sha256:a46973fd31cf21f43a583e4264b171e0cf07531a76971c0527551e89a664522c"
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "format": "arxo.fide-chess-case-capture/1",
+  "sourceOrigin": {
+    "repository": "https://github.com/arxohq/arxo-fide-chess",
+    "revision": "3550570cef14da097ae92250f8e1b953f8a040e6",
+    "path": "SOURCE-ORIGIN.json"
+  },
+  "cli": {
+    "binaryHash": "sha256:02cdcd662449bbfb6ac252d92c3a34d7849df5343162d457f59692847dde6a25",
+    "lawql": {
+      "language": "lawql/1",
+      "queryResult": "0.1"
+    },
+    "semantics": [
+      "law.core/0.2"
+    ],
+    "std": [
+      {
+        "language": "0.2",
+        "std": "0.2.0"
+      }
+    ],
+    "tool": "0.2.3"
+  },
+  "cases": [
+    {
+      "name": "TouchIntentUnknown",
+      "path": "examples/arbiter/cases/touch-intent-unknown.lawcase",
+      "sourceHash": "sha256:ae19f8746539eda209edc814abac639d10d334eeaeea7ed955d549dc06cb4eaf",
+      "requestHash": "sha256:56c25e7760aa1f8ebd62aa698a7c83c217a7c88f9cbad0838581c66d8b7fc5e6"
+    },
+    {
+      "name": "FirstIllegal",
+      "path": "examples/arbiter/cases/first-illegal.lawcase",
+      "sourceHash": "sha256:6e1eabd932d376bc55d0e72a39f57a24fad8d128894b70abf987a101e577c0ab",
+      "requestHash": "sha256:8ac1c6788a1122972e1b56ec8afd8e115d86aa696fe5a19564459b5472990836"
+    },
+    {
+      "name": "SecondIllegal",
+      "path": "examples/arbiter/cases/second-illegal.lawcase",
+      "sourceHash": "sha256:e4ea890c9fe961f5a7f80b6f71118404c5f6afb66ab0c0b7116343b9abb39052",
+      "requestHash": "sha256:d1539db6e5fb734e49ed3ae3a684309f97b9644393bcb745bbfe4a354bb8b631"
+    },
+    {
+      "name": "SecondIllegalNoMate",
+      "path": "examples/arbiter/cases/second-illegal-no-mate.lawcase",
+      "sourceHash": "sha256:fcfb49472d0039a28d6f0745cfbcaa4069f3ef22268c049ea96a02f8697a1837",
+      "requestHash": "sha256:27f831a647bdf3963af4bdf7ba8206213cc0af235f283a91ad00cca8fa65d8ca"
+    },
+    {
+      "name": "FlagFall",
+      "path": "examples/arbiter/cases/flag-fall.lawcase",
+      "sourceHash": "sha256:b4b8880d6f0b739bf4c328ba5c5de9e3f9527a70764f200180badbd2cf8c33fc",
+      "requestHash": "sha256:b362595858a46277aa7b2d0032ab245573b796953a3c4842fcb04db9d3cd4250"
+    },
+    {
+      "name": "FlagFallNoMate",
+      "path": "examples/arbiter/cases/flag-fall-no-mate.lawcase",
+      "sourceHash": "sha256:098c528a139f87a479572cbbdb229d3c8665ba463ddf4ff1ced0bcc8a0460904",
+      "requestHash": "sha256:4fd4027e81cbb14daa30245d35d18e374831cafbe22682b020385d9854471a11"
+    },
+    {
+      "name": "RapidFirstIllegal",
+      "path": "examples/arbiter/cases/rapid-first-illegal.lawcase",
+      "sourceHash": "sha256:23044a8cfed149ff8b123f76ce934e66604a201112c1250ac0cf94b70a1f0348",
+      "requestHash": "sha256:c9dfaef3c7a436a854aabdc7afe03cc767e0a69a639f1f43c4b1bb5dd6d09d43"
+    },
+    {
+      "name": "BlitzFirstIllegalCompetitive",
+      "path": "examples/arbiter/cases/blitz-first-illegal-competitive.lawcase",
+      "sourceHash": "sha256:c7b8b03828aaf7e72789e62fa37019cb0aa1932aac49a44d9cfa30cf7a889910",
+      "requestHash": "sha256:23f0986c5812e3f2185e2b5f9bfb36e9d17ca547a53814bb2dfde687005841d9"
+    },
+    {
+      "name": "ShortOfTimeRecording",
+      "path": "examples/arbiter/cases/short-of-time-recording.lawcase",
+      "sourceHash": "sha256:c4bcfce8895c09e6db8804e71e32cc1a44d776a6ca00a14783ef5e7c57030435",
+      "requestHash": "sha256:c237c33ae96bc34e2b01542c4fc15353d7dd4baaeec7a4336986331797c68c42"
+    },
+    {
+      "name": "DeviceWarning",
+      "path": "examples/arbiter/cases/device-warning.lawcase",
+      "sourceHash": "sha256:c583c09ffd850c5544cdfd2c2b198bda074bbff81f6f6ff9d31d8f619dfe7bc9",
+      "requestHash": "sha256:2dadd6d39d330bcb94f934be8ac99fdef8b1dec02a776e0859daf8ec0b0deb8d"
+    }
+  ]
+}

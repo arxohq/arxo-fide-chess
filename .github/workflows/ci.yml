@@ -1,0 +1,49 @@
+name: pinned demonstration
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  npm:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node: [20, 24]
+    defaults:
+      run:
+        working-directory: npm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: npm/package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm run build -- --canon ..
+      - run: npm test
+      - run: npm run test:types
+      - run: node examples/run-arbiter.mjs
+      - run: npm pack --ignore-scripts --pack-destination "${RUNNER_TEMP}"
+  source-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: python3 -m pip install --disable-pip-version-check jsonschema
+      - run: python3 registry/check_registry.py
+      - name: Reproduce the pinned CLIR with the released CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "${RUNNER_TEMP}/cli" --ignore-scripts --no-audit --no-fund @arxo/cli-linux-x64@0.2.3
+          "${RUNNER_TEMP}/cli/node_modules/@arxo/cli-linux-x64/law" engine lower packages/fide.laws.chess > "${RUNNER_TEMP}/fide.lawir.json"
+          cmp "${RUNNER_TEMP}/fide.lawir.json" registry/p/fide.laws.chess/0.1.1/package.lawir.json

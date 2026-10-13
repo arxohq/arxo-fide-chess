@@ -1,0 +1,125 @@
+{
+  "format": "arxo.fide-chess-delivery-check/1",
+  "package": "@arxo/canon-fide-chess@0.1.0",
+  "model": "fide.laws.chess@0.1.1",
+  "sourceScenarios": {
+    "declared": 103,
+    "passed": 103,
+    "failed": 0,
+    "method": "package.py build, replay and rebuild; CLI 0.2.3"
+  },
+  "sdkCases": {
+    "cases": 10,
+    "originalCaseQueryExpectations": 18,
+    "runtimeGroups": 9,
+    "sdk": "0.4.3",
+    "engine": "0.5.3"
+  },
+  "installedConsumers": [
+    {
+      "node": "v20.20.2",
+      "passed": true,
+      "checks": [
+        {
+          "check": "install",
+          "exitCode": 0
+        },
+        {
+          "check": "runtime",
+          "exitCode": 0
+        },
+        {
+          "check": "types",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "bundled-example",
+          "exitCode": 0
+        }
+      ],
+      "typescript": "5.9.3",
+      "skipLibCheck": false
+    },
+    {
+      "node": "v24.21.0",
+      "passed": true,
+      "checks": [
+        {
+          "check": "install",
+          "exitCode": 0
+        },
+        {
+          "check": "runtime",
+          "exitCode": 0
+        },
+        {
+          "check": "types",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "npm-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-0",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-1",
+          "exitCode": 0
+        },
+        {
+          "check": "github-readme-2",
+          "exitCode": 0
+        },
+        {
+          "check": "bundled-example",
+          "exitCode": 0
+        }
+      ],
+      "typescript": "5.9.3",
+      "skipLibCheck": false
+    }
+  ],
+  "tarball": {
+    "name": "@arxo/canon-fide-chess",
+    "file": "arxo-canon-fide-chess-0.1.0.tgz",
+    "bytes": 524353,
+    "sha256": "0d81c3be34783400ac1f35774fbc13ea22285b2412cb8159c9c2914cedecc9d1"
+  },
+  "published": false,
+  "releaseVerified": false,
+  "corpus": "not_checked"
+}
