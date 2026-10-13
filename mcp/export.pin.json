@@ -280,8 +280,8 @@
     },
     {
       "path": "mcp/npm/host-pins.json",
-      "bytes": 1140,
-      "sha256": "sha256:efafb4d72f2c6dfff766336d1ebed5b1e32e67a788b4ee2c59832621ea49b2cd"
+      "bytes": 1557,
+      "sha256": "sha256:465887693f867c406f1ce0ca05f53ef69368bd44393fcd11cf16c5ce161271a9"
     },
     {
       "path": "mcp/npm/package.json",
