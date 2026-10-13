@@ -1,0 +1,16 @@
+{
+  "format": "arxo.mcp-build-lock/0.1",
+  "platform": "linux/amd64",
+  "builderImage": "python:3.13.7-slim-bookworm@sha256:781449467ffb6f04218f09b1ecdcdc7d22b289ee5da9ec498b024e24ad7a6db7",
+  "baseImage": "debian:bookworm-20251020-slim@sha256:3fc563f538cf97e350bb04f43ad234c5b100aa602cced60cd36d482336d45fd5",
+  "python": "3.13.7",
+  "pythonDependencies": [],
+  "packaging": "Python standard library tarfile/gzip, normalized by tools/bundle_mcp.py",
+  "runtimeDependencies": ["POSIX /bin/sh", "/usr/bin/env"],
+  "imageManifestVerification": {
+    "registry": "registry-1.docker.io",
+    "verifiedAt": "2026-10-13",
+    "builderIndexDigest": "sha256:adafcc17694d715c905b4c7bebd96907a1fd5cf183395f0ebc4d3428bd22d92d",
+    "baseIndexDigest": "sha256:78d2f66e0fec9e5a39fb2c72ea5e052b548df75602b5215ed01a17171529f706"
+  }
+}

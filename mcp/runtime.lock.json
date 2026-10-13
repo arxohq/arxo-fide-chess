@@ -1,0 +1,56 @@
+{
+  "format": "arxo.mcp-runtime-lock/0.1",
+  "host": {
+    "version": "0.4.2-cnafpreview.1",
+    "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc",
+    "platforms": {
+      "linux-amd64": {
+        "url": "https://github.com/arxohq/arxo-cnaf/releases/download/mcp-host-0.4.2-cnafpreview.1/mcp-host-linux-amd64.tgz",
+        "archiveSha256": "sha256:234ebd33a63e79ea5107555ea52ab4c26824f2989c4e5cd806e4ad02f3842d91",
+        "binaryPath": "package/bin/law-mcp-server",
+        "binarySha256": "sha256:0a620900bfe6a9b6f73ddadfd945e7f7ec168a4ed6d7ef1a93c2c6d261419a87",
+        "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+      },
+      "darwin-arm64": {
+        "url": "https://registry.npmjs.org/@arxo/mcp-host-darwin-arm64/-/mcp-host-darwin-arm64-0.4.2-cnafpreview.1.tgz",
+        "archiveSha256": "sha256:f8cba565e2368f5c2670ca9d2a49fc73d1e73cae4dd525cdc28a88e462f78b24",
+        "binaryPath": "package/bin/law-mcp-server",
+        "binarySha256": "sha256:76652208a494a7f91af1badee91ac066d8e575bd71a73da9fe1effbbe646508d",
+        "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+      }
+    }
+  },
+  "assets": [
+    {
+      "source": "mcp/assets/LICENSE.host",
+      "target": "notices/LICENSE.host",
+      "sha256": "sha256:cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+    },
+    {
+      "source": "mcp/assets/NOTICE",
+      "target": "notices/host.NOTICE",
+      "sha256": "sha256:efdeba83bdc47d4957a57cbec20ff8adaa25c416096ecc9709a967272982f974",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+    },
+    {
+      "source": "mcp/assets/packs/verb/law.verb.en/pack-0.14.0.json",
+      "target": "packs/verb/law.verb.en/pack-0.14.0.json",
+      "sha256": "sha256:8cb3ec433474b7166f8275f85f46c5d8c5b0dd8d302a0dd23ed7eb7025a960d8",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+    },
+    {
+      "source": "mcp/assets/packs/verb/law.verb.en/pack-0.3.0.json",
+      "target": "packs/verb/law.verb.en/pack-0.3.0.json",
+      "sha256": "sha256:4cba53d0d97b92f71b2f9ec4fdf79db3b1d6ac72264107c1f0ada621970c91bb",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+    },
+    {
+      "source": "mcp/assets/spec/schema/legal-ir.schema.json",
+      "target": "spec/schema/legal-ir.schema.json",
+      "sha256": "sha256:65af510b7742bb0827c0fbcafd5a0ca80641f68f04f8e3e98be7e942d810a0d0",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+    }
+  ],
+  "compatibilityReceipt": "mcp/host-compatibility.json"
+}

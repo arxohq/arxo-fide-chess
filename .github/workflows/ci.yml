@@ -1,5 +1,11 @@
 name: pinned demonstration
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [main]
+    paths: ['packages/**', 'registry/**', 'npm/**', 'examples/**', 'SOURCE-ORIGIN.json', 'packages.json', '.github/workflows/ci.yml']
+  pull_request:
+    paths: ['packages/**', 'registry/**', 'npm/**', 'examples/**', 'SOURCE-ORIGIN.json', 'packages.json', '.github/workflows/ci.yml']
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:

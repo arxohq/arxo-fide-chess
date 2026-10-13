@@ -1,0 +1,133 @@
+{
+  "format": "arxo.mcp-runtime-contract/0.1",
+  "status": "accepted",
+  "profile": "fide-chess",
+  "canon": "fide.chess/0.1.0",
+  "runtimeLayout": {
+    "profile": "apps/mcp/profiles/fide-chess.json",
+    "canon": "corpus/profiles/fide.chess/0.1.0/profile.json",
+    "packages": "corpus/clir/<explicit-runtime-key>.lawir.json",
+    "packageInputs": "corpus/laws/<explicit-package-directory>/",
+    "verbPacks": "packs/verb/<name>/pack-<version>.json"
+  },
+  "packageMaterialization": {
+    "input": "registry/p/<name>/<version>/package.lawir.json",
+    "preserveBytes": true,
+    "closure": "Exact raw registry descriptors, original package/world hashes and pinned resources",
+    "sourceOfTruth": "public frozen registry and explicit delivery publication mapping",
+    "monorepoRequired": false
+  },
+  "temporalContext": {
+    "requireExplicitContext": true,
+    "legalTime": "caller-supplied YYYY-MM-DD",
+    "context": {
+      "timezone": "caller-supplied IANA timezone",
+      "decisionTime": "caller-supplied Instant with Z or UTC offset",
+      "knowledgeTime": "caller-supplied Instant with Z or UTC offset"
+    }
+  },
+  "operations": [
+    {
+      "operations": [
+        "law_packages",
+        "law_search"
+      ],
+      "inputs": [
+        "selected pinned CLIR",
+        "package metadata"
+      ],
+      "network": "none; LAW_NEURAL_URL unset"
+    },
+    {
+      "operations": [
+        "law_ask"
+      ],
+      "inputs": [
+        "selected CLIR and full pinned dependency closure",
+        "explicit typed facts and provenance",
+        "caller temporal context"
+      ],
+      "writes": "temporary answer artifacts only; dataset read-only"
+    },
+    {
+      "operations": [
+        "law_rules"
+      ],
+      "inputs": [
+        "selected CLIR",
+        "English rule verb pack 0.3.0"
+      ]
+    },
+    {
+      "operations": [
+        "law_sources"
+      ],
+      "inputs": [
+        "existing CLIR fragments and publication metadata"
+      ],
+      "policy": "mcp/source-policy.json"
+    },
+    {
+      "operations": [
+        "law_query"
+      ],
+      "inputs": [
+        "selected CLIR"
+      ],
+      "allowed": "inline structural catalog queries",
+      "unavailable": "Strict profiles refuse inference, case materialization, document sources and named questions before execution. Use law_ask with explicit context.",
+      "refusalCode": "STRICT_CONTEXT_QUERY_UNSUPPORTED"
+    },
+    {
+      "operations": [
+        "law_passport",
+        "law_case_ask"
+      ],
+      "unavailable": "No acceptance passports or registered authored-case packages in this initial runtime; scenarios are retained consumer fixtures, not host case registrations."
+    },
+    {
+      "operations": [
+        "law_capture_answer",
+        "law_prepare_answer",
+        "law_publish_answer",
+        "law_revoke_answer"
+      ],
+      "unavailable": "External publication service is unconfigured; refusal is explicit."
+    }
+  ],
+  "assets": {
+    "ruleVerbPack": "law.verb.en@0.3.0",
+    "answerVerbPack": "law.verb.en@0.14.0",
+    "questionCatalog": "Existing hash-pinned catalog is shipped as metadata; it does not create cases automatically."
+  },
+  "sourceEvidence": {
+    "runtimeCitation": "provenance.acts[].fragments returned by pinned native host",
+    "staticJoin": "Separate retained producer-rule anchors from exact CLIR, never represented as fabricated runtime citations",
+    "requestHashes": "SDK/CLI and MCP requests have different representations; their request hashes need not be equal."
+  },
+  "transport": {
+    "stdio": "newline-delimited JSON-RPC",
+    "httpPath": "/mcp",
+    "healthPath": "/healthz",
+    "authentication": "Bearer backend with declared public deployment edge",
+    "readOnlyDataset": true,
+    "runtimeEgress": "denied by deployment infrastructure; native npm has no OS network sandbox",
+    "binaryIdentity": "SHA-256, not serverInfo.version"
+  },
+  "acceptance": {
+    "model": "fide.laws.chess@0.1.1",
+    "modelSourceCommit": "3550570cef14da097ae92250f8e1b953f8a040e6",
+    "retainedSourceScenarios": 103,
+    "publishedExamples": 10,
+    "publishedExpectations": 18,
+    "fullCorpus": "not_checked",
+    "releaseVerified": false,
+    "finalHostPin": {
+      "platform": "linux-amd64",
+      "binarySha256": "sha256:0a620900bfe6a9b6f73ddadfd945e7f7ec168a4ed6d7ef1a93c2c6d261419a87",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc"
+    },
+    "linuxDiagnosticReceiptSha256": "sha256:9dc87be88308dd1ea75758e375d733f9ba01ea9b36f2c9553c18d649730ccc88",
+    "nativeCompatibility": "Linux119 + macOS119 real stdio/HTTP/source checks"
+  }
+}

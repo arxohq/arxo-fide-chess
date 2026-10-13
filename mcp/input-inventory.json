@@ -1,0 +1,447 @@
+{
+  "format": "arxo.mcp-input-inventory/0.1",
+  "sourceCommit": "3550570cef14da097ae92250f8e1b953f8a040e6",
+  "modelSourceOrigin": "6225feb5cc3960bc251426b45b83e065456ba5be",
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 908,
+      "sha256": "a5bd0f23392a376aef3fa575aea1b033de4e478717d00eaa7c3f551305422550"
+    },
+    {
+      "path": "examples/arbiter/README.md",
+      "bytes": 1042,
+      "sha256": "750076666dcb2a6bcd7b8bf4bc08a72795b778ea3396ad2aa973745d0374d16e"
+    },
+    {
+      "path": "examples/arbiter/cases/blitz-first-illegal-competitive.lawcase",
+      "bytes": 1733,
+      "sha256": "c7b8b03828aaf7e72789e62fa37019cb0aa1932aac49a44d9cfa30cf7a889910"
+    },
+    {
+      "path": "examples/arbiter/cases/device-warning.lawcase",
+      "bytes": 1040,
+      "sha256": "c583c09ffd850c5544cdfd2c2b198bda074bbff81f6f6ff9d31d8f619dfe7bc9"
+    },
+    {
+      "path": "examples/arbiter/cases/first-illegal.lawcase",
+      "bytes": 854,
+      "sha256": "6e1eabd932d376bc55d0e72a39f57a24fad8d128894b70abf987a101e577c0ab"
+    },
+    {
+      "path": "examples/arbiter/cases/flag-fall-no-mate.lawcase",
+      "bytes": 1442,
+      "sha256": "098c528a139f87a479572cbbdb229d3c8665ba463ddf4ff1ced0bcc8a0460904"
+    },
+    {
+      "path": "examples/arbiter/cases/flag-fall.lawcase",
+      "bytes": 1194,
+      "sha256": "b4b8880d6f0b739bf4c328ba5c5de9e3f9527a70764f200180badbd2cf8c33fc"
+    },
+    {
+      "path": "examples/arbiter/cases/rapid-first-illegal.lawcase",
+      "bytes": 1167,
+      "sha256": "23044a8cfed149ff8b123f76ce934e66604a201112c1250ac0cf94b70a1f0348"
+    },
+    {
+      "path": "examples/arbiter/cases/second-illegal-no-mate.lawcase",
+      "bytes": 996,
+      "sha256": "fcfb49472d0039a28d6f0745cfbcaa4069f3ef22268c049ea96a02f8697a1837"
+    },
+    {
+      "path": "examples/arbiter/cases/second-illegal.lawcase",
+      "bytes": 855,
+      "sha256": "e4ea890c9fe961f5a7f80b6f71118404c5f6afb66ab0c0b7116343b9abb39052"
+    },
+    {
+      "path": "examples/arbiter/cases/short-of-time-recording.lawcase",
+      "bytes": 1257,
+      "sha256": "c4bcfce8895c09e6db8804e71e32cc1a44d776a6ca00a14783ef5e7c57030435"
+    },
+    {
+      "path": "examples/arbiter/cases/touch-intent-unknown.lawcase",
+      "bytes": 996,
+      "sha256": "ae19f8746539eda209edc814abac639d10d334eeaeea7ed955d549dc06cb4eaf"
+    },
+    {
+      "path": "examples/arbiter/deps/fide.laws.chess.lawir.json",
+      "bytes": 603954,
+      "sha256": "20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe"
+    },
+    {
+      "path": "examples/arbiter/deps/fide.laws.chess.questions.json",
+      "bytes": 59390,
+      "sha256": "78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad"
+    },
+    {
+      "path": "examples/arbiter/expectations.json",
+      "bytes": 3739,
+      "sha256": "ec6130d83aa0c06533424b38f86a9ed65257ff8a2b6fa523458961fc23e24f90"
+    },
+    {
+      "path": "examples/arbiter/law.lock",
+      "bytes": 1266,
+      "sha256": "cedfb9eb0c18b987196ee3cece7dc38974a8d0218c729460b37c886a97bd0697"
+    },
+    {
+      "path": "examples/arbiter/law.toml",
+      "bytes": 1053,
+      "sha256": "38fe69f7b163d098ab32706e7a4257c0052952b1f2a04b33ccf8a49f46ef9b45"
+    },
+    {
+      "path": "examples/arbiter/package.law",
+      "bytes": 168,
+      "sha256": "a3a105300a0598faaaaa97bc3057e67a4104185b43173ad60ad027b6427db4a4"
+    },
+    {
+      "path": "examples/arbiter/queries/draw.json",
+      "bytes": 275,
+      "sha256": "7b0ff4e3c8afa844d857b4afc854845c4363a722d2a926e87a0b39d56281e59a"
+    },
+    {
+      "path": "examples/arbiter/queries/extra-time-black-120.json",
+      "bytes": 526,
+      "sha256": "5bf46ee3c924d895aa18d4e41829847b8dd2d7ecb17c403fe6ed31fe2b851276"
+    },
+    {
+      "path": "examples/arbiter/queries/extra-time-black-60.json",
+      "bytes": 524,
+      "sha256": "be79e4538a4e63db71bb857ad16a05e82ad1304ecc2106ffe44e115438a7e6aa"
+    },
+    {
+      "path": "examples/arbiter/queries/loss.json",
+      "bytes": 364,
+      "sha256": "d540ca6e7f8bbe289e76608e10f3d50b0d6390e9d5b31b422d6f5f67483bde0a"
+    },
+    {
+      "path": "examples/arbiter/queries/must-move.json",
+      "bytes": 386,
+      "sha256": "3b2347cac7154f91cfc67292459c7a9e48c1337e1b4bd692c82300e42bf488ef"
+    },
+    {
+      "path": "examples/arbiter/queries/must-record.json",
+      "bytes": 376,
+      "sha256": "7843f253025e1cafa03afc5e516eb011f96b67bda6932fa5fd9761fb0003c79d"
+    },
+    {
+      "path": "examples/arbiter/queries/penalty-differs.json",
+      "bytes": 399,
+      "sha256": "997ccad33aa1d25481cb96ac5e1434cae40ac960b17ba653ff01cfd069d0a8c6"
+    },
+    {
+      "path": "npm/source-pin.json",
+      "bytes": 8643,
+      "sha256": "48f567601bf0a2419ec38fb37e95c0dacad97da9e42cfa148a873c41f5d77282"
+    },
+    {
+      "path": "packages.json",
+      "bytes": 542,
+      "sha256": "08d0530d05cc5ab70cddbb316f67e4a0540cf2802a775688684d2f3cd54fc0ed"
+    },
+    {
+      "path": "packages/fide.laws.chess/01-02-basics.law",
+      "bytes": 2987,
+      "sha256": "1a311ffdf4c1f0f0b08f3a1784b121e387cf037f1b428e951306fdaaf99c8edb"
+    },
+    {
+      "path": "packages/fide.laws.chess/03-moves.law",
+      "bytes": 6144,
+      "sha256": "615f32c30f5455ae7e7dc7cf2cafaa4c969cfd2707ac1530309ac525f98b2190"
+    },
+    {
+      "path": "packages/fide.laws.chess/03-observed-position.law",
+      "bytes": 20425,
+      "sha256": "e5b6ac8d6be0204c9c6ed2db528cf7b45255794ffa9d8a6910eda7191918af67"
+    },
+    {
+      "path": "packages/fide.laws.chess/04-touch.law",
+      "bytes": 2028,
+      "sha256": "5cf93161498bdc08f650703e30bf09ebefb8e28c60737008a5b4ed9b08b8d73d"
+    },
+    {
+      "path": "packages/fide.laws.chess/05-completion.law",
+      "bytes": 6212,
+      "sha256": "ee4a5d9aec508efae76591d2fff295cca02c4358e0c8885b5d99dcf115ecaf97"
+    },
+    {
+      "path": "packages/fide.laws.chess/06-clock.law",
+      "bytes": 13466,
+      "sha256": "5f2a591481dfba2474465daf2eacb242c6df7a3e66ceedb8db512297ea589288"
+    },
+    {
+      "path": "packages/fide.laws.chess/07-irregularities.law",
+      "bytes": 9697,
+      "sha256": "da53f07c49438c5b234a0ae6d7e7aed59cc3df5984fe4485f5050239d86470a7"
+    },
+    {
+      "path": "packages/fide.laws.chess/08-recording.law",
+      "bytes": 5699,
+      "sha256": "298a7974800a4e6a66977fd80296cdc7d2bc6537c67cac398aaa9547593e3980"
+    },
+    {
+      "path": "packages/fide.laws.chess/09-drawn.law",
+      "bytes": 9367,
+      "sha256": "72f88584b0ac40ed9bdb26932602f85e6fb3860e62874d60816e33b7ac29f3f6"
+    },
+    {
+      "path": "packages/fide.laws.chess/10-points.law",
+      "bytes": 8825,
+      "sha256": "682412d3feb8f53f898028a7e610e94aca94ca97d3e2988b5ae307b279b9dcf4"
+    },
+    {
+      "path": "packages/fide.laws.chess/11-conduct.law",
+      "bytes": 11530,
+      "sha256": "cba42539c9b69098f86c626521b54e8cf4368339c448fc8f92fbd9bf53e7c7c2"
+    },
+    {
+      "path": "packages/fide.laws.chess/12-arbiter.law",
+      "bytes": 10785,
+      "sha256": "77be8c80cc87a8f4d2440d0f620dd5ec6d9bacc3179f755cc950c73509b98974"
+    },
+    {
+      "path": "packages/fide.laws.chess/README.md",
+      "bytes": 4159,
+      "sha256": "97ff729a6369f52008106dea16def25e0779a96a838dd2d4c9c3aa884a78b28f"
+    },
+    {
+      "path": "packages/fide.laws.chess/appendix-a-b-rapid-blitz.law",
+      "bytes": 14301,
+      "sha256": "5e979ba9d52269379b70239e1a2a2106451dec6feae5ce8c33be81bd05cea986"
+    },
+    {
+      "path": "packages/fide.laws.chess/law.lock",
+      "bytes": 530,
+      "sha256": "0e058ecfd24701f2abdd65588d079f11b310c4695a0ad4ed903670be81b71cc9"
+    },
+    {
+      "path": "packages/fide.laws.chess/law.toml",
+      "bytes": 4189,
+      "sha256": "2994f116bce19085dc5104000f0a6897237cf4246e2a35fd0c69721d3c17739d"
+    },
+    {
+      "path": "packages/fide.laws.chess/package-info.json",
+      "bytes": 3993,
+      "sha256": "cc37977591e98da413b8525858fff28aa14c2fef761a8d62a61a433064cc0ac7"
+    },
+    {
+      "path": "packages/fide.laws.chess/package.law",
+      "bytes": 7430,
+      "sha256": "b19dbced66e64aeba0a3696c850e107bbbb14cf426c17ff7ff30389fb6324ae6"
+    },
+    {
+      "path": "packages/fide.laws.chess/sources.law",
+      "bytes": 54935,
+      "sha256": "7bab6800ed6423a3f021bc42f1e8da6ee7cf09fe1d51d01218e2bffbe7dffcae"
+    },
+    {
+      "path": "packages/fide.laws.chess/sources/fide-chess/articles.json",
+      "bytes": 2499,
+      "sha256": "89affd26a49724ad71bb6e1eaeda30f0c2386c05ca87cca9386eb9ee6c7312d0"
+    },
+    {
+      "path": "packages/fide.laws.chess/sources/fide-chess/en.txt",
+      "bytes": 48152,
+      "sha256": "d24adcdaec8b46dc37d5dcc74d52052d314d804870d5d5402e2434aa1bfda836"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/01-touch-move-requires-judgment.lawtest",
+      "bytes": 1353,
+      "sha256": "13f6ca75c0e16790e3e725a6aaac87722eef4f420379fb90827abff5a127d375"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/02-second-illegal-move-loses.lawtest",
+      "bytes": 1085,
+      "sha256": "4f9ee9e9d859b57f4ec4e73b83d11376b94d7c37973e67e4aa6ddeda486f52be"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/03-threefold-without-claim-not-yet.lawtest",
+      "bytes": 982,
+      "sha256": "6735d84bc3e350638c2770e14893fb5ca46590f2db1f2043bd5878ae2c722284"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/04-flag-fall-loses.lawtest",
+      "bytes": 1864,
+      "sha256": "fd5fd89c0f5da6255817c886063d54e3120c4b0151934598d867f5d16c660ca1"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/05-flag-fall-drawn-mate-impossible.lawtest",
+      "bytes": 1726,
+      "sha256": "f8e258ad23761db420ec3c789085d744e1d1f27f55b0baddba8d9af86089b8f8"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/06-checkmate-before-flag-prevails.lawtest",
+      "bytes": 2111,
+      "sha256": "ac65570dd13170aff0b77cadfd49f6366bb77907a40f2bec93a192db48b50111"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/07-late-arrival-requires-arbiter.lawtest",
+      "bytes": 1932,
+      "sha256": "dd4717554a84d50e31dad777bcfbbae9ad8881037a264bfe2150e8f99b9b76f0"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/08-late-arrival-loses-after-arbiter.lawtest",
+      "bytes": 1788,
+      "sha256": "0d5ec2388fe415781c71941852fbacc14181b85d65e04953134bcee3401689a0"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/09-rapid-first-illegal-one-minute.lawtest",
+      "bytes": 1852,
+      "sha256": "30f89f0cf0e4731c858de21e151c615a7a16908b84bfe0bbb5182ee45255d62a"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/10-standard-first-illegal-two-minutes.lawtest",
+      "bytes": 1828,
+      "sha256": "aa1863e53ceeedf1fda1077e2fb9edcd06b82c84f6e471e5d319e6eda37d7073"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/11-blitz-classification.lawtest",
+      "bytes": 836,
+      "sha256": "7862e219e44849bf824fdd73c6135170950142631ec150f268b12fbc38d01c1b"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/12-short-of-time-relieves-recording.lawtest",
+      "bytes": 1842,
+      "sha256": "104e1747dbae8ea61e0c896c289c7d9640235a3b251f0b5b8ead167825ae957e"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/13-increment-keeps-recording-duty.lawtest",
+      "bytes": 1862,
+      "sha256": "8ebd89d8538576e5588ef01b41f1758ce3f9e3bc78ec9a29b27e1e1c97ca4f8f"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/14-device-loses.lawtest",
+      "bytes": 1873,
+      "sha256": "43ba65f31f32f54eb7febe8ffa0d9011af30de1788a3cc83d26e005941ca270f"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/15-event-less-severe-device-penalty.lawtest",
+      "bytes": 2045,
+      "sha256": "ccf11bed6631f71a7d62110e8c56568afd8e06029d1d4db323a0da258f03b94c"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/16-warning-instead-of-prescribed-loss.lawtest",
+      "bytes": 2167,
+      "sha256": "b746858aa8c7922653e580bafa069894fb5888cc67cef483a922fa8947689587"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/17-resignation-scores-opponent.lawtest",
+      "bytes": 1794,
+      "sha256": "6199d05048094dd44b51217e5ed8277bb97c1bfa7f4e3025d455bc8ab7a8b8d1"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/18-both-persistent-refusal-no-winner.lawtest",
+      "bytes": 1933,
+      "sha256": "307b679573188d535766ed35b728c33b747d1d04a3c3497521329902b93014b0"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/19-colours-reversed-replay.lawtest",
+      "bytes": 799,
+      "sha256": "47f9115fd99b6dd15d729e6b10efca34786213c25fdd3ef41cf63bf35a398ac6"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/20-incorrect-threefold-claim-penalty.lawtest",
+      "bytes": 2011,
+      "sha256": "84e45a46e0bc289c2e65175f22f53895595fdbab993ef3a4b810c216e5ee99b6"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/21-rapid-illegal-move-stands.lawtest",
+      "bytes": 2158,
+      "sha256": "1fca1290ec303cef2ecd167059538d07fd4ec70eb9594596ff7d955955636df5"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/22-signed-result-requires-arbiter.lawtest",
+      "bytes": 820,
+      "sha256": "04a25ed4bb48f408a93819c6b038b7c234245d0cbb6fcf490a16af6d8fa0a1ff"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/23-quarter-point-score-not-normal.lawtest",
+      "bytes": 724,
+      "sha256": "729580334b5d1dbc8d958e88fd6aaa4134fd62e04ef114f1a0ccbbae189bd861"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/24-excess-scoresheet-requests-penalised.lawtest",
+      "bytes": 2296,
+      "sha256": "dafd0da61f2bf9efdc115d92324d172ef33387d190763e7c784f5234eea4bc75"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/25-observed-mate-position.lawtest",
+      "bytes": 204288,
+      "sha256": "1555b7c4bab7ff2363c2c2cb9d8e4f51421cb777f842cba551844d98ba00d64e"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/26-score-half-point-boundary.lawtest",
+      "bytes": 3267,
+      "sha256": "dc699381a1ff5f63a812d4e21f31f23eed5b9bfb866145efc6b6c195468a50c6"
+    },
+    {
+      "path": "packages/fide.laws.chess/tests/fide-chess.lawtest",
+      "bytes": 53580,
+      "sha256": "b91b55cbe8070ba825d23bba1ce3aa59eb2f38bcc984fbf1d9bc3f13086e3143"
+    },
+    {
+      "path": "registry/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "registry/check_registry.py",
+      "bytes": 11570,
+      "sha256": "685ea392636974289fa07060a1602a7e13345076f80d5141113607c56ca8c28f"
+    },
+    {
+      "path": "registry/lockfile.schema.json",
+      "bytes": 6973,
+      "sha256": "a2d2dda534ed1ec49320ed97d175e651a683c3922aac936f4e021301837cc94d"
+    },
+    {
+      "path": "registry/p/fide.laws.chess/0.1.1.json",
+      "bytes": 695,
+      "sha256": "2abd9263629f5faee13e733ad8fb6da93b1f4e6267cf873573fc4c23f453b097"
+    },
+    {
+      "path": "registry/p/fide.laws.chess/0.1.1/package.lawir.json",
+      "bytes": 603954,
+      "sha256": "20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe"
+    },
+    {
+      "path": "registry/p/fide.laws.chess/0.1.1/world.lawir.json",
+      "bytes": 603954,
+      "sha256": "20aa243a8e443c25aaa4f97add7cfb5eeaecb3a1492cb4170f1ae4b2ee8eedfe"
+    },
+    {
+      "path": "registry/p/fide.laws.chess/versions.json",
+      "bytes": 99,
+      "sha256": "c4d4a676329bd23b655479ead4a4170920ba134872dd0da2a7e1ef4b355ebbf2"
+    },
+    {
+      "path": "registry/package-descriptor.schema.json",
+      "bytes": 8946,
+      "sha256": "43444066471444c1910baa0126423219accf2921df295ccf0415e7001fce51e4"
+    },
+    {
+      "path": "registry/r/sha256/78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad",
+      "bytes": 59390,
+      "sha256": "78a4ff102d84266ea7e7463f3843f9a9cd57db1433f0d2e97b4642be2c1d1bad"
+    },
+    {
+      "path": "registry/r/sha256/7d5218658212fc19cb13b46ef8ccb808d0c2a7ed85ba5fbf8e5dc205269516f6",
+      "bytes": 59187,
+      "sha256": "7d5218658212fc19cb13b46ef8ccb808d0c2a7ed85ba5fbf8e5dc205269516f6"
+    },
+    {
+      "path": "registry/registry.json",
+      "bytes": 234,
+      "sha256": "ef711ce6f460998aeb8e5b35c6f9f444eb714d8901ca0967d7c8e2259d8703e9"
+    }
+  ],
+  "modelScenarioCount": 103,
+  "originalExampleCount": 10,
+  "originalExpectationCount": 18,
+  "fullCorpus": "not_checked",
+  "releaseVerified": false
+}

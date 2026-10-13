@@ -1,0 +1,25 @@
+name: FIDE chess npm stdio wrapper
+on:
+  push:
+    branches: [main]
+    paths: ['mcp/npm/**', 'tools/mcp_npm.py', 'tools/standalone_mcp/**', 'tests/mcp/*npm*', '.github/workflows/npm-mcp-verify.yml']
+  pull_request:
+    paths: ['mcp/npm/**', 'tools/mcp_npm.py', 'tools/standalone_mcp/**', 'tests/mcp/*npm*', '.github/workflows/npm-mcp-verify.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  guards:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: node --test tests/mcp/npm-launcher.test.cjs
+      - run: python3 -m unittest discover -s tests/mcp -p test_npm.py -v

@@ -1,0 +1,4790 @@
+{
+  "$defs": {
+    "AchievementGoal": {
+      "additionalProperties": false,
+      "properties": {
+        "completenessPolicy": {
+          "$ref": "#/$defs/StableId"
+        },
+        "condition": {
+          "$ref": "#/$defs/Formula"
+        },
+        "kind": {
+          "const": "achievement"
+        },
+        "termination": {
+          "$ref": "#/$defs/Formula"
+        },
+        "window": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "condition",
+        "window"
+      ],
+      "type": "object"
+    },
+    "AggregateTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "aggregate"
+        },
+        "op": {
+          "enum": [
+            "sum",
+            "count",
+            "min",
+            "max",
+            "average",
+            "only"
+          ]
+        },
+        "options": {
+          "$ref": "#/$defs/JsonObject"
+        }
+      },
+      "required": [
+        "kind",
+        "op",
+        "input"
+      ],
+      "type": "object"
+    },
+    "Anchor": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "coverage": {
+              "enum": [
+                "exact",
+                "partial",
+                "contextual",
+                "disputed"
+              ]
+            },
+            "id": {},
+            "kind": {
+              "const": "anchor"
+            },
+            "labels": {},
+            "package": {},
+            "provenance": {},
+            "quote": {
+              "description": "Exact quote of the norm's location inside the fragment text: a contiguous substring of `Fragment.texts[].text` in at least one language of the same fragment, byte for byte, without normalization. Optional; a mismatch is a static error. Offsets are deliberately not stored: they shift on every re-pinning of the publication, while containment does not.",
+              "$comment": "SPEC §33, §13, §194; DECISION-0358; errata E-0240; LDC-E5208",
+              "type": "string"
+            },
+            "relation": {
+              "enum": [
+                "formalizes",
+                "interprets",
+                "quotes",
+                "paraphrases",
+                "derives_from",
+                "applies",
+                "limits",
+                "invalidates",
+                "distinguishes"
+              ]
+            },
+            "semanticNode": {
+              "$ref": "#/$defs/StableId"
+            },
+            "sourceFragment": {
+              "$ref": "#/$defs/StableId"
+            },
+            "sourceSpan": {}
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "semanticNode",
+            "sourceFragment",
+            "relation",
+            "coverage"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "Assertion": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "$ref": "#/$defs/AssertionBody"
+        }
+      ]
+    },
+    "AssertionBody": {
+      "additionalProperties": false,
+      "properties": {
+        "anchors": {},
+        "annotations": {},
+        "contentHash": {},
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/StableId"
+          },
+          "type": "array"
+        },
+        "id": {},
+        "judgment": {
+          "additionalProperties": false,
+          "properties": {
+            "authority": {
+              "$ref": "#/$defs/StableId"
+            },
+            "payload": {
+              "$ref": "#/$defs/Term"
+            },
+            "request": {
+              "$ref": "#/$defs/StableId"
+            }
+          },
+          "required": [
+            "authority"
+          ],
+          "type": "object"
+        },
+        "kind": {
+          "const": "assertion"
+        },
+        "labels": {},
+        "literal": {
+          "$ref": "#/$defs/Literal"
+        },
+        "observedAt": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DateString"
+            },
+            {
+              "$ref": "#/$defs/InstantString"
+            }
+          ]
+        },
+        "origin": {
+          "enum": [
+            "case_input",
+            "source_asserted",
+            "external_snapshot",
+            "derived",
+            "adjudicated",
+            "assumed_for_simulation"
+          ]
+        },
+        "package": {},
+        "provenance": {},
+        "recordedAt": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DateString"
+            },
+            {
+              "$ref": "#/$defs/InstantString"
+            }
+          ]
+        },
+        "sourceSpan": {},
+        "valid": {
+          "$ref": "#/$defs/TemporalInterval"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "package",
+        "literal",
+        "origin"
+      ],
+      "type": "object"
+    },
+    "BinaryTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "binary"
+        },
+        "left": {
+          "$ref": "#/$defs/Term"
+        },
+        "op": {
+          "type": "string"
+        },
+        "right": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "op",
+        "left",
+        "right"
+      ],
+      "type": "object"
+    },
+    "BindPattern": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "bind"
+        },
+        "variable": {
+          "$ref": "#/$defs/Variable"
+        }
+      },
+      "required": [
+        "kind",
+        "variable"
+      ],
+      "type": "object"
+    },
+    "BoolFormula": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "boolean"
+        },
+        "value": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "type": "object"
+    },
+    "CalendarSnapshot": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "datasetHash": {
+              "$ref": "#/$defs/Digest"
+            },
+            "format": {
+              "type": "string"
+            },
+            "id": {},
+            "kind": {
+              "const": "calendar_snapshot"
+            },
+            "labels": {},
+            "package": {},
+            "provenance": {},
+            "resourceUri": {
+              "type": "string"
+            },
+            "sourceArtifacts": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "sourceSpan": {},
+            "timezone": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "timezoneDbSnapshot": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "valid": {
+              "$ref": "#/$defs/TemporalInterval"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "timezone",
+            "valid",
+            "sourceArtifacts",
+            "datasetHash",
+            "timezoneDbSnapshot"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "CaseAssertion": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommonInput"
+        },
+        {
+          "$ref": "#/$defs/AssertionBody"
+        }
+      ]
+    },
+    "EvidencePolicy": {
+      "description": "Carrier of an executable evidence policy. Phase rules are closed by the `rules` list; the node has no open metadata.",
+      "$comment": "SPEC §78.2; DECISION-0126",
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "profile",
+            "accepts",
+            "protects",
+            "rules"
+          ],
+          "properties": {
+            "kind": {
+              "const": "evidence_policy"
+            },
+            "visibility": {
+              "description": "`pub` on a policy makes it addressable from a neighboring case axis as `package::Policy`. Absence of the field means internal, and bytes without `pub` are unchanged.",
+              "$comment": "SPEC §24; DECISION-0165",
+              "enum": [
+                "public"
+              ]
+            },
+            "id": {},
+            "package": {},
+            "contentHash": {},
+            "sourceSpan": {},
+            "annotations": {},
+            "labels": {},
+            "anchors": {},
+            "provenance": {},
+            "profile": {
+              "const": "law.core.evidence-policy/0.2"
+            },
+            "accepts": {
+              "$ref": "#/$defs/StableId"
+            },
+            "protects": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/StableId"
+              }
+            },
+            "inputs": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/StableId"
+              },
+              "propertyNames": {
+                "enum": [
+                  "edge",
+                  "status",
+                  "issuer",
+                  "observed",
+                  "recorded",
+                  "available",
+                  "current",
+                  "authentic",
+                  "knowledge",
+                  "source"
+                ]
+              }
+            },
+            "fields": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/StableId"
+              }
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/StableId"
+              },
+              "propertyNames": {
+                "pattern": "^(0|[1-9][0-9]*)$"
+              }
+            },
+            "targets": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/StableId"
+              }
+            },
+            "rules": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/StableId"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DeadlinePolicy": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "policy"
+          ],
+          "properties": {
+            "kind": {
+              "const": "deadline_policy"
+            },
+            "visibility": {
+              "description": "`pub` on a policy makes it addressable from a neighboring case axis as `package::Policy`. Absence of the field means internal, and bytes without `pub` are unchanged.",
+              "$comment": "SPEC §24; DECISION-0165",
+              "enum": [
+                "public"
+              ]
+            },
+            "id": {},
+            "package": {},
+            "contentHash": {},
+            "sourceSpan": {},
+            "annotations": {},
+            "labels": {},
+            "anchors": {},
+            "provenance": {},
+            "policy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "start_count",
+                "include_end",
+                "roll"
+              ],
+              "properties": {
+                "start_count": {
+                  "enum": [
+                    "same_day",
+                    "next_day"
+                  ]
+                },
+                "include_end": {
+                  "type": "boolean"
+                },
+                "roll": {
+                  "enum": [
+                    "no_roll",
+                    "next_working_day",
+                    "previous_working_day"
+                  ]
+                },
+                "cutoff": {
+                  "type": "string",
+                  "pattern": "^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$"
+                },
+                "month_end": {
+                  "enum": [
+                    "last_day_of_month",
+                    "reject_nonexistent"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "TemporalResolutionPolicy": {
+      "description": "Resolution of `Date` into `Instant`. Only `utcOffset` is executed; `timezone` is a provenance label, and no time-zone database is read.",
+      "$comment": "SPEC §82.1; errata E-0143",
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "utcOffset"
+          ],
+          "properties": {
+            "kind": {
+              "const": "temporal_resolution_policy"
+            },
+            "visibility": {
+              "description": "`pub` on a policy makes it addressable from a neighboring case axis as `package::Policy`. Absence of the field means internal, and bytes without `pub` are unchanged.",
+              "$comment": "SPEC §24; DECISION-0165",
+              "enum": [
+                "public"
+              ]
+            },
+            "id": {},
+            "package": {},
+            "contentHash": {},
+            "sourceSpan": {},
+            "annotations": {},
+            "labels": {},
+            "anchors": {},
+            "provenance": {},
+            "utcOffset": {
+              "type": "string",
+              "pattern": "^[+-]([01]\\d|2[0-3]):[0-5]\\d$"
+            },
+            "dayBoundary": {
+              "type": "string",
+              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$"
+            },
+            "timezone": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "Procedure": {
+      "description": "The profile automaton as data, executed by the folding phase. Desugaring no longer emits the `<P>/initial`, `<P>/<T>/valid` and `<P>/<T>/enters` rules.",
+      "$comment": "SPEC §201.1, §159-§164, §161.1; DECISION-0156",
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "instanceType",
+            "states",
+            "transitions",
+            "instancePredicate",
+            "attemptedPredicate",
+            "validPredicate",
+            "enteredPredicate",
+            "leftPredicate",
+            "initialPredicate",
+            "stateBeforePredicate",
+            "currentStatePredicate"
+          ],
+          "properties": {
+            "kind": {
+              "const": "procedure"
+            },
+            "id": {},
+            "package": {},
+            "contentHash": {},
+            "sourceSpan": {},
+            "annotations": {},
+            "labels": {},
+            "anchors": {},
+            "provenance": {},
+            "instanceType": {
+              "$ref": "#/$defs/TypeRef"
+            },
+            "instancePredicate": {
+              "description": "The `procedure_instance` of this procedure. The eight profile predicates are named by the node explicitly: with two procedures in one package the names are qualified, and a fact's membership in a procedure would otherwise be guessed from the name — precisely the inference this explicit naming removes.",
+              "$comment": "SPEC §201.1, §164.1; DECISION-0013",
+              "$ref": "#/$defs/StableId"
+            },
+            "attemptedPredicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "validPredicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "enteredPredicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "leftPredicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "initialPredicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "stateBeforePredicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "currentStatePredicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "completedPredicate": {
+              "description": "The sugar predicate `completed(P, y)` of this procedure. Optional: a procedure whose completion is not referenced by any rule of the package does not declare it. Named by the node, not guessed from the first argument's shape: the guess \"a binary relation whose first argument is the procedure name\" would also cover an unrelated `paid(ProcedureA, y)`, and folding would declare it true knowing nothing about it.",
+              "$comment": "SPEC §163.1, §201.1",
+              "$ref": "#/$defs/StableId"
+            },
+            "states": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/ProcedureState"
+              }
+            },
+            "transitions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ProcedureTransition"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ProcedureState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "initial",
+        "terminal"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "initial": {
+          "type": "boolean"
+        },
+        "terminal": {
+          "type": "boolean"
+        },
+        "regions": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/ProcedureRegion"
+          }
+        },
+        "join": {
+          "$ref": "#/$defs/ProcedureJoin"
+        }
+      }
+    },
+    "ProcedureRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "states",
+        "transitions"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "states": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/ProcedureState"
+          }
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProcedureTransition"
+          }
+        }
+      }
+    },
+    "ProcedureTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "from",
+        "to",
+        "requires"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "from": {
+          "$ref": "#/$defs/StableId"
+        },
+        "to": {
+          "$ref": "#/$defs/StableId"
+        },
+        "on": {
+          "$ref": "#/$defs/StableId"
+        },
+        "guard": {
+          "$ref": "#/$defs/Formula"
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Formula"
+          }
+        }
+      }
+    },
+    "ProcedureJoin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy"
+      ],
+      "properties": {
+        "policy": {
+          "enum": [
+            "all",
+            "any",
+            "quorum"
+          ]
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "Stage": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "status"
+          ],
+          "properties": {
+            "kind": {
+              "const": "stage"
+            },
+            "id": {},
+            "package": {},
+            "contentHash": {},
+            "sourceSpan": {},
+            "annotations": {},
+            "labels": {},
+            "anchors": {},
+            "provenance": {},
+            "status": {
+              "description": "Lifecycle state of a stage body. `reserved` is an empty body executed by no version; `executable` is a body with an index and bindings.",
+              "$comment": "SPEC §111.1, §111.2; DECISION-0199; errata E-0262, E-0269; revision law.core/0.2.4 and later",
+              "enum": [
+                "reserved",
+                "executable"
+              ]
+            },
+            "index": {
+              "description": "Index of the round. The domain runs from `from` to `to` per the declaration and is finite by construction; the rank is the number of steps from `from` along `direction`; `step` is a calendar step for `Date` only.",
+              "$comment": "SPEC §111.2",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "Integer",
+                    "Date"
+                  ]
+                },
+                "from": {
+                  "$ref": "#/$defs/Term"
+                },
+                "to": {
+                  "$ref": "#/$defs/Term"
+                },
+                "step": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "unit": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "count",
+                    "unit"
+                  ]
+                },
+                "direction": {
+                  "enum": [
+                    "ascending",
+                    "descending"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type",
+                "from",
+                "to",
+                "direction"
+              ]
+            },
+            "bindings": {
+              "description": "Round predicates of the stage: the relation and the one-based position of the index argument.",
+              "$comment": "SPEC §111.2",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "predicate": {
+                    "$ref": "#/$defs/StableId"
+                  },
+                  "position": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "predicate",
+                  "position"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CallTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "items": {
+            "$ref": "#/$defs/Term"
+          },
+          "type": "array"
+        },
+        "function": {
+          "$ref": "#/$defs/StableId"
+        },
+        "kind": {
+          "const": "call"
+        }
+      },
+      "required": [
+        "kind",
+        "function",
+        "args"
+      ],
+      "type": "object"
+    },
+    "ClosurePolicy": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "completeAsOf": {
+              "$ref": "#/$defs/InstantString"
+            },
+            "contentHash": {},
+            "deriveExplicitNegative": {
+              "type": "boolean"
+            },
+            "domain": {
+              "$ref": "#/$defs/Term"
+            },
+            "effective": {
+              "$ref": "#/$defs/TemporalInterval"
+            },
+            "id": {},
+            "kind": {
+              "const": "closure_policy"
+            },
+            "labels": {},
+            "package": {},
+            "predicate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "provenance": {},
+            "snapshot": {
+              "$ref": "#/$defs/StableId"
+            },
+            "sourceSpan": {}
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "predicate",
+            "domain",
+            "snapshot",
+            "completeAsOf"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ComparisonFormula": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "comparison"
+        },
+        "left": {
+          "$ref": "#/$defs/Term"
+        },
+        "op": {
+          "enum": [
+            "eq",
+            "ne",
+            "lt",
+            "le",
+            "gt",
+            "ge",
+            "in",
+            "text_matches"
+          ]
+        },
+        "right": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "op",
+        "left",
+        "right"
+      ],
+      "type": "object"
+    },
+    "ComprehensionTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "binders": {
+          "description": "Auxiliary existential-local generator binders; they distinguish List positions but are not collection elements.",
+          "$comment": "SPEC §52.1",
+          "items": {
+            "$ref": "#/$defs/Variable"
+          },
+          "type": "array"
+        },
+        "distinct": {
+          "description": "True gives Set<T> (`collect`, distinct ground values); false gives List<T> (`collect all`, one element per solution substitution of the generator). Required, with no default: multiplicity is the author's semantic decision, not a schema default.",
+          "$comment": "SPEC §51, §52.1; errata E-0012",
+          "type": "boolean"
+        },
+        "element": {
+          "$ref": "#/$defs/Term"
+        },
+        "generator": {
+          "$ref": "#/$defs/Formula"
+        },
+        "kind": {
+          "const": "comprehension"
+        },
+        "variable": {
+          "$ref": "#/$defs/Variable"
+        }
+      },
+      "required": [
+        "kind",
+        "variable",
+        "element",
+        "generator",
+        "distinct"
+      ],
+      "type": "object"
+    },
+    "Constraint": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "antecedent": {
+              "$ref": "#/$defs/Formula"
+            },
+            "contentHash": {},
+            "effective": {
+              "$ref": "#/$defs/TemporalInterval"
+            },
+            "id": {},
+            "interpretations": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "kind": {
+              "const": "constraint"
+            },
+            "labels": {},
+            "message": {
+              "type": "string"
+            },
+            "package": {},
+            "provenance": {},
+            "requirement": {
+              "$ref": "#/$defs/Formula"
+            },
+            "scope": {
+              "$ref": "#/$defs/Formula"
+            },
+            "severity": {
+              "enum": [
+                "info",
+                "warning",
+                "error",
+                "critical"
+              ]
+            },
+            "sourceSpan": {},
+            "variables": {
+              "items": {
+                "$ref": "#/$defs/Variable"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "variables",
+            "antecedent",
+            "requirement",
+            "scope",
+            "severity",
+            "interpretations"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "CounterfactualDecl": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "constraints": {
+              "items": {
+                "$ref": "#/$defs/Formula"
+              },
+              "type": "array"
+            },
+            "contentHash": {},
+            "costModel": {
+              "$ref": "#/$defs/StableId"
+            },
+            "id": {},
+            "immutable": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            "kind": {
+              "const": "counterfactual_decl"
+            },
+            "labels": {},
+            "metadata": {
+              "$ref": "#/$defs/JsonObject"
+            },
+            "mutable": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "package": {},
+            "provenance": {},
+            "sourceSpan": {},
+            "target": {
+              "$ref": "#/$defs/Formula"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "target",
+            "mutable",
+            "immutable",
+            "costModel",
+            "constraints"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "DateString": {
+      "description": "Current semantic Date axes use ASCII YYYY-MM-DD, years 0001 through 9999, and a valid proleptic Gregorian calendar date. This lexical schema pattern does not check calendar validity; current semantic admission does.",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "DateBound": {
+      "description": "A finite temporal bound is ASCII YYYY-MM-DD with year 0001 through 9999 and a valid proleptic Gregorian calendar date. The pattern checks lexical ranges; admission checks month length and leap years.",
+      "format": "date",
+      "pattern": "^(?!0000-)[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$",
+      "type": "string"
+    },
+    "DecimalString": {
+      "pattern": "^(?:0|-?(?:[1-9][0-9]*(?:\\.[0-9]*[1-9])?|0\\.[0-9]*[1-9]))$",
+      "type": "string"
+    },
+    "Digest": {
+      "pattern": "^[A-Za-z0-9_-]+:[A-Fa-f0-9]+$",
+      "type": "string"
+    },
+    "DutyPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "activation": {
+          "$ref": "#/$defs/Formula"
+        },
+        "allocationPolicy": {
+          "oneOf": [
+            {
+              "enum": [
+                "individual",
+                "joint",
+                "several",
+                "joint_and_several"
+              ]
+            },
+            {
+              "$ref": "#/$defs/StableId"
+            }
+          ]
+        },
+        "bearer": {
+          "$ref": "#/$defs/Term"
+        },
+        "beneficiary": {
+          "$ref": "#/$defs/Term"
+        },
+        "dischargePolicy": {
+          "$ref": "#/$defs/StableId"
+        },
+        "goal": {
+          "$ref": "#/$defs/Goal"
+        },
+        "kind": {
+          "const": "duty"
+        },
+        "violationPolicy": {
+          "$ref": "#/$defs/StableId"
+        }
+      },
+      "required": [
+        "kind",
+        "bearer",
+        "goal"
+      ],
+      "type": "object"
+    },
+    "DynamicReference": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "id": {},
+            "kind": {
+              "const": "reference"
+            },
+            "labels": {},
+            "language": {
+              "$ref": "#/$defs/LanguageTag"
+            },
+            "locator": {
+              "type": "string"
+            },
+            "package": {},
+            "policy": {
+              "$ref": "#/$defs/StableId"
+            },
+            "provenance": {},
+            "resolveAt": {
+              "const": "legal_time"
+            },
+            "sourceSpan": {},
+            "work": {
+              "$ref": "#/$defs/StableId"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "work",
+            "resolveAt"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "EvidenceItem": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "documentHash": {
+              "$ref": "#/$defs/Digest"
+            },
+            "evidenceType": {
+              "$ref": "#/$defs/TypeRef"
+            },
+            "id": {},
+            "issuer": {
+              "$ref": "#/$defs/Term"
+            },
+            "kind": {
+              "const": "evidence_item"
+            },
+            "labels": {},
+            "observedAt": {
+              "$ref": "#/$defs/InstantString"
+            },
+            "package": {},
+            "payload": {
+              "$ref": "#/$defs/JsonObject"
+            },
+            "provenance": {},
+            "recordedAt": {
+              "$ref": "#/$defs/InstantString"
+            },
+            "sourceSpan": {},
+            "status": {
+              "type": "string"
+            },
+            "valid": {
+              "$ref": "#/$defs/TemporalInterval"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "evidenceType",
+            "status",
+            "payload"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ExternalDecl": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "authority": {
+              "$ref": "#/$defs/RefTerm"
+            },
+            "capability": {
+              "type": "string"
+            },
+            "contentHash": {},
+            "effect": {
+              "enum": [
+                "snapshot",
+                "judgment",
+                "opaque"
+              ]
+            },
+            "id": {},
+            "kind": {
+              "const": "external_decl"
+            },
+            "labels": {},
+            "package": {},
+            "provenance": {},
+            "requestType": {
+              "$ref": "#/$defs/TypeRef"
+            },
+            "responseType": {
+              "$ref": "#/$defs/TypeRef"
+            },
+            "snapshotBinding": {
+              "type": "string"
+            },
+            "sourceSpan": {},
+            "symbol": {
+              "$ref": "#/$defs/StableId"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "effect": {
+                    "const": "snapshot"
+                  }
+                },
+                "required": [
+                  "effect"
+                ]
+              },
+              "then": {
+                "required": [
+                  "capability",
+                  "snapshotBinding",
+                  "responseType"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "effect": {
+                    "const": "judgment"
+                  }
+                },
+                "required": [
+                  "effect"
+                ]
+              },
+              "then": {
+                "required": [
+                  "authority"
+                ]
+              }
+            }
+          ],
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "symbol",
+            "effect"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "FieldTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "field"
+        },
+        "target": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "target",
+        "field"
+      ],
+      "type": "object"
+    },
+    "ForbearanceGoal": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/Term"
+        },
+        "completenessPolicy": {
+          "$ref": "#/$defs/StableId"
+        },
+        "kind": {
+          "const": "forbearance"
+        },
+        "window": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "action",
+        "window"
+      ],
+      "type": "object"
+    },
+    "Formula": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Literal"
+        },
+        {
+          "$ref": "#/$defs/BoolFormula"
+        },
+        {
+          "$ref": "#/$defs/NaryFormula"
+        },
+        {
+          "$ref": "#/$defs/StatusFormula"
+        },
+        {
+          "$ref": "#/$defs/ComparisonFormula"
+        },
+        {
+          "$ref": "#/$defs/QuantifiedFormula"
+        },
+        {
+          "$ref": "#/$defs/TemporalFormula"
+        },
+        {
+          "$ref": "#/$defs/RoundingFormula"
+        }
+      ]
+    },
+    "Fragment": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "edition": {
+              "$ref": "#/$defs/StableId"
+            },
+            "fragmentKind": {
+              "type": "string"
+            },
+            "id": {},
+            "kind": {
+              "const": "fragment"
+            },
+            "labels": {},
+            "locator": {
+              "type": "string"
+            },
+            "package": {},
+            "parent": {
+              "$ref": "#/$defs/StableId"
+            },
+            "provenance": {},
+            "sourceSpan": {},
+            "texts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "contentHash": {
+                    "$ref": "#/$defs/Digest",
+                    "description": "Digest of this text item's own exact UTF-8 bytes, independently of other texts and language/status. Direct CLIR may carry multiple items with individual digests; the single source content_hash field is limited to one text item (E5209). Required when the fragment's edition declared a materialization status from the pinned group (PINNED_OFFICIAL_BYTES, PINNED_UNOFFICIAL_COPY, PINNED_EDITORIAL_RECONSTRUCTION): absence is then a static error, as is a mismatch with the text. The obligation is cross-node (it depends on the edition), so `required` cannot express it and a static check enforces it; outside the pinned group the field stays optional, and ABSTRACT_ONLY declares the absence of text.",
+                    "$comment": "SPEC §194, §27.2; errata E-0024; LDC-E5205, LDC-E5201"
+                  },
+                  "exactBytes": {
+                    "description": "The exact UTF-8 bytes of the source text block, in canonical base64 (RFC 4648, standard alphabet, padded, no whitespace). Present if and only if those bytes differ from the UTF-8 encoding of `text`, which always carries the NFC form. The exact bytes of a text are the decoded `exactBytes`, or UTF-8 `text` when the field is absent; `contentHash`, publication containment and text coverage are computed over them, while string comparison (quotes, revisions) runs over `text`. The carrier is legal only when re-encoding the decoded bytes yields the same string, they are valid UTF-8, their NFC form equals `text`, and they differ from UTF-8 `text`; otherwise evaluation reports fatal SOURCE_TEXT_BYTES_INVALID. Legality is a content check, not a schema pattern: canonical base64 includes zero trailing bits, which a pattern does not express, and an illegal carrier is an evaluation issue, not a request rejection. Current documents carrying the field are written as law.core.ir/0.7.",
+                    "$comment": "SPEC §13, §28, §208, §33.1, §33.2, §32; DECISION-0375; errata E-0248; LDC-E5202",
+                    "type": "string"
+                  },
+                  "language": {
+                    "$ref": "#/$defs/LanguageTag"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "description": "The official text in Unicode NFC; the source bytes, when they differ, are carried by `exactBytes`.",
+                    "$comment": "SPEC §13, §208",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "language",
+                  "status",
+                  "text"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "visibility": {
+              "description": "`pub fragment` is the only form of a cross-package @source target. Absence means internal, as with other exportable declarations.",
+              "$comment": "SPEC §24, §33",
+              "enum": [
+                "public"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "edition",
+            "fragmentKind",
+            "locator"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "FunctionDecl": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "body": {
+              "$ref": "#/$defs/Term"
+            },
+            "contentHash": {},
+            "effect": {
+              "const": "pure"
+            },
+            "id": {},
+            "kind": {
+              "const": "function_decl"
+            },
+            "labels": {},
+            "package": {},
+            "parameters": {
+              "items": {
+                "$ref": "#/$defs/Variable"
+              },
+              "type": "array"
+            },
+            "provenance": {},
+            "sourceSpan": {},
+            "symbol": {
+              "$ref": "#/$defs/StableId"
+            },
+            "terminationCertificate": {
+              "$ref": "#/$defs/StableId"
+            },
+            "visibility": {
+              "description": "Declaration visibility. Absence of the field defaults to `internal`; `public` is written only for `pub` declarations, so the field's appearance is additive and does not change the bytes of programs without `pub`. Cross-package references of the form `pkg::Symbol` resolve only against a public declaration.",
+              "$comment": "SPEC §24",
+              "enum": [
+                "public"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "symbol",
+            "parameters",
+            "body",
+            "effect"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "Goal": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/AchievementGoal"
+        },
+        {
+          "$ref": "#/$defs/MaintenanceGoal"
+        },
+        {
+          "$ref": "#/$defs/ForbearanceGoal"
+        },
+        {
+          "$ref": "#/$defs/RecurringGoal"
+        }
+      ]
+    },
+    "IfTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/$defs/Formula"
+        },
+        "else": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "if"
+        },
+        "then": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "condition",
+        "then",
+        "else"
+      ],
+      "type": "object"
+    },
+    "ImmunityPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "against": {
+          "$ref": "#/$defs/Term"
+        },
+        "holder": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "immunity"
+        },
+        "protectedEffect": {
+          "$ref": "#/$defs/LegalEffect"
+        },
+        "window": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "holder",
+        "protectedEffect"
+      ],
+      "type": "object"
+    },
+    "InstantString": {
+      "description": "Current semantic Instant axes use ASCII YYYY-MM-DDTHH:MM:SS[.fraction](Z|±HH:MM), with a required offset whose hours are 00 through 23 and minutes 00 through 59. Current semantic admission also checks the Gregorian date, clock ranges, and offset ranges; this lexical pattern alone does not.",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$",
+      "type": "string"
+    },
+    "InstantBound": {
+      "description": "A finite temporal bound is ASCII YYYY-MM-DDTHH:MM:SS[.fraction](Z|±HH:MM), with year 0001 through 9999, a valid proleptic Gregorian date, clock fields in range, a required explicit offset with hours 00 through 23 and minutes 00 through 59, and one or more ASCII fraction digits when present. Admission checks calendar validity.",
+      "format": "date-time",
+      "pattern": "^(?!0000-)[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\\.[0-9]+)?(?:Z|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$",
+      "type": "string"
+    },
+    "Interpretation": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "authority": {
+              "$ref": "#/$defs/Term"
+            },
+            "contentHash": {},
+            "effective": {
+              "$ref": "#/$defs/TemporalInterval"
+            },
+            "excludes": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "extends": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "id": {},
+            "includes": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "kind": {
+              "const": "interpretation"
+            },
+            "visibility": {
+              "description": "Visibility of an interpretation: `pub` exports the entire reading. Absence means internal.",
+              "$comment": "SPEC §24; DECISION-0152",
+              "enum": [
+                "public"
+              ]
+            },
+            "labels": {},
+            "metadata": {
+              "$ref": "#/$defs/JsonObject"
+            },
+            "of": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "package": {},
+            "provenance": {},
+            "sourceSpan": {},
+            "status": {
+              "type": "string"
+            },
+            "origin": {
+              "description": "Id of the precedent_decl node from which this node was generated by the compiler; absent on hand-written nodes.",
+              "$comment": "SPEC §276.10",
+              "$ref": "#/$defs/StableId"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "status",
+            "includes",
+            "excludes"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "InterpretationGroup": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "alternatives": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "minItems": 2,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "id": {},
+            "kind": {
+              "const": "interpretation_group"
+            },
+            "labels": {},
+            "metadata": {
+              "$ref": "#/$defs/JsonObject"
+            },
+            "package": {},
+            "provenance": {},
+            "selection": {
+              "enum": [
+                "exactly_one",
+                "any_of",
+                "compose_explicitly"
+              ]
+            },
+            "sourceSpan": {}
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "alternatives",
+            "selection"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "IntervalTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "$ref": "#/$defs/Term"
+        },
+        "endInclusive": {
+          "type": "boolean"
+        },
+        "kind": {
+          "const": "interval"
+        },
+        "start": {
+          "$ref": "#/$defs/Term"
+        },
+        "startInclusive": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "start",
+        "end",
+        "startInclusive",
+        "endInclusive"
+      ],
+      "type": "object"
+    },
+    "JsonObject": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "type": "object"
+    },
+    "JsonValue": {
+      "oneOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "integer",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "type": "array"
+        },
+        {
+          "$ref": "#/$defs/JsonObject"
+        }
+      ]
+    },
+    "Label": {
+      "additionalProperties": false,
+      "properties": {
+        "grammaticalForms": {
+          "type": "object",
+          "description": "Morphological forms of the label; the key is a slot from the closed dictionary of its language tag, the value is a non-empty form. Presentational: outside the semantic hash, inside the node's content hash.",
+          "$comment": "SPEC §218.1, §209, §202; errata E-0010",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minProperties": 1
+        },
+        "language": {
+          "$ref": "#/$defs/LanguageTag"
+        },
+        "status": {
+          "enum": [
+            "official",
+            "unofficial",
+            "translation"
+          ]
+        },
+        "template": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Predicate template of a relation label: a positive clause with placeholders {parameterName} for every parameter; {{ and }} are literal braces. Presentational: outside the semantic hash, inside the node's content hash; allowed only on labels of relation symbol_decl.",
+          "$comment": "SPEC §218.2, §209, §202; DECISION-0395"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "language",
+        "status",
+        "text"
+      ],
+      "type": "object"
+    },
+    "LanguageTag": {
+      "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$",
+      "type": "string"
+    },
+    "LegalEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "after": {
+          "$ref": "#/$defs/Formula"
+        },
+        "before": {
+          "$ref": "#/$defs/Formula"
+        },
+        "description": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "create",
+            "terminate",
+            "modify",
+            "opaque"
+          ]
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "LetTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "let"
+        },
+        "value": {
+          "$ref": "#/$defs/Term"
+        },
+        "variable": {
+          "$ref": "#/$defs/Variable"
+        }
+      },
+      "required": [
+        "kind",
+        "variable",
+        "value",
+        "body"
+      ],
+      "type": "object"
+    },
+    "LibertyPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/Term"
+        },
+        "against": {
+          "$ref": "#/$defs/Term"
+        },
+        "holder": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "liberty"
+        },
+        "window": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "holder",
+        "action",
+        "window"
+      ],
+      "type": "object"
+    },
+    "LifecycleEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/TemporalInterval"
+            },
+            {
+              "$ref": "#/$defs/DateBound"
+            },
+            {
+              "$ref": "#/$defs/InstantBound"
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/StableId"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "extent"
+      ],
+      "type": "object"
+    },
+    "ListTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/Term"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "list"
+        }
+      },
+      "required": [
+        "kind",
+        "items"
+      ],
+      "type": "object"
+    },
+    "Literal": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "items": {
+            "$ref": "#/$defs/Term"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "literal"
+        },
+        "polarity": {
+          "enum": [
+            "positive",
+            "negative"
+          ]
+        },
+        "predicate": {
+          "$ref": "#/$defs/StableId"
+        }
+      },
+      "required": [
+        "kind",
+        "polarity",
+        "predicate",
+        "args"
+      ],
+      "type": "object"
+    },
+    "LiteralTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "display": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "value"
+        },
+        "type": {
+          "$ref": "#/$defs/TypeRef"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "factors": {
+          "description": "The multiset of a quantity's base units. `unit` is not parsed on read but is checked against its rendering: the grammar \"base _per_ base\" is ambiguous.",
+          "$comment": "SPEC §49.1; E-0136",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "unit": {
+                "type": "string"
+              },
+              "exp": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "unit",
+              "exp"
+            ]
+          }
+        },
+        "lower": {
+          "description": "Lower bound of the interval, an irreducible fraction `<n>/<d>`.",
+          "$comment": "SPEC §259.2; E-0136",
+          "type": "string",
+          "pattern": "^-?[0-9]+/[1-9][0-9]*$"
+        },
+        "upper": {
+          "description": "Upper bound of the interval.",
+          "$comment": "SPEC §259.2; E-0136",
+          "type": "string",
+          "pattern": "^-?[0-9]+/[1-9][0-9]*$"
+        },
+        "derivation": {
+          "description": "The derivation canon. The bounds are recomputed from it, not checked field by field.",
+          "$comment": "SPEC §259.2; E-0136",
+          "type": "string",
+          "minLength": 1
+        },
+        "poly": {
+          "description": "Algebraic min-poly coefficients, ascending, as ASCII-int decimal strings; verified through the canon funnel on read, never trusted.",
+          "$comment": "Form 0.4.1; DECISION-0437",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[+-]?[0-9]+$"
+          }
+        },
+        "root": {
+          "description": "1-based index of the real root in ascending order; range-checked against the Sturm count on read.",
+          "$comment": "Form 0.4.1; DECISION-0437",
+          "type": "integer",
+          "minimum": 1
+        },
+        "expr": {
+          "description": "RealExpr canon string; verified through the constructor funnel on read, never trusted.",
+          "$comment": "Form 0.5, canon §1; DECISION-0438",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "kind",
+        "type"
+      ],
+      "type": "object"
+    },
+    "LockedImport": {
+      "additionalProperties": false,
+      "properties": {
+        "contentHash": {
+          "$ref": "#/$defs/Digest"
+        },
+        "features": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "package": {
+          "$ref": "#/$defs/PackageRef"
+        }
+      },
+      "required": [
+        "package",
+        "contentHash"
+      ],
+      "type": "object"
+    },
+    "MaintenanceGoal": {
+      "additionalProperties": false,
+      "properties": {
+        "completenessPolicy": {
+          "$ref": "#/$defs/StableId"
+        },
+        "condition": {
+          "$ref": "#/$defs/Formula"
+        },
+        "kind": {
+          "const": "maintenance"
+        },
+        "termination": {
+          "$ref": "#/$defs/Formula"
+        },
+        "window": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "condition",
+        "window"
+      ],
+      "type": "object"
+    },
+    "MapTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "entries": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "$ref": "#/$defs/Term"
+              },
+              "value": {
+                "$ref": "#/$defs/Term"
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "map"
+        }
+      },
+      "required": [
+        "kind",
+        "entries"
+      ],
+      "type": "object"
+    },
+    "MatchArm": {
+      "additionalProperties": false,
+      "properties": {
+        "pattern": {
+          "$ref": "#/$defs/Pattern"
+        },
+        "value": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "pattern",
+        "value"
+      ],
+      "type": "object"
+    },
+    "MatchTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "arms": {
+          "items": {
+            "$ref": "#/$defs/MatchArm"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "kind": {
+          "const": "match"
+        },
+        "subject": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "subject",
+        "arms"
+      ],
+      "type": "object"
+    },
+    "NaryFormula": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/Formula"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "and",
+            "or"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "items"
+      ],
+      "type": "object"
+    },
+    "Node": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/SourceWork"
+        },
+        {
+          "$ref": "#/$defs/SourceEdition"
+        },
+        {
+          "$ref": "#/$defs/Publication"
+        },
+        {
+          "$ref": "#/$defs/Fragment"
+        },
+        {
+          "$ref": "#/$defs/DynamicReference"
+        },
+        {
+          "$ref": "#/$defs/CalendarSnapshot"
+        },
+        {
+          "$ref": "#/$defs/DeadlinePolicy"
+        },
+        {
+          "$ref": "#/$defs/TemporalResolutionPolicy"
+        },
+        {
+          "$ref": "#/$defs/EvidencePolicy"
+        },
+        {
+          "$ref": "#/$defs/Stage"
+        },
+        {
+          "$ref": "#/$defs/TypeDecl"
+        },
+        {
+          "$ref": "#/$defs/SymbolDecl"
+        },
+        {
+          "$ref": "#/$defs/FunctionDecl"
+        },
+        {
+          "$ref": "#/$defs/ExternalDecl"
+        },
+        {
+          "$ref": "#/$defs/Assertion"
+        },
+        {
+          "$ref": "#/$defs/EvidenceItem"
+        },
+        {
+          "$ref": "#/$defs/SupportEdge"
+        },
+        {
+          "$ref": "#/$defs/Rule"
+        },
+        {
+          "$ref": "#/$defs/NormTemplate"
+        },
+        {
+          "$ref": "#/$defs/PriorityRule"
+        },
+        {
+          "$ref": "#/$defs/Interpretation"
+        },
+        {
+          "$ref": "#/$defs/InterpretationGroup"
+        },
+        {
+          "$ref": "#/$defs/Anchor"
+        },
+        {
+          "$ref": "#/$defs/Revision"
+        },
+        {
+          "$ref": "#/$defs/Entrenchment"
+        },
+        {
+          "$ref": "#/$defs/ClosurePolicy"
+        },
+        {
+          "$ref": "#/$defs/Constraint"
+        },
+        {
+          "$ref": "#/$defs/Procedure"
+        },
+        {
+          "$ref": "#/$defs/CounterfactualDecl"
+        },
+        {
+          "$ref": "#/$defs/Query"
+        },
+        {
+          "$ref": "#/$defs/FactorVocabulary"
+        },
+        {
+          "$ref": "#/$defs/PrecedentDecl"
+        },
+        {
+          "$ref": "#/$defs/UnitDecl"
+        }
+      ]
+    },
+    "NodeCommon": {
+      "properties": {
+        "anchors": {
+          "items": {
+            "$ref": "#/$defs/StableId"
+          },
+          "type": "array"
+        },
+        "annotations": {
+          "$ref": "#/$defs/JsonObject"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Digest"
+        },
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "labels": {
+          "items": {
+            "$ref": "#/$defs/Label"
+          },
+          "type": "array"
+        },
+        "package": {
+          "$ref": "#/$defs/StableId"
+        },
+        "provenance": {
+          "items": {
+            "$ref": "#/$defs/ProvenanceEdge"
+          },
+          "type": "array"
+        },
+        "sourceSpan": {
+          "$ref": "#/$defs/SourceSpan"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "package",
+        "contentHash"
+      ],
+      "type": "object"
+    },
+    "NodeCommonInput": {
+      "properties": {
+        "anchors": {
+          "items": {
+            "$ref": "#/$defs/StableId"
+          },
+          "type": "array"
+        },
+        "annotations": {
+          "$ref": "#/$defs/JsonObject"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Digest"
+        },
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "labels": {
+          "items": {
+            "$ref": "#/$defs/Label"
+          },
+          "type": "array"
+        },
+        "package": {
+          "$ref": "#/$defs/StableId"
+        },
+        "provenance": {
+          "items": {
+            "$ref": "#/$defs/ProvenanceEdge"
+          },
+          "type": "array"
+        },
+        "sourceSpan": {
+          "$ref": "#/$defs/SourceSpan"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "package"
+      ],
+      "type": "object"
+    },
+    "NormTemplate": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "id": {},
+            "kind": {
+              "const": "norm_template"
+            },
+            "labels": {},
+            "modality": {
+              "enum": [
+                "duty",
+                "liberty",
+                "power",
+                "immunity"
+              ]
+            },
+            "package": {},
+            "payload": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DutyPayload"
+                },
+                {
+                  "$ref": "#/$defs/LibertyPayload"
+                },
+                {
+                  "$ref": "#/$defs/PowerPayload"
+                },
+                {
+                  "$ref": "#/$defs/ImmunityPayload"
+                }
+              ]
+            },
+            "provenance": {},
+            "sourceSpan": {}
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "modality",
+            "payload"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "NormTemplateRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "kind": {
+          "const": "norm_template_ref"
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "type": "object"
+    },
+    "PackageRef": {
+      "additionalProperties": false,
+      "properties": {
+        "labels": {
+          "type": "array",
+          "description": "The human-readable name of the package: the act or code it formalizes. A package is not a node, so the shared node `labels` did not apply to it, and there was nothing to name the package with. The field is optional and presentational: outside the semantic hash (`labels` stays in RECURSIVE_EXCLUDED_KEYS), inside the canonical bytes — i.e. it changes the package's contentHash but cannot change any inference.",
+          "$comment": "SPEC §22, §218, §201, §202, §209, §208; errata E-0025",
+          "items": {
+            "$ref": "#/$defs/Label"
+          }
+        },
+        "name": {
+          "$ref": "#/$defs/QName"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "semanticHash": {
+          "$ref": "#/$defs/Digest"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "namespace",
+        "semanticHash"
+      ],
+      "type": "object"
+    },
+    "Pattern": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/WildcardPattern"
+        },
+        {
+          "$ref": "#/$defs/BindPattern"
+        },
+        {
+          "$ref": "#/$defs/ValuePattern"
+        },
+        {
+          "$ref": "#/$defs/VariantPattern"
+        }
+      ]
+    },
+    "PatternField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "pattern": {
+          "$ref": "#/$defs/Pattern"
+        }
+      },
+      "required": [
+        "name",
+        "pattern"
+      ],
+      "type": "object"
+    },
+    "PowerPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "effect": {
+          "$ref": "#/$defs/LegalEffect"
+        },
+        "exercise": {
+          "$ref": "#/$defs/Term"
+        },
+        "holder": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "power"
+        },
+        "over": {
+          "$ref": "#/$defs/Term"
+        },
+        "subject": {
+          "description": "The subject matter of a power: a finite enumeration of what the delegate may regulate, using identifiers from the dictionary of the authorizing act itself. Finiteness is essential: inferring that one norm covers another in general is prohibited, and subject-matter competence is checked by membership of the declared item in the declared set, not by inference from the text. Absence of the field means the subject matter is not declared and there is nothing to check it against (LDC-W5302) — this is not \"any subject matter\".",
+          "$comment": "SPEC §127, §105.1; DECISION-0043",
+          "items": {
+            "$ref": "#/$defs/StableId"
+          },
+          "type": "array"
+        },
+        "validWhen": {
+          "$ref": "#/$defs/Formula"
+        },
+        "window": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "holder",
+        "exercise",
+        "effect",
+        "validWhen"
+      ],
+      "type": "object"
+    },
+    "PriorityRule": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "condition": {
+              "$ref": "#/$defs/Formula"
+            },
+            "contentHash": {},
+            "higher": {
+              "$ref": "#/$defs/Term"
+            },
+            "id": {},
+            "interpretations": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "kind": {
+              "const": "priority_rule"
+            },
+            "labels": {},
+            "lower": {
+              "$ref": "#/$defs/Term"
+            },
+            "package": {},
+            "priorityKind": {
+              "enum": [
+                "direct",
+                "policy"
+              ]
+            },
+            "provenance": {},
+            "reason": {
+              "$ref": "#/$defs/StableId"
+            },
+            "sourceSpan": {},
+            "variables": {
+              "description": "Meta-domain of a priority policy: variables ranging over grounded RuleApplication, referenced by higher/lower and condition. Absent for direct priorities: the sides are named by const_refs, and v0/v1 in the condition are the applications of higher and lower respectively.",
+              "$comment": "SPEC §118, §116, §117",
+              "items": {
+                "$ref": "#/$defs/Variable"
+              },
+              "type": "array"
+            },
+            "origin": {
+              "description": "Id of the precedent_decl node from which this node was generated by the compiler; absent on hand-written nodes.",
+              "$comment": "SPEC §276.10",
+              "$ref": "#/$defs/StableId"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "priorityKind",
+            "condition",
+            "higher",
+            "lower"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ProvenanceEdge": {
+      "additionalProperties": false,
+      "description": "A normalized edge of the provenance graph. `attributes` profiles: sugar — `{declaration: \"definition\", mode: necessary|exact, part: sufficient|necessary, alternative?: Integer}` on a rule and a constraint, where `target` is the concept's symbol; A3 decision tables — `{decisionKind, hitPolicy, rows}`; fact groups — `{factGroup, visibility?}`.",
+      "$comment": "SPEC §202, §144; DECISION-0151, DECISION-0143",
+      "properties": {
+        "at": {
+          "$ref": "#/$defs/InstantString"
+        },
+        "attributes": {
+          "$ref": "#/$defs/JsonObject"
+        },
+        "relation": {
+          "enum": [
+            "was_derived_from",
+            "was_generated_by",
+            "was_attributed_to",
+            "used",
+            "was_revision_of",
+            "was_invalidated_by"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/StableId"
+        }
+      },
+      "required": [
+        "relation",
+        "target"
+      ],
+      "type": "object"
+    },
+    "Publication": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "documentHash": {
+              "$ref": "#/$defs/Digest"
+            },
+            "edition": {
+              "$ref": "#/$defs/StableId"
+            },
+            "id": {},
+            "kind": {
+              "const": "publication"
+            },
+            "labels": {},
+            "mediaType": {
+              "type": "string"
+            },
+            "package": {},
+            "provenance": {},
+            "retrievedAt": {
+              "$ref": "#/$defs/InstantString"
+            },
+            "sourceSpan": {},
+            "uri": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "edition",
+            "mediaType",
+            "uri",
+            "documentHash"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "QName": {
+      "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*$",
+      "type": "string"
+    },
+    "QuantifiedFormula": {
+      "additionalProperties": false,
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/Formula"
+        },
+        "domain": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "quantified"
+        },
+        "quantifier": {
+          "enum": [
+            "exists",
+            "forall"
+          ]
+        },
+        "variable": {
+          "$ref": "#/$defs/Variable"
+        }
+      },
+      "required": [
+        "kind",
+        "quantifier",
+        "variable",
+        "domain",
+        "body"
+      ],
+      "type": "object"
+    },
+    "Query": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "body": {
+              "$ref": "#/$defs/Term"
+            },
+            "contentHash": {},
+            "id": {},
+            "kind": {
+              "const": "query"
+            },
+            "labels": {},
+            "package": {},
+            "parameters": {
+              "items": {
+                "$ref": "#/$defs/Variable"
+              },
+              "type": "array"
+            },
+            "provenance": {},
+            "returnType": {
+              "$ref": "#/$defs/TypeRef"
+            },
+            "sourceSpan": {}
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "parameters",
+            "returnType",
+            "body"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "RecordTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Term"
+          },
+          "type": "object"
+        },
+        "kind": {
+          "const": "record"
+        },
+        "type": {
+          "$ref": "#/$defs/TypeRef"
+        }
+      },
+      "required": [
+        "kind",
+        "type",
+        "fields"
+      ],
+      "type": "object"
+    },
+    "RecurringGoal": {
+      "additionalProperties": false,
+      "description": "`over` is the interval of the entire recurrence; it is also the schedule's anchor and its finiteness bound. The optional `activation` is the internal activation formula, the only one that sees the `occurrence.*` meta-terms; the schedule's overall external activation lives entirely in the `activation` field of `DutyPayload`.",
+      "$comment": "SPEC §124.4.1, §135.1, §123; errata E-0146",
+      "properties": {
+        "activation": {
+          "$ref": "#/$defs/Formula"
+        },
+        "goal": {
+          "$ref": "#/$defs/Goal"
+        },
+        "kind": {
+          "const": "recurring"
+        },
+        "over": {
+          "$ref": "#/$defs/Term"
+        },
+        "schedule": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "schedule",
+        "over",
+        "goal"
+      ],
+      "type": "object"
+    },
+    "RefTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "kind": {
+          "enum": [
+            "const_ref",
+            "entity_ref"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "type": "object"
+    },
+    "Revision": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "causedBy": {
+              "$ref": "#/$defs/StableId"
+            },
+            "contentHash": {},
+            "effectiveAt": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DateString"
+                },
+                {
+                  "$ref": "#/$defs/InstantString"
+                }
+              ]
+            },
+            "id": {},
+            "kind": {
+              "const": "revision"
+            },
+            "labels": {},
+            "next": {
+              "$ref": "#/$defs/StableId"
+            },
+            "operations": {
+              "description": "The formalized delta of an amending act. An edge without operations is a link annotation; an edge with operations must satisfy the consolidation invariant (applying previous with operations yields next), otherwise a static error is reported.",
+              "$comment": "SPEC §32.1, §32.2; LDC-E5401",
+              "items": {
+                "$ref": "#/$defs/RevisionOperation"
+              },
+              "type": "array"
+            },
+            "package": {},
+            "previous": {
+              "$ref": "#/$defs/StableId"
+            },
+            "provenance": {},
+            "relation": {
+              "type": "string"
+            },
+            "sourceSpan": {}
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "previous",
+            "next",
+            "relation"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "Entrenchment": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "id": {},
+            "kind": {
+              "const": "entrenchment"
+            },
+            "labels": {},
+            "locator": {
+              "description": "This locator and its descendants by '/' segments are protected.",
+              "$comment": "SPEC §32.3",
+              "type": "string"
+            },
+            "package": {},
+            "provenance": {},
+            "source": {
+              "$ref": "#/$defs/StableId"
+            },
+            "sourceSpan": {},
+            "window": {
+              "$ref": "#/$defs/TemporalInterval"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "source",
+            "locator",
+            "window"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "RevisionOperation": {
+      "allOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "contentHash": {
+              "$ref": "#/$defs/Digest"
+            },
+            "effectiveAt": {
+              "description": "An attribute of the operation, not the edge: the act is introduced in stages. If absent, it is inherited from the edge.",
+              "$comment": "SPEC §32.1",
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DateString"
+                },
+                {
+                  "$ref": "#/$defs/InstantString"
+                }
+              ]
+            },
+            "language": {
+              "$ref": "#/$defs/LanguageTag"
+            },
+            "locator": {
+              "type": "string"
+            },
+            "op": {
+              "enum": [
+                "replace",
+                "insert",
+                "repeal",
+                "renumber"
+              ]
+            },
+            "text": {
+              "description": "Operations are extensional: this holds the result (the fragment's text after the amendment), not the instruction of the amending act.",
+              "$comment": "SPEC §32.1",
+              "type": "string"
+            },
+            "toLocator": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "op": {
+                  "const": "replace"
+                }
+              },
+              "required": [
+                "op",
+                "locator",
+                "language",
+                "text"
+              ]
+            },
+            {
+              "properties": {
+                "op": {
+                  "const": "insert"
+                }
+              },
+              "required": [
+                "op",
+                "locator",
+                "language",
+                "text"
+              ]
+            },
+            {
+              "properties": {
+                "op": {
+                  "const": "repeal"
+                }
+              },
+              "required": [
+                "op",
+                "locator"
+              ]
+            },
+            {
+              "properties": {
+                "op": {
+                  "const": "renumber"
+                }
+              },
+              "required": [
+                "op",
+                "locator",
+                "toLocator"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Rule": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "body": {
+              "$ref": "#/$defs/Formula"
+            },
+            "contentHash": {},
+            "effective": {
+              "$ref": "#/$defs/TemporalInterval"
+            },
+            "governs": {
+              "items": {
+                "$ref": "#/$defs/TemporalInterval"
+              },
+              "type": "array"
+            },
+            "head": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Literal"
+                },
+                {
+                  "$ref": "#/$defs/NormTemplateRef"
+                }
+              ]
+            },
+            "id": {},
+            "interpretations": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "kind": {
+              "const": "rule"
+            },
+            "labels": {},
+            "package": {},
+            "provenance": {},
+            "scope": {
+              "$ref": "#/$defs/Formula"
+            },
+            "sourceSpan": {},
+            "stratum": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "strength": {
+              "enum": [
+                "strict",
+                "defeasible",
+                "defeater"
+              ]
+            },
+            "variables": {
+              "items": {
+                "$ref": "#/$defs/Variable"
+              },
+              "type": "array"
+            },
+            "visibility": {
+              "description": "Declaration visibility. Absence of the field defaults to `internal`; `public` is written only for `pub` declarations, so the field's appearance is additive and does not change the bytes of programs without `pub`. Cross-package references of the form `pkg::Symbol` resolve only against a public declaration.",
+              "$comment": "SPEC §24",
+              "enum": [
+                "public"
+              ]
+            },
+            "origin": {
+              "description": "Id of the precedent_decl node from which this node was generated by the compiler; absent on hand-written nodes.",
+              "$comment": "SPEC §276.10",
+              "$ref": "#/$defs/StableId"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "strength",
+            "variables",
+            "body",
+            "head",
+            "scope",
+            "interpretations"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "SetTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/Term"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "kind": {
+          "const": "set"
+        }
+      },
+      "required": [
+        "kind",
+        "items"
+      ],
+      "type": "object"
+    },
+    "SourceEdition": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "applicability": {
+              "const": "timeless",
+              "description": "Explicit timeless applicability of an edition, for Scripture, doctrine, and other sources without an effective date. Compatible only with an empty lifecycle; it does not fabricate a date and does not change the semantics of an edition for which applicability is absent.",
+              "$comment": "SPEC §31"
+            },
+            "annotations": {},
+            "contentHash": {},
+            "documentHash": {
+              "$ref": "#/$defs/Digest"
+            },
+            "id": {},
+            "kind": {
+              "const": "source_edition"
+            },
+            "labels": {},
+            "language": {
+              "$ref": "#/$defs/LanguageTag"
+            },
+            "lifecycle": {
+              "items": {
+                "$ref": "#/$defs/LifecycleEvent"
+              },
+              "type": "array"
+            },
+            "materializationStatus": {
+              "description": "How firmly the edition's bytes are actually pinned. Declared explicitly, not inferred from the presence of a publication: the absence of pinned bytes is itself a statement about source quality. The pinned group is PINNED_OFFICIAL_BYTES, PINNED_UNOFFICIAL_COPY and PINNED_EDITORIAL_RECONSTRUCTION. Auditable profiles require a status from the pinned group; production profiles require PINNED_OFFICIAL_BYTES unconditionally. PINNED_EDITORIAL_RECONSTRUCTION differs from a copy not by degree of pinning but by the fact that no original exists of which the text would be a copy: the publisher assembled it from quotations in other works.",
+              "$comment": "SPEC §27.2, §8.6; errata E-0013, E-0057; PATCH-0.1.1 §9",
+              "enum": [
+                "PINNED_OFFICIAL_BYTES",
+                "PINNED_UNOFFICIAL_COPY",
+                "PINNED_EDITORIAL_RECONSTRUCTION",
+                "DYNAMIC_OFFICIAL_PAGE",
+                "ABSTRACT_ONLY",
+                "UNAVAILABLE"
+              ]
+            },
+            "officiality": {
+              "type": "string"
+            },
+            "package": {},
+            "provenance": {},
+            "sourceSpan": {},
+            "work": {
+              "$ref": "#/$defs/StableId"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "applicability": {
+                    "const": "timeless"
+                  }
+                },
+                "required": [
+                  "applicability"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "lifecycle": {
+                    "maxItems": 0
+                  }
+                }
+              }
+            }
+          ],
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "work",
+            "language",
+            "officiality",
+            "lifecycle"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "SourceSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/StableId"
+        },
+        "column": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "line": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "start": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact",
+        "start",
+        "end"
+      ],
+      "type": "object"
+    },
+    "SourceWork": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "authority": {
+              "$ref": "#/$defs/Term"
+            },
+            "basis": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array",
+              "description": "The basis of issuance: the StableId of the power norms of the authorizing act, named by the subordinate act itself (\"issued on the basis of Article X of Law Y\"). Provenance data, not a program reference: delegation is not import, and the authorizing act is not pulled into the computation world. Resolvability of the basis and the power's validity at the adoption date are checked by the delegation chain, which reads the parent's IR separately; the package compiler cannot prove this. The field is included in the semantic hash: this is the package's assertion about the law, not formatting, unlike labels. The field is repeatable: order V2000021744 has two bases, and dropping one would mean losing half the delegation; the chain checks each one, and subject-matter competence is checked against the union of their subject matters.",
+              "$comment": "SPEC §27.1, §127, §23, §209; DECISION-0042, DECISION-0046; errata E-0010; LDC-E5304, LDC-E5305"
+            },
+            "contentHash": {},
+            "id": {},
+            "jurisdiction": {
+              "$ref": "#/$defs/Term"
+            },
+            "regulates": {
+              "description": "The subject matter of the act itself: what it regulates, using identifiers from the authorizing act's dictionary. Provenance data of the same kind as `basis`: strings, not qualified references, because delegation is not import. Subject-matter competence is checked by the chain as the inclusion of `regulates` in the power norm's `subject`.",
+              "$comment": "SPEC §27.1, §23; DECISION-0043; LDC-E5307",
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "kind": {
+              "const": "source_work"
+            },
+            "labels": {},
+            "number": {
+              "type": "string"
+            },
+            "package": {},
+            "provenance": {},
+            "sourceKind": {
+              "$ref": "#/$defs/StableId"
+            },
+            "sourceSpan": {}
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "sourceKind"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "StableId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "StatusFormula": {
+      "additionalProperties": false,
+      "properties": {
+        "formula": {
+          "$ref": "#/$defs/Literal"
+        },
+        "kind": {
+          "const": "status"
+        },
+        "policy": {
+          "$ref": "#/$defs/StableId"
+        },
+        "status": {
+          "enum": [
+            "established",
+            "supported",
+            "monotone",
+            "refuted",
+            "opposed",
+            "conflicted",
+            "unknown",
+            "not_known",
+            "no_evidence"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "status",
+        "formula"
+      ],
+      "type": "object"
+    },
+    "Stratum": {
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "rules": {
+          "items": {
+            "$ref": "#/$defs/StableId"
+          },
+          "type": "array"
+        },
+        "strictSccs": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/StableId"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "index",
+        "rules"
+      ],
+      "type": "object"
+    },
+    "SupportEdge": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "from": {
+              "$ref": "#/$defs/StableId"
+            },
+            "id": {},
+            "kind": {
+              "const": "support_edge"
+            },
+            "labels": {},
+            "package": {},
+            "policy": {
+              "$ref": "#/$defs/StableId"
+            },
+            "provenance": {},
+            "relation": {
+              "enum": [
+                "supports",
+                "refutes",
+                "authenticates",
+                "measures",
+                "reports",
+                "establishes"
+              ]
+            },
+            "sourceSpan": {},
+            "to": {
+              "$ref": "#/$defs/Literal"
+            },
+            "valid": {
+              "$ref": "#/$defs/TemporalInterval"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "from",
+            "relation",
+            "to"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "SymbolDecl": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "symbolKind": {
+                    "const": "relation"
+                  }
+                },
+                "required": [
+                  "symbolKind"
+                ]
+              },
+              "then": {
+                "required": [
+                  "relationKind"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "symbolKind": {
+                    "const": "function"
+                  }
+                },
+                "required": [
+                  "symbolKind"
+                ]
+              },
+              "then": {
+                "required": [
+                  "returnType"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "symbolKind": {
+                    "const": "constant"
+                  }
+                },
+                "required": [
+                  "symbolKind"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "parameters": {
+                    "maxItems": 0
+                  }
+                },
+                "required": [
+                  "returnType",
+                  "value"
+                ]
+              }
+            }
+          ],
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "effect": {
+              "enum": [
+                "pure",
+                "snapshot",
+                "judgment",
+                "opaque"
+              ]
+            },
+            "id": {},
+            "keys": {
+              "items": {
+                "items": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "minItems": 1,
+                "type": "array",
+                "uniqueItems": true
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            "kind": {
+              "const": "symbol_decl"
+            },
+            "labels": {},
+            "metadata": {
+              "$ref": "#/$defs/JsonObject"
+            },
+            "name": {
+              "type": "string"
+            },
+            "package": {},
+            "parameters": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ParameterDecl"
+              },
+              "description": "Current named parameter declarations; TypeRef is a type, not a parameter declaration."
+            },
+            "provenance": {},
+            "relationKind": {
+              "type": "string"
+            },
+            "returnType": {
+              "$ref": "#/$defs/TypeRef"
+            },
+            "sourceSpan": {},
+            "symbolKind": {
+              "enum": [
+                "relation",
+                "function",
+                "constant"
+              ]
+            },
+            "value": {
+              "$ref": "#/$defs/Term"
+            },
+            "visibility": {
+              "description": "Declaration visibility. Absence of the field defaults to `internal`; `public` is written only for `pub` declarations, so the field's appearance is additive and does not change the bytes of programs without `pub`. Cross-package references of the form `pkg::Symbol` resolve only against a public declaration.",
+              "$comment": "SPEC §24",
+              "enum": [
+                "public"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "symbolKind",
+            "name",
+            "parameters"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "TemporalFormula": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "temporal"
+        },
+        "left": {
+          "$ref": "#/$defs/Term"
+        },
+        "op": {
+          "enum": [
+            "before",
+            "after",
+            "during",
+            "overlaps",
+            "contains",
+            "starts",
+            "finishes"
+          ]
+        },
+        "right": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "op",
+        "left",
+        "right"
+      ],
+      "type": "object"
+    },
+    "TemporalInterval": {
+      "description": "Optional start and end are independent open sides and remain absent when omitted; admission does not synthesize infinity values. An explicit start may be a finite Date, a finite offset-bearing Instant, or -infinity; an explicit end may be a finite Date, a finite offset-bearing Instant, or infinity. Mixed Date/Instant comparisons retain the selected temporal-resolution policy.",
+      "additionalProperties": false,
+      "properties": {
+        "axis": {
+          "type": "string"
+        },
+        "end": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DateBound"
+            },
+            {
+              "$ref": "#/$defs/InstantBound"
+            },
+            {
+              "const": "infinity"
+            }
+          ]
+        },
+        "endInclusive": {
+          "type": "boolean"
+        },
+        "start": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DateBound"
+            },
+            {
+              "$ref": "#/$defs/InstantBound"
+            },
+            {
+              "const": "-infinity"
+            }
+          ]
+        },
+        "startInclusive": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "startInclusive",
+        "endInclusive"
+      ],
+      "type": "object"
+    },
+    "Term": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/LiteralTerm"
+        },
+        {
+          "$ref": "#/$defs/VarTerm"
+        },
+        {
+          "$ref": "#/$defs/WildcardTerm"
+        },
+        {
+          "$ref": "#/$defs/RefTerm"
+        },
+        {
+          "$ref": "#/$defs/CallTerm"
+        },
+        {
+          "$ref": "#/$defs/FieldTerm"
+        },
+        {
+          "$ref": "#/$defs/RecordTerm"
+        },
+        {
+          "$ref": "#/$defs/ListTerm"
+        },
+        {
+          "$ref": "#/$defs/SetTerm"
+        },
+        {
+          "$ref": "#/$defs/MapTerm"
+        },
+        {
+          "$ref": "#/$defs/IntervalTerm"
+        },
+        {
+          "$ref": "#/$defs/IfTerm"
+        },
+        {
+          "$ref": "#/$defs/LetTerm"
+        },
+        {
+          "$ref": "#/$defs/MatchTerm"
+        },
+        {
+          "$ref": "#/$defs/VariantTerm"
+        },
+        {
+          "$ref": "#/$defs/BinaryTerm"
+        },
+        {
+          "$ref": "#/$defs/UnaryTerm"
+        },
+        {
+          "$ref": "#/$defs/ComprehensionTerm"
+        },
+        {
+          "$ref": "#/$defs/AggregateTerm"
+        }
+      ]
+    },
+    "TypeDecl": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "typeKind": {
+                    "const": "alias"
+                  }
+                },
+                "required": [
+                  "typeKind"
+                ]
+              },
+              "then": {
+                "required": [
+                  "target"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "typeKind": {
+                    "const": "variant"
+                  }
+                },
+                "required": [
+                  "typeKind"
+                ]
+              },
+              "then": {
+                "required": [
+                  "variants",
+                  "cases"
+                ],
+                "properties": {
+                  "variants": {
+                    "minItems": 2
+                  }
+                }
+              },
+              "else": {
+                "not": {
+                  "required": [
+                    "cases"
+                  ]
+                }
+              }
+            }
+          ],
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "base": {
+              "$ref": "#/$defs/TypeRef"
+            },
+            "cases": {
+              "items": {
+                "$ref": "#/$defs/VariantCase"
+              },
+              "minItems": 2,
+              "type": "array"
+            },
+            "contentHash": {},
+            "fields": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "constraint": {
+                    "$ref": "#/$defs/Formula"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "$ref": "#/$defs/TypeRef"
+                  }
+                },
+                "required": [
+                  "name",
+                  "type"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "id": {},
+            "kind": {
+              "const": "type_decl"
+            },
+            "labels": {},
+            "metadata": {
+              "$ref": "#/$defs/JsonObject"
+            },
+            "name": {
+              "type": "string"
+            },
+            "package": {},
+            "provenance": {},
+            "sourceSpan": {},
+            "target": {
+              "description": "Transparent target of `type Name = T`; distinct from `base`, which is entity inheritance.",
+              "$ref": "#/$defs/TypeRef"
+            },
+            "typeKind": {
+              "enum": [
+                "entity",
+                "record",
+                "enum",
+                "variant",
+                "alias"
+              ]
+            },
+            "variants": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "visibility": {
+              "description": "Declaration visibility. Absence of the field defaults to `internal`; `public` is written only for `pub` declarations, so the field's appearance is additive and does not change the bytes of programs without `pub`. Cross-package references of the form `pkg::Symbol` resolve only against a public declaration.",
+              "$comment": "SPEC §24",
+              "enum": [
+                "public"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "typeKind",
+            "name"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "VariantCaseField": {
+      "additionalProperties": false,
+      "properties": {
+        "constraint": {
+          "$ref": "#/$defs/Formula"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/TypeRef"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "VariantCase": {
+      "additionalProperties": false,
+      "properties": {
+        "constructor": {
+          "$ref": "#/$defs/StableId"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/VariantCaseField"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "constructor"
+      ],
+      "type": "object"
+    },
+    "ParameterDecl": {
+      "additionalProperties": false,
+      "description": "The 0.2 form of a symbol parameter: id is the parameter's StableId (source precedence: explicit @id, suffix from role, suffix from name); name is the argument name, non-semantic metadata outside the semantic hash; role is an optional semantic role (SHOULD for pub; MUST together with @id for public declarations in core-auditable and ontology packages); array order and length preserve the validity of positional keys; labels are the labels of the parameter itself, non-empty only.",
+      "$comment": "SPEC §218; DECISION-0001, DECISION-0161; errata E-0153",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/StableId"
+        },
+        "labels": {
+          "description": "Labels of the parameter itself: it has its own carrier, not the owning node. A non-empty list only (minItems 1): an empty one is not serialized, and an unlabeled parameter keeps the previous bytes. Outside the semantic, theory and artifact hashes (recursively), inside the owning node's content hash.",
+          "$comment": "SPEC §218, §209, §202; DECISION-0161; errata E-0153, E-0010",
+          "items": {
+            "$ref": "#/$defs/Label"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "optional": {
+          "default": false,
+          "type": "boolean"
+        },
+        "role": {
+          "$ref": "#/$defs/StableId"
+        },
+        "type": {
+          "$ref": "#/$defs/TypeRef"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "TypeRef": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "items": {
+            "$ref": "#/$defs/TypeRef"
+          },
+          "type": "array"
+        },
+        "name": {
+          "$ref": "#/$defs/StableId"
+        },
+        "optional": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "UnaryTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "unary"
+        },
+        "op": {
+          "type": "string"
+        },
+        "operand": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "op",
+        "operand"
+      ],
+      "type": "object"
+    },
+    "ValuePattern": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "value"
+        },
+        "value": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/LiteralTerm"
+            },
+            {
+              "$ref": "#/$defs/RefTerm"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "type": "object"
+    },
+    "WildcardTerm": {
+      "additionalProperties": false,
+      "description": "The existential argument of a rule-body literal: \"there is some value\". It does not bind, it is not part of the substitution; it is legal only as an argument of a positive body literal, otherwise a static error is reported.",
+      "$comment": "SPEC §98; E-0165; LDC-E0207",
+      "properties": {
+        "kind": {
+          "const": "wildcard"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "VarTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "var"
+        },
+        "var": {
+          "pattern": "^v[0-9]+$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "var"
+      ],
+      "type": "object"
+    },
+    "Variable": {
+      "additionalProperties": false,
+      "properties": {
+        "domain": {
+          "$ref": "#/$defs/Term"
+        },
+        "id": {
+          "pattern": "^v[0-9]+$",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/TypeRef"
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ],
+      "type": "object"
+    },
+    "VariantTerm": {
+      "additionalProperties": false,
+      "description": "A value of an algebraic type: Result/Option and a user enum payload. Unlike VariantPattern this is a term, not a pattern.",
+      "properties": {
+        "kind": {
+          "const": "variant_value"
+        },
+        "constructor": {
+          "$ref": "#/$defs/StableId"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/Term"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "constructor",
+        "fields"
+      ],
+      "type": "object"
+    },
+    "VariantPattern": {
+      "additionalProperties": false,
+      "properties": {
+        "constructor": {
+          "$ref": "#/$defs/StableId"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/PatternField"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "variant"
+        }
+      },
+      "required": [
+        "kind",
+        "constructor",
+        "fields"
+      ],
+      "type": "object"
+    },
+    "WildcardPattern": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "wildcard"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "FactorVocabulary": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "id": {},
+            "kind": {
+              "const": "factor_vocabulary"
+            },
+            "labels": {},
+            "package": {},
+            "provenance": {},
+            "sourceSpan": {},
+            "signature": {
+              "description": "An ordered tuple of vocabulary binders.",
+              "$comment": "SPEC §276.2",
+              "items": {
+                "$ref": "#/$defs/Variable"
+              },
+              "type": "array",
+              "minItems": 1
+            },
+            "plaintiff": {
+              "description": "Factors for the plaintiff (relation ids), in declaration order.",
+              "$comment": "SPEC §276.2",
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "defendant": {
+              "description": "Factors for the defendant.",
+              "$comment": "SPEC §276.2",
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "courts": {
+              "description": "A partial preorder of courts: chains from senior to junior; courts outside the chains are incomparable.",
+              "$comment": "SPEC §276.2",
+              "items": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "minItems": 1
+              },
+              "type": "array"
+            },
+            "domain": {
+              "description": "Established literals over the signature's variables, binding all of them; read first in each holding.",
+              "$comment": "SPEC §276.2",
+              "items": {
+                "$ref": "#/$defs/Literal"
+              },
+              "type": "array",
+              "minItems": 1
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "domain",
+            "package",
+            "contentHash",
+            "signature",
+            "plaintiff",
+            "defendant",
+            "courts"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "PrecedentDecl": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "id": {},
+            "kind": {
+              "const": "precedent_decl"
+            },
+            "labels": {},
+            "package": {},
+            "provenance": {},
+            "sourceSpan": {},
+            "vocabulary": {
+              "$ref": "#/$defs/StableId"
+            },
+            "court": {
+              "type": "string",
+              "description": "The court's name; absence means the court is incomparable to all others.",
+              "$comment": "SPEC §276.3"
+            },
+            "decided": {
+              "$ref": "#/$defs/DateString"
+            },
+            "plaintiff": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "defendant": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array"
+            },
+            "outcome": {
+              "$ref": "#/$defs/Literal",
+              "description": "The outcome over the signature's variables (var v<i>); positive polarity is for the plaintiff, negative for the defendant.",
+              "$comment": "SPEC §276.3"
+            },
+            "ratio": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array",
+              "description": "The ground factors of the winning side (reason model).",
+              "$comment": "SPEC §276.3"
+            },
+            "preferOver": {
+              "items": {
+                "$ref": "#/$defs/StableId"
+              },
+              "type": "array",
+              "description": "The baseline rules that the holding defeats.",
+              "$comment": "SPEC §276.3"
+            },
+            "overruled": {
+              "additionalProperties": false,
+              "properties": {
+                "at": {
+                  "$ref": "#/$defs/DateString"
+                },
+                "by": {
+                  "$ref": "#/$defs/StableId"
+                }
+              },
+              "required": [
+                "at",
+                "by"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "package",
+            "contentHash",
+            "vocabulary",
+            "decided",
+            "plaintiff",
+            "defendant",
+            "outcome"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "UnitDecl": {
+      "description": "Simple: an atom with an exact rational scale and a tuple of the seven SI base units; derived unfolds into atoms; alias is a second name. Sugar is normalized before hashing.",
+      "$comment": "SPEC §49.2, §209; E-0150",
+      "allOf": [
+        {
+          "$ref": "#/$defs/NodeCommon"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchors": {},
+            "annotations": {},
+            "contentHash": {},
+            "dimension": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "prefixItems": [
+                  {
+                    "enum": [
+                      "Length",
+                      "Mass",
+                      "Time",
+                      "Current",
+                      "Temperature",
+                      "Amount",
+                      "Luminosity"
+                    ]
+                  },
+                  {
+                    "type": "integer",
+                    "minimum": -9223372036854775808,
+                    "maximum": 9223372036854775807
+                  }
+                ]
+              }
+            },
+            "factors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "unit": {
+                    "type": "string"
+                  },
+                  "exp": {
+                    "type": "integer",
+                    "minimum": -9223372036854775808,
+                    "maximum": 9223372036854775807
+                  }
+                },
+                "required": [
+                  "unit",
+                  "exp"
+                ]
+              }
+            },
+            "id": {},
+            "kind": {
+              "const": "unit_decl"
+            },
+            "labels": {},
+            "package": {},
+            "provenance": {},
+            "public": {
+              "type": "boolean"
+            },
+            "scaleDen": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            "scaleNum": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            "sourceSpan": {},
+            "target": {
+              "type": "string"
+            },
+            "unitKind": {
+              "enum": [
+                "simple",
+                "derived",
+                "alias"
+              ]
+            },
+            "unitName": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "unitName",
+            "unitKind"
+          ],
+          "type": "object"
+        },
+        {
+          "if": {
+            "properties": {
+              "unitKind": {
+                "const": "simple"
+              }
+            },
+            "required": [
+              "unitKind"
+            ]
+          },
+          "then": {
+            "required": [
+              "dimension",
+              "scaleNum",
+              "scaleDen"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "unitKind": {
+                "const": "derived"
+              }
+            },
+            "required": [
+              "unitKind"
+            ]
+          },
+          "then": {
+            "required": [
+              "factors"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "unitKind": {
+                "const": "alias"
+              }
+            },
+            "required": [
+              "unitKind"
+            ]
+          },
+          "then": {
+            "required": [
+              "target"
+            ]
+          }
+        }
+      ]
+    },
+    "RoundingFormula": {
+      "description": "The only core formula whose support is taken from the proof. `I ⊆ C` gives TRUE_ONLY, `I ∩ C = ∅` gives FALSE_ONLY, and an intersection of several cells gives NEITHER due to insufficient bounds.",
+      "$comment": "SPEC §64.2; errata E-0136",
+      "additionalProperties": false,
+      "properties": {
+        "bounds": {
+          "$ref": "#/$defs/Term"
+        },
+        "kind": {
+          "const": "rounding"
+        },
+        "mode": {
+          "enum": [
+            "HALF_UP",
+            "HALF_EVEN",
+            "HALF_DOWN",
+            "UP",
+            "DOWN",
+            "CEILING",
+            "FLOOR"
+          ]
+        },
+        "precision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceSpan": {},
+        "value": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "kind",
+        "bounds",
+        "value",
+        "precision",
+        "mode"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://law.arxo.io/schema/legal-ir.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Machine-readable schema for the sole current canonical Legal IR.",
+  "properties": {
+    "features": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "imports": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/LockedImport"
+      },
+      "type": "array"
+    },
+    "metadata": {
+      "$ref": "#/$defs/JsonObject"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/Node"
+      },
+      "type": "array"
+    },
+    "package": {
+      "$ref": "#/$defs/PackageRef"
+    },
+    "schemaVersion": {
+      "const": "law.core.ir/0.7",
+      "description": "The sole current preproduction CLIR envelope. Historical envelopes are not accepted."
+    },
+    "semanticHash": {
+      "$ref": "#/$defs/Digest"
+    },
+    "theoryHash": {
+      "$ref": "#/$defs/Digest",
+      "description": "Normalized declarations without presentation or provenance.",
+      "$comment": "SPEC §209; DECISION-0111"
+    },
+    "artifactHash": {
+      "$ref": "#/$defs/Digest",
+      "description": "Canonical CLIR artifact identity with provenance, excluding presentation labels.",
+      "$comment": "SPEC §209; DECISION-0111"
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+      "description": "Canonical semantic selector syntax; current build admission is enforced by release binding. Historical release identity grants no execution."
+    },
+    "strata": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Stratum"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "semanticVersion",
+    "package",
+    "nodes",
+    "semanticHash",
+    "theoryHash",
+    "artifactHash"
+  ],
+  "title": "Arxo Current Canonical Legal IR",
+  "type": "object"
+}
