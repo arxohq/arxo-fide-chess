@@ -1,0 +1,657 @@
+{
+  "format": "arxo.mcp-host-compatibility/0.1",
+  "status": "compatible",
+  "version": "0.4.2-cnafpreview.1",
+  "sourceRepository": "https://github.com/arxohq/law-archive",
+  "sourceUrl": "https://github.com/arxohq/law-archive/commit/0a07391da494237f3c2d911a6df867cb871277fc",
+  "modelSourceCommit": "3550570cef14da097ae92250f8e1b953f8a040e6",
+  "linuxExecution": "passed",
+  "platforms": {
+    "darwin-arm64": {
+      "status": "native_stdio_http_passed",
+      "binarySha256": "sha256:76652208a494a7f91af1badee91ac066d8e575bd71a73da9fe1effbbe646508d",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc",
+      "checks": {
+        "stdioRequests": 35,
+        "httpRequests": 35,
+        "retainedExpectationsPerTransport": 18,
+        "additionalSubjectRequestsPerTransport": 10,
+        "strictSurfaceRefusalsPerTransport": 7,
+        "httpReferenceOperations": 4,
+        "httpSourceFragments": 17,
+        "httpSourceParts": 20,
+        "httpAuthenticationRefusal": "passed",
+        "httpOriginRefusal": "passed",
+        "producerProofs": "passed",
+        "judgmentRequests": "passed",
+        "callerContextReplay": "passed",
+        "decimalErrorIssuesAbsent": "passed"
+      },
+      "diagnosticEvidence": [
+        {
+          "file": "native-probe.json",
+          "sha256": "sha256:cd4c2b2581b6db01faa6b5cd0efd468dbda3b1897397778bd110f68c2e753c81"
+        },
+        {
+          "file": "native-http-probe.json",
+          "sha256": "sha256:2ffb69131a1cd389e292f68540928e9725113ab0332bd9b7050b6ab786c85094"
+        },
+        {
+          "file": "native-source-http-probe.json",
+          "sha256": "sha256:62a576ce1ca25d58421015be01f082544b5655a44978c24f3d7f5d7c2b726100"
+        }
+      ]
+    },
+    "linux-amd64": {
+      "status": "compatible",
+      "binarySha256": "sha256:0a620900bfe6a9b6f73ddadfd945e7f7ec168a4ed6d7ef1a93c2c6d261419a87",
+      "sourceCommit": "0a07391da494237f3c2d911a6df867cb871277fc",
+      "checks": [
+        {
+          "id": "initialize",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "tools-list",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "law_packages",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "law_search",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "law_rules",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "law_sources",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_A",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_B",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_C",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_D",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_1",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_10",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_11",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_12",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_2",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_3",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_4",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_5",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_6",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_7",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_8",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_9",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_PREFACE",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "TouchIntentUnknown/must-move",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "FirstIllegal/loss",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "FirstIllegal/draw",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegal/loss",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegal/draw",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegalNoMate/loss",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegalNoMate/draw",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFall/loss",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFall/draw",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFallNoMate/loss",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFallNoMate/draw",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "RapidFirstIllegal/extra-time-black-60",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "RapidFirstIllegal/extra-time-black-120",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "BlitzFirstIllegalCompetitive/extra-time-black-120",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "BlitzFirstIllegalCompetitive/extra-time-black-60",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "ShortOfTimeRecording/must-record",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "DeviceWarning/penalty-differs",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "DeviceWarning/loss",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "touch-explicit-adjudicated",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "empirical-missing",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "empirical-negative",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "empirical-conflicting",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0.25",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0.5",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0.75",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-1",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-1.5",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "foreign-cnaf-package",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "drafting-denied",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "adversarial-denied",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "editing-denied",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "missing-explicit-context",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "publication-unavailable",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "query-inference-no-context",
+          "transport": "stdio",
+          "status": "passed"
+        },
+        {
+          "id": "healthz",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "auth-refusal",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "origin-refusal",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "initialize",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "tools-list",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "law_packages",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "law_search",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "law_rules",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "law_sources",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_A",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_B",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_C",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_APP_D",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_1",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_10",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_11",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_12",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_2",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_3",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_4",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_5",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_6",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_7",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_8",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_ART_9",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "source-policy:urn:fide:laws:clir:chess#FIDE_PREFACE",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "TouchIntentUnknown/must-move",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "FirstIllegal/loss",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "FirstIllegal/draw",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegal/loss",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegal/draw",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegalNoMate/loss",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "SecondIllegalNoMate/draw",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFall/loss",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFall/draw",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFallNoMate/loss",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "FlagFallNoMate/draw",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "RapidFirstIllegal/extra-time-black-60",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "RapidFirstIllegal/extra-time-black-120",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "BlitzFirstIllegalCompetitive/extra-time-black-120",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "BlitzFirstIllegalCompetitive/extra-time-black-60",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "ShortOfTimeRecording/must-record",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "DeviceWarning/penalty-differs",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "DeviceWarning/loss",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "touch-explicit-adjudicated",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "empirical-missing",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "empirical-negative",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "empirical-conflicting",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0.25",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0.5",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-0.75",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-1",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "decimal-half-point-1.5",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "foreign-cnaf-package",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "drafting-denied",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "adversarial-denied",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "editing-denied",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "missing-explicit-context",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "publication-unavailable",
+          "transport": "http",
+          "status": "passed"
+        },
+        {
+          "id": "query-inference-no-context",
+          "transport": "http",
+          "status": "passed"
+        }
+      ],
+      "diagnosticEvidence": [
+        {
+          "file": "offline-smoke.json",
+          "sha256": "sha256:9dc87be88308dd1ea75758e375d733f9ba01ea9b36f2c9553c18d649730ccc88",
+          "networkIsolation": "docker --network none; no law-dsl mount"
+        }
+      ]
+    }
+  },
+  "fullCorpus": "not_checked",
+  "releaseVerified": false
+}

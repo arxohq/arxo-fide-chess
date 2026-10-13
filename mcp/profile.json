@@ -1,0 +1,30 @@
+{
+  "name": "fide-chess",
+  "lang": "en",
+  "jurisdiction": "FIDE Laws of Chess — independent Arxo teaching demonstration, not endorsed or supplied by FIDE",
+  "primaryJurisdiction": "International",
+  "serverName": "arxo-fide-chess-mcp",
+  "prefixes": [
+    "fide-laws-chess"
+  ],
+  "borrowed": [],
+  "calendarPackage": null,
+  "canon": "fide.chess/0.1.0",
+  "requireExplicitContext": true,
+  "note": "Technical preview of the pinned FIDE Laws of Chess model, edition effective 1 January 2023. Execution requires caller-supplied legalTime and context (timezone, decisionTime, knowledgeTime). An absent judgment remains absent; NEITHER is not an arbiter decision. Publisher FIDE terms apply to retained quotations.",
+  "facets": {
+    "allow": [
+      "reference",
+      "execution"
+    ],
+    "deny": {
+      "argumentation": "Argument construction requires separate acceptance.",
+      "process": "Procedure execution is outside this initial preview.",
+      "editions": "This preview serves the pinned edition only.",
+      "feedback": "No external feedback or publication service is configured.",
+      "drafting": "Model authoring is maintained in the development repository.",
+      "adversarial": "Adversarial searches are outside the accepted public surface.",
+      "editing": "This server does not modify the pinned corpus."
+    }
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "format": "arxo.mcp-source-policy/0.1",
+  "sourceCommit": "3550570cef14da097ae92250f8e1b953f8a040e6",
+  "decision": "preserve-existing-public-pinned-fragments",
+  "basis": "Preserve already published FIDE model bytes, pins, source notices and quotations. No new publisher text is fetched or added. The Arxo code licence does not grant rights to publisher text.",
+  "publisherHosts": [
+    "handbook.fide.com"
+  ],
+  "distribution": {
+    "withheldPaths": [],
+    "fetchWithheld": false,
+    "newReproductionRightsGranted": false,
+    "allowedExistingFragments": [
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_APP_A",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:9402a5bf8f62b133762fe9942913db2da04483626bce5611a497df8dd3e98a5f",
+        "textSha256": "sha256:6644e643d9995e31953930c29af6f5939af223a83557edc57266ac6b97fac27f",
+        "characters": 2865,
+        "bytes": 2871,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_APP_B",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:7c468152e374f171935a950801157661f606ebcee11f742e63ba22d39a67d4ff",
+        "textSha256": "sha256:b9813a5ca31f8e53e8d1abb71bcd2cd090e3cd48e5b65b547562fd7290cc2ebe",
+        "characters": 888,
+        "bytes": 892,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_APP_C",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:da9c4560cdeb2f5df472596a74a11b5c0eab7c36f02f7b1e3af22f0d63021faf",
+        "textSha256": "sha256:2519050511a9e764f8ee2c8490195552b4fe95fc4c9abe3abbd98cbad4ad13a7",
+        "characters": 4946,
+        "bytes": 4964,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_APP_D",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:85cf6e4380f1d5d1744117681911c12b363affa66e5c0e634c963ae36c9d18e6",
+        "textSha256": "sha256:506cbb4333d7fd4b5b0e67e48bdf3e79e343c88227a0206fff7d7f8918acd966",
+        "characters": 4716,
+        "bytes": 4732,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_1",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:9d895a73ed09ca2c47dd0ac3356358c3b671b8d14ec46839968f1d436a1b9b6b",
+        "textSha256": "sha256:5c49d18d248eb3807140df33f3077ca1838d3fa060df208068489543f4107f1c",
+        "characters": 1028,
+        "bytes": 1066,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_10",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:f5f6c1de318a21cbfa45fd74a6ca58379cd85a11a9613281dda1ffbc0fcc8af6",
+        "textSha256": "sha256:5d058a2fa0cf87bb74d5f8f02f3c59f4118dc845e3a00e903d4a3d9c28129520",
+        "characters": 511,
+        "bytes": 514,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_11",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:95561ab287702e32e6035977045db53e4380fdaefb08e3417e616c394b395368",
+        "textSha256": "sha256:bc5905e5d415f7573a86c6c003dbf3773788d18813a3fff5184e961cbec95137",
+        "characters": 3418,
+        "bytes": 3438,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_12",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:d7aa193cc4bd00b60c793ace692cbf7df0aa4d66769ea5ebb00f62a76c4528ae",
+        "textSha256": "sha256:bea61fbf4897529826fb45ec54100f180e0a323dd4423fb8cd54149c62083094",
+        "characters": 2372,
+        "bytes": 2374,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_2",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:95d0bd078411c45ce6cbf45daa39f0bc677745c6b82b16306757c4d2f5423d7e",
+        "textSha256": "sha256:24184a7d160eec9afefd5f349018548d6e41072436807204a74c8c97f3630da5",
+        "characters": 826,
+        "bytes": 854,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_3",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:71e8ec9876dca1f9241b86fdc2ef4bfad418cdca5c153548e509b42ebc789193",
+        "textSha256": "sha256:70607ebf269ef244f7c9ea7dcab1022cdb13fd47312aca84c0865f42a9354d5b",
+        "characters": 4021,
+        "bytes": 4049,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_4",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:b4c6f74e76377e9137c884d3e5ad25d377c6e99aed22613711a449373ac75ecd",
+        "textSha256": "sha256:7007dbe794a4826dce5bb1219730b88243b8712f4f548976699c261d2be0d65d",
+        "characters": 3791,
+        "bytes": 3819,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_5",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:06422578a97c08fe23350dedb44428172c1eb51f300180198ece11cf5fb7096b",
+        "textSha256": "sha256:8f6c680e6f6c7ca545d105654528cf9643fed5dcf1ed4a42a6373bb2057bafff",
+        "characters": 1303,
+        "bytes": 1323,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_6",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:9cd644536d33fddb89f0598605d4b4b74f010316188a81fdfec130abb7903e1a",
+        "textSha256": "sha256:6a63cfc111f0cae118807846fee1e151bba1e0dcd12f9e1b5d3fc5488a9fcc4b",
+        "characters": 5537,
+        "bytes": 5579,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_7",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:a82edbe4edea236d6ebf05ad91787e469ca69f2a19c2851a81680b6dc3297abc",
+        "textSha256": "sha256:7b5ef05c341fd6a9b1ff9413600bf2a557bbe09c88ad5bbf03d51cfa664c2249",
+        "characters": 3136,
+        "bytes": 3142,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_8",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:ef50d48224ccac57663774b9fd1ef21f2005f24aa06bbfe449baf38aee9a941d",
+        "textSha256": "sha256:8fc6eb21255d62cf6e4ee3d0384b1a873a27dfd4d655b3dcecfb06e26813cb1c",
+        "characters": 3428,
+        "bytes": 3446,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_ART_9",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:a0b080153ae9a6a1baa951ac587554ad69119641cbcb0cb3ffa888c6aa780d7f",
+        "textSha256": "sha256:6c8cdd87141ab27aad5b9b7e6fe77a33e79b67eef044932bb4fd11934d1cffb2",
+        "characters": 3560,
+        "bytes": 3562,
+        "status": "official",
+        "language": "en"
+      },
+      {
+        "package": "fide.laws.chess",
+        "version": "0.1.1",
+        "id": "urn:fide:laws:clir:chess#FIDE_PREFACE",
+        "edition": "urn:fide:laws:clir:chess#FIDE_LAWS_2023",
+        "nodeContentHash": "sha256:345c073a7517519494982db8979fd187c21e20d87a966876c3aa9f35b7bb9943",
+        "textSha256": "sha256:e200932fde8e9cacf2bc914e9cd73531fedcb6dd820f9d32cc1045d5eecbe49f",
+        "characters": 1013,
+        "bytes": 1013,
+        "status": "official",
+        "language": "en"
+      }
+    ]
+  },
+  "api": {
+    "sourceText": "Existing pinned English fragments only, checked by exact ID and text SHA-256.",
+    "missingLocalSource": "Report the publication URI and pinned hash without fetching or manufacturing text.",
+    "proofSourceLinks": "Actual runtime citations and a static join from producer rules to pinned fragment anchors are distinct evidence."
+  },
+  "datasetMutationAllowed": false,
+  "internalPathsExcluded": [
+    "analysis",
+    "drafts",
+    "tools",
+    "reviews",
+    "notes"
+  ],
+  "fullCorpus": "not_checked",
+  "releaseVerified": false
+}

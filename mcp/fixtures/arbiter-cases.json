@@ -1,0 +1,1195 @@
+{
+  "TouchIntentUnknown": {
+    "legalTime": "2023-06-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:696ba690ec316ad1654c94c94886b3d6e9764573460a0ed89f76280496c904fa",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#player",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:de94ca719cb2ea05e54b7dc85edb385d54754bf6ce633de75acf00366a5999e4",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#turn",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_has_the_move"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:08866b8446a78cb31b69450626daecc84efaf4031412c325f7df3b352337b0e0",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#own",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:king",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#own_piece_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:32ddbb5697aa6eba8235f46e11249545aa0015149049afa5654a7c584eb33042",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#movable",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:king",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#piece_can_be_moved"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2023-06-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "FirstIllegal": {
+    "legalTime": "2023-06-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:696ba690ec316ad1654c94c94886b3d6e9764573460a0ed89f76280496c904fa",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#player",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:9f7706ed8482cd04f869afdd849b90eea3c2e42ca246bf932c8a20f77a1fcc15",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#complete-mate-facts",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#checked_player"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:c1f44f19a8f6311022866bf5fcc029e2cdd766aa37c521ecbf34748111e83796",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#illegal-count",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 1
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#completed_illegal_move_count"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2023-06-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "SecondIllegal": {
+    "legalTime": "2023-06-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:696ba690ec316ad1654c94c94886b3d6e9764573460a0ed89f76280496c904fa",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#player",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:9f7706ed8482cd04f869afdd849b90eea3c2e42ca246bf932c8a20f77a1fcc15",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#complete-mate-facts",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#checked_player"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:cd688c83624c70688f10ead443e5c46c32ad7d3310696caf6dad9b80be7c1cb0",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#illegal-count",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 2
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#completed_illegal_move_count"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2023-06-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "SecondIllegalNoMate": {
+    "legalTime": "2023-06-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:696ba690ec316ad1654c94c94886b3d6e9764573460a0ed89f76280496c904fa",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#player",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:9f7706ed8482cd04f869afdd849b90eea3c2e42ca246bf932c8a20f77a1fcc15",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#complete-mate-facts",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#checked_player"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:cd688c83624c70688f10ead443e5c46c32ad7d3310696caf6dad9b80be7c1cb0",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#illegal-count",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 2
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#completed_illegal_move_count"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:e10a4ee04e31b511110e0cdf292905adf51079db0914e07a46ddb4ebceda1db6",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#mate-impossible",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#king_cannot_be_checkmated"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2023-06-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "FlagFall": {
+    "legalTime": "2026-09-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:3486a3875a9f0975db36a748fc1e3c406c14207e1454f4dee35917c64d5588d7",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#white",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:d3ecb8529ea816466be4ee6e0b5bdf131abd469a5f4b6ad6a1101914e768776c",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#black",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:black",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:feaf970e845c74026e1028ebdd182e26f7338cc17199f3f41b2d7280c5b67f83",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#complete-mate-facts-white",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#checked_player"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:bd5289f9c014b903a6989b0a6629feeffeef3b2ef403b2503e84ecdb6d144035",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#flag-observed",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#flag_fall_observed_by_arbiter"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:d769c3875a8425814973c80a0ecd49c8854db0f780041ed0fb9376251d578847",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#moves-not-completed",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#prescribed_moves_not_completed"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2026-09-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "FlagFallNoMate": {
+    "legalTime": "2026-09-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:3486a3875a9f0975db36a748fc1e3c406c14207e1454f4dee35917c64d5588d7",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#white",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:d3ecb8529ea816466be4ee6e0b5bdf131abd469a5f4b6ad6a1101914e768776c",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#black",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:black",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:feaf970e845c74026e1028ebdd182e26f7338cc17199f3f41b2d7280c5b67f83",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#complete-mate-facts-white",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#checked_player"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:bd5289f9c014b903a6989b0a6629feeffeef3b2ef403b2503e84ecdb6d144035",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#flag-observed",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#flag_fall_observed_by_arbiter"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:d769c3875a8425814973c80a0ecd49c8854db0f780041ed0fb9376251d578847",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#moves-not-completed",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#prescribed_moves_not_completed"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:e10a4ee04e31b511110e0cdf292905adf51079db0914e07a46ddb4ebceda1db6",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#mate-impossible",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#king_cannot_be_checkmated"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2026-09-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "RapidFirstIllegal": {
+    "legalTime": "2026-09-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:48f770cae0cebdf76653246fc2d06594b8f48760a03e6f451e8f0cbfd82084e9",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#opponent",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:black",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#opponent_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:029792c7b89a573b6776b7bde943c7d80c44333eed9d570c5727ab84cb078306",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#competition",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:open",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#game_in_competition"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:731b01f82dbce1fe9479fb5d5d7374a839bbad8489d933bc789663ebfb7cc6e9",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#base",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:open",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 900
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#time_control_base_seconds"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:d416ba2db7181c97686667f93d11ec8f2ee4c543d6511a32106a8bfa7473e945",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#increment",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:open",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 10
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#time_control_increment_seconds"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:c1f44f19a8f6311022866bf5fcc029e2cdd766aa37c521ecbf34748111e83796",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#illegal-count",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 1
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#completed_illegal_move_count"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2026-09-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "BlitzFirstIllegalCompetitive": {
+    "legalTime": "2026-09-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:48f770cae0cebdf76653246fc2d06594b8f48760a03e6f451e8f0cbfd82084e9",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#opponent",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:black",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#opponent_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:c8dd0df23973666743bc22c3bc727c7b1c2494546db3611d458adf393c707c8e",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#competition",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:final",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#game_in_competition"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:69cbe923e4f31514bdcc8b907340a502c67497b39d05895d2d4644b1ca95bc2c",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#base",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:final",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 180
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#time_control_base_seconds"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:32ddedfd07a94d2ae971b8cd806764c09089d4009a0bc1cd228531846d40fe14",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#increment",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:final",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 2
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#time_control_increment_seconds"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:f2e4d6b05eeab62494b03238393a352c3f86939e13c1806b72381420b0765d38",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#regime",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:final",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#event_regulations_choose_competitive_rules"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:529d2b96e4bce39f895120acbd1f80126d496ef2aeffa5df79b09df0cbc5c72c",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#supervision",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:final",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 1
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#games_supervised_by_one_arbiter"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:a8bdea9af90eb3112c32a1d9fde6a4c779873b1a8a7a79d3d5b637bee582e108",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#recorded",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:final",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#each_game_recorded_by_arbiter"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:c1f44f19a8f6311022866bf5fcc029e2cdd766aa37c521ecbf34748111e83796",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#illegal-count",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 1
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#completed_illegal_move_count"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2026-09-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "ShortOfTimeRecording": {
+    "legalTime": "2026-09-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:3486a3875a9f0975db36a748fc1e3c406c14207e1454f4dee35917c64d5588d7",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#white",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#player_of"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:ea5ef4bda69914ce468d54ced810ecf5d38928bebaa6995ac271e0b8793b0947",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#competition",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:classic",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#game_in_competition"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:357d63bc71072ca4548214044f4914383e604c262a60ed9c03c2ea0299965e7e",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#base",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:classic",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 5400
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#time_control_base_seconds"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:852f0ec48d12af6d8bc9030d48ed76816623a43092fbea60f53b296482004580",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#increment",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:classic",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Integer"
+              },
+              "value": 0
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#time_control_increment_seconds"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:38ce392d8fa7345ae5447ca02a232b1a89b960e31be3056f9e4aae032a76e6b9",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#clock",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "kind": "value",
+              "type": {
+                "name": "urn:law:std#Decimal"
+              },
+              "value": "240"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#remaining_time_seconds"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2026-09-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  },
+  "DeviceWarning": {
+    "legalTime": "2026-09-01",
+    "assertions": [
+      {
+        "contentHash": "sha256:ea5ef4bda69914ce468d54ced810ecf5d38928bebaa6995ac271e0b8793b0947",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#competition",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:classic",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#game_in_competition"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:cdb05698093001c4d8e0bfa7d58e16f9e8ce58adaa1e0a4c3dbdbb23ede9073d",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#device",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#electronic_device_evident_on_person"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      },
+      {
+        "contentHash": "sha256:21f18162cb6e83030bddb4ba74092afe70afaac738931c3cb77991ce9252ff42",
+        "evidence": [],
+        "id": "urn:law:examples:chess:arbiter#penalty",
+        "kind": "assertion",
+        "literal": {
+          "args": [
+            {
+              "id": "urn:example:chess:game",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:example:chess:white",
+              "kind": "entity_ref"
+            },
+            {
+              "id": "urn:fide:laws:clir:chess#warning",
+              "kind": "const_ref"
+            }
+          ],
+          "kind": "literal",
+          "polarity": "positive",
+          "predicate": "urn:fide:laws:clir:chess#penalty_imposed"
+        },
+        "origin": "case_input",
+        "package": "urn:law:examples:chess:arbiter"
+      }
+    ],
+    "context": {
+      "decisionTime": "2026-09-08T12:00:00Z",
+      "knowledgeTime": "2026-09-08T12:00:00Z",
+      "legalTime": "2026-09-01",
+      "timezone": "UTC"
+    },
+    "options": {}
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "format": "arxo.mcp-helper-snapshot/0.1",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "bytes": 63,
+      "sha256": "sha256:6e6188de331018d5f76c3655f8685f57b4d6030086aebffc06e18e3c06646cd3"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 920,
+      "sha256": "sha256:8cf88542c8abdeb0099e9d79eee052b2c01333fe7f2eaedec7a18e164dea25e9"
+    },
+    {
+      "path": "compose.yaml",
+      "bytes": 1802,
+      "sha256": "sha256:7c0e9afa754ec18f3acbef28a5d2d1fa44409fb715d6ac7f53c620ecba02bd92"
+    },
+    {
+      "path": "mcp/ingress.conf",
+      "bytes": 1261,
+      "sha256": "sha256:7a1de15ab86d83e6ea56205b7ebb03342465b4c94b67b7572df36c271e5aa51a"
+    },
+    {
+      "path": "tools/acquire_mcp.py",
+      "bytes": 169,
+      "sha256": "sha256:68d6fd9f9d587ab3f4406fe873098afd8f8b0ae9dc8042bbf920ee64dd675d4f"
+    },
+    {
+      "path": "tools/build_mcp.py",
+      "bytes": 167,
+      "sha256": "sha256:2f2c95d20a9e7fe1cfec4198652e6394b37a188553310952e1a11d02c1409d57"
+    },
+    {
+      "path": "tools/bundle_mcp.py",
+      "bytes": 168,
+      "sha256": "sha256:8a56743ef964444875e5b7c6d59cd6f281878decadf8049f080d0138b836c5e5"
+    },
+    {
+      "path": "tools/check_mcp_source_policy.py",
+      "bytes": 175,
+      "sha256": "sha256:5802b164f1c3fb025a9a80ae6b55a44f6b06f18fe7aa85f7dc7abcb278ca676e"
+    },
+    {
+      "path": "tools/materialize_mcp.py",
+      "bytes": 173,
+      "sha256": "sha256:e60c32167ba3864c8be7eebacc6b627354835b58a12058ac6066cdd035faae2a"
+    },
+    {
+      "path": "tools/mcp_entrypoint.sh",
+      "bytes": 1356,
+      "sha256": "sha256:1a942a4773951d5331cd04918c2125c4c3f0fe1eced049a6544d001bd1e3d283"
+    },
+    {
+      "path": "tools/mcp_identity.py",
+      "bytes": 131,
+      "sha256": "sha256:1c30b1d29b61a75dcf9bb473082410bb39599de7b491c430f3ce57506bbfe27a"
+    },
+    {
+      "path": "tools/mcp_npm.py",
+      "bytes": 165,
+      "sha256": "sha256:4fc10bbb4fce693395a6971559f0369e2dbf063e23f18758be355cde14688b10"
+    },
+    {
+      "path": "tools/mcp_smoke.py",
+      "bytes": 167,
+      "sha256": "sha256:f38f169100bab282a7b319546675bdc1811e1e481c4a8b70b0ebc31850b3c1fb"
+    },
+    {
+      "path": "tools/offline_mcp.py",
+      "bytes": 169,
+      "sha256": "sha256:e1759442d29009e5e4d46acc84e7a07fc0b6f1f564901eb1b8943fb2623b30e4"
+    },
+    {
+      "path": "tools/promote_mcp.py",
+      "bytes": 169,
+      "sha256": "sha256:670d76981b6b99c242021e61342fdae98a901f709d237829cf428555d5579e02"
+    },
+    {
+      "path": "tools/standalone_mcp/__init__.py",
+      "bytes": 78,
+      "sha256": "sha256:e34cd1cf1a77e0eb7daf737180db528b64d25e1c8d2d501fc1ef0b4b3f08cc1c"
+    },
+    {
+      "path": "tools/standalone_mcp/acquire.py",
+      "bytes": 3591,
+      "sha256": "sha256:3f79367abd36fbb94a8d71f06596e80f6c613bc9d1ac3a5fa03d59c17190d545"
+    },
+    {
+      "path": "tools/standalone_mcp/build.py",
+      "bytes": 12308,
+      "sha256": "sha256:9ba6a0f0dbd78beb9122fdd5ffbd5361a4471241fe0177dcb9d222d541bbfe37"
+    },
+    {
+      "path": "tools/standalone_mcp/bundle.py",
+      "bytes": 2880,
+      "sha256": "sha256:ccb7901932ab3940ba3cbefa8920842ae693536cf2542d51d25263fb731fb7a4"
+    },
+    {
+      "path": "tools/standalone_mcp/config.py",
+      "bytes": 4942,
+      "sha256": "sha256:0a2feaeeb87fa264e545dc67dd17e85487af99a38aeaf3fa37b57551efcaa7ba"
+    },
+    {
+      "path": "tools/standalone_mcp/identity.py",
+      "bytes": 5076,
+      "sha256": "sha256:ee1cbb752fd60a0886a5f4a969fd86e339f5c81b87c29558de936db6d0527a00"
+    },
+    {
+      "path": "tools/standalone_mcp/materialize.py",
+      "bytes": 27348,
+      "sha256": "sha256:271af2cd870750e480b0e579c7b40a257f97ba4d3affe08c99a4edee44415c43"
+    },
+    {
+      "path": "tools/standalone_mcp/npm.py",
+      "bytes": 19564,
+      "sha256": "sha256:5cbd36a45293c02f205cfd470857749c7e21d3ef7df839aa176b032070d570e5"
+    },
+    {
+      "path": "tools/standalone_mcp/offline.py",
+      "bytes": 3280,
+      "sha256": "sha256:58d78cdc7f9c4aacc82d55dd689b6709ec3e7760f2a91d14d587c3ae49f97a85"
+    },
+    {
+      "path": "tools/standalone_mcp/promote.py",
+      "bytes": 9330,
+      "sha256": "sha256:e78b103f40b5a29c9b03a490801b921dbca2313591dedc999d03dac8933eac48"
+    },
+    {
+      "path": "tools/standalone_mcp/smoke.py",
+      "bytes": 23661,
+      "sha256": "sha256:095479275673c9f18444e7164b10f02f34a6f4980f02649a08c01e12e6ef1c30"
+    },
+    {
+      "path": "tools/standalone_mcp/source_policy.py",
+      "bytes": 5971,
+      "sha256": "sha256:719fb4c42adcb6fa8e3794fd0dd352e1bb2ab831483235dfbcae87126bdb3c58"
+    },
+    {
+      "path": "tools/standalone_mcp/verify.py",
+      "bytes": 4737,
+      "sha256": "sha256:5ade4c26a21f55580540e08eb5f51aa3f5f40a0ba17c57f26601b7d858fcf6e7"
+    },
+    {
+      "path": "tools/verify_mcp_runtime.py",
+      "bytes": 168,
+      "sha256": "sha256:83a0a97fc1c44591554bf4276e58e938d205f5d793167df319419b4e7a878c88"
+    }
+  ],
+  "toolSource": "arxohq/arxo-corpus:apps/registry/standalone_mcp",
+  "fullCorpus": "not_checked",
+  "releaseVerified": false,
+  "canonicalSourceCommit": "dfbf245c849bb31e9b7198204fa7d69d51b9ac63"
+}
