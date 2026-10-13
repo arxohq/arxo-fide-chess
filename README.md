@@ -18,7 +18,7 @@ The separate native MCP wrapper runs the same pinned model over stdio:
 npx -y @arxo/mcp-fide-chess@0.1.0
 ```
 
-Node.js 20+, Linux x64 or macOS arm64. [Client configuration, HTTP endpoint, inputs and limitations](docs/mcp.md) · [OCI recipe](docs/mcp-release.md) · [npm recipe](docs/mcp-npm-release.md). This MCP delivery is separate from the model-library package below.
+Node.js 20+, Linux x64 or macOS arm64. [Client configuration, HTTP endpoint, inputs and limitations](docs/mcp.md) · [OCI recipe](docs/mcp-release.md) · [npm recipe](docs/mcp-npm-release.md) · [Accepted delivery](docs/mcp-release.md#accepted-delivery--14-october-2026). This MCP delivery is separate from the model-library package below.
 
 ## Start in Node.js
 

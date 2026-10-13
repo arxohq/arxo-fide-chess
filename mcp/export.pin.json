@@ -50,13 +50,13 @@
     },
     {
       "path": "docs/mcp-release.md",
-      "bytes": 2495,
-      "sha256": "sha256:981365a9c2e408ded2019626dc93518b674baaa559cdc6f1c8b99141da8464df"
+      "bytes": 7895,
+      "sha256": "sha256:abb9ad789498267e01b1b89da4a54e1c7f7c77e6a51bb89a2687132a9ac9bea7"
     },
     {
       "path": "docs/mcp.md",
-      "bytes": 4055,
-      "sha256": "sha256:351b58f39ad76ab2006beac749d3491e820e44e8e24a1e223aafb8360eb116b5"
+      "bytes": 4485,
+      "sha256": "sha256:32acaab34eb305557e2bc82789fb73276b825e6487803e2b6d9f0673b968ae0e"
     },
     {
       "path": "examples/arbiter/README.md",
