@@ -14,6 +14,7 @@ ap=argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--candidate',type=Path,required=True)
 ap.add_argument('--node',type=Path,required=True)
 ap.add_argument('--out',type=Path,required=True)
+ap.add_argument('--registry-install',action='store_true',help='Install the exact version by name from public npm after publication')
 a=ap.parse_args();root=Path(__file__).resolve().parents[1]
 a.candidate=a.candidate.resolve();a.node=a.node.resolve();a.out=a.out.resolve()
 if a.out.exists():raise ValueError('Use a new consumer directory')
@@ -38,7 +39,7 @@ with tarfile.open(archive) as tar:
         if not any(p['path']=='package/'+name and p['bytes']>0 for p in inventory):raise ValueError('Missing '+name)
 a.out.mkdir(parents=True)
 (a.out/'package.json').write_text(json.dumps({'private':True,'type':'module',
-    'dependencies':{'@arxo/canon-fide-chess':'file:'+str(archive),'@arxo/law':'0.4.3'},
+    'dependencies':{'@arxo/canon-fide-chess':'0.1.0' if a.registry_install else 'file:'+str(archive),'@arxo/law':'0.4.3'},
     'devDependencies':{'typescript':'5.9.3'}},indent=2)+'\n')
 env=os.environ.copy();env['PATH']=str(a.node.parent)+os.pathsep+env['PATH']
 steps=[]
@@ -59,6 +60,6 @@ run('bundled-example',[str(a.node),'node_modules/@arxo/canon-fide-chess/examples
 report={'format':'arxo.fide-chess-installed-check/1','passed':True,
     'node':subprocess.check_output([str(a.node),'--version'],text=True).strip(),
     'tarball':row,'sdk':'0.4.3','engine':'0.5.3','typescript':'5.9.3','skipLibCheck':False,
-    'checks':steps,'inventory':inventory,'published':False,'releaseVerified':False,'corpus':'not_checked'}
+    'checks':steps,'inventory':inventory,'published':a.registry_install,'releaseVerified':False,'corpus':'not_checked'}
 (a.out/'verification.json').write_text(json.dumps(report,indent=2)+'\n')
 print('Installed FIDE candidate verified:',report['node'],flush=True)

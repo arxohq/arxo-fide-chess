@@ -62,3 +62,11 @@ IDs to the pinned model; the current SDK source-anchor arrays are empty.
 
 These local checks do not assert public publication or full subject acceptance.
 See `verification/delivery-checks.json` for the prepared evidence.
+
+## Public delivery
+
+The repository is public. [Public CI](https://github.com/arxohq/arxo-fide-chess/actions/runs/38452471203) passed on Node.js 20 and 24 and reproduced the pinned CLIR on Linux. The released CLI install/ask commands passed in a fresh public clone.
+
+[Dry run](https://github.com/arxo-io/law/actions/runs/38452941907) and [npm publication](https://github.com/arxo-io/law/actions/runs/38453113544) succeeded. npm 0.1.0 is published under latest. The version endpoint and public archive were verified anonymously against the exact prepared SHA-256 and size. [README assets](https://github.com/arxohq/arxo-fide-chess/releases/tag/npm-v0.1.0) are public; all four PNGs were downloaded anonymously and match the shipped manifest.
+
+Root npm metadata propagation and ordinary installation are checked separately. The first ordinary install encountered an npm CDN 404 after the version endpoint was already available; it is preserved as a failed propagation attempt, not a reason for another publication. Full corpus: `not_checked`; `releaseVerified: false`.
