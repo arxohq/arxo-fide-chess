@@ -2,6 +2,8 @@
 
 # FIDE Laws of Chess on Arxo
 
+[![Smithery](https://smithery.ai/badge/arxohq/fide-chess)](https://smithery.ai/servers/arxohq/fide-chess)
+
 **Explore a chess arbiter's decision through a pinned model, explicit facts and an inspectable answer.** Ten retained fictional cases cover illegal moves, flag fall, rapid/blitz exceptions, recording and arbiter judgment.
 
 **Node.js 20+ · ESM · canon package 0.1.0 · model 0.1.1 · FIDE edition effective 1 January 2023**
