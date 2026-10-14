@@ -4,25 +4,19 @@
 
 **Explore a chess arbiter's decision through a pinned model, explicit facts and an inspectable answer.** Ten retained fictional cases cover illegal moves, flag fall, rapid/blitz exceptions, recording and arbiter judgment.
 
-**Node.js 20+ · ESM · npm 0.1.0 · model 0.1.1 · FIDE edition effective 1 January 2023**
+**Node.js 20+ · ESM · canon package 0.1.0 · model 0.1.1 · FIDE edition effective 1 January 2023**
 
-[Start in Node.js](#start-in-nodejs) · [Cases](#choose-a-case) · [Evidence](#inspect-the-evidence) · [Depth](#formalization-depth) · [Source repository](https://github.com/arxohq/arxo-fide-chess)
+[Start in Node.js](#start-in-nodejs) · [Cases](#choose-a-case) · [Evidence](#inspect-the-evidence) · [Depth](#formalization-depth) · [Submit a case](https://github.com/arxohq/arxo-fide-chess/issues/new) · [Source repository](https://github.com/arxohq/arxo-fide-chess)
 
 This is an independent open-source teaching and research demonstration. For an actual chess ruling, use the authentic FIDE Laws and the competent arbiter. Source text and model scope are pinned; the package does not claim general chess-engine capability or complete formalization.
 
-## Use as an MCP server
-
-The separate native MCP wrapper runs the same pinned model over stdio:
-
-```sh
-npx -y @arxo/mcp-fide-chess@0.1.0
-```
-
-Node.js 20+, Linux x64 or macOS arm64. [Client configuration, HTTP endpoint, inputs and limitations](docs/mcp.md) · [OCI recipe](docs/mcp-release.md) · [npm recipe](docs/mcp-npm-release.md) · [Accepted delivery](docs/mcp-release.md#accepted-delivery--14-october-2026). This MCP delivery is separate from the model-library package below.
-
 ## Start in Node.js
 
-In a fresh directory:
+Requirements: **Node.js 20+**. The example uses ES modules; keep the `.mjs`
+extension. This recipe was checked on macOS arm64 with Node.js 20.20.2 on
+14 October 2026. No global CLI, Git clone or MCP client is needed for this route.
+
+Create a fresh directory, open a terminal there, then run:
 
 ```sh
 npm init -y
@@ -49,11 +43,50 @@ console.log(loss.evaluationStatus, loss.truthStatus); // COMPUTED, TRUE_ONLY
 console.log(draw.evaluationStatus, draw.truthStatus); // COMPUTED, NEITHER
 ```
 
-Change the case to `SecondIllegalNoMate`: the draw is `COMPUTED / TRUE_ONLY`. Its input establishes that the opponent cannot checkmate by any legal series. The separate loss query is `REQUIRES_JUDGMENT / NEITHER` because other reachable loss grounds can still require arbiter judgments.
+The two output lines are **loss**, then **draw**:
+
+```text
+COMPUTED TRUE_ONLY
+COMPUTED NEITHER
+```
+
+`COMPUTED` means the query was evaluated. `TRUE_ONLY` means it has positive
+support and no negative support. `NEITHER` means neither polarity is supported;
+it does not establish that the proposition is false.
+
+Now replace only `getCaseInput('SecondIllegal')` with
+`getCaseInput('SecondIllegalNoMate')` and run `node example.mjs` again:
+
+```text
+REQUIRES_JUDGMENT NEITHER
+COMPUTED TRUE_ONLY
+```
+
+The second line now establishes a draw. This case supplies the fact that the
+opponent cannot checkmate by any legal series. The separate loss query still
+requests an arbiter's assessment because other reachable loss grounds remain
+unresolved. Read both status fields; `REQUIRES_JUDGMENT` identifies an assessment
+the model does not decide on its own.
+
+To try another retained episode, choose a name from [the case table](#choose-a-case).
+To propose your own episode, [open an issue](https://github.com/arxohq/arxo-fide-chess/issues/new)
+with the case facts, legal date, query, package/runtime versions, output and the
+FIDE clause or model rule you think should give a different answer. Use a
+fictional or anonymized case.
 
 The SDK executes the rules through `@arxo/law-engine@0.5.3`. Installation alone does not register this distribution in the SDK's automatic canon resolver: keep the explicit `local.packages` handoff above. The loader implements no chess decisions or formulas.
 
 ![Model and episode to answer and proof](npm/assets/model-to-answer.svg)
+
+## Use as an MCP server
+
+The separate native MCP wrapper runs the same pinned model over stdio:
+
+```sh
+npx -y @arxo/mcp-fide-chess@0.1.0
+```
+
+Node.js 20+, Linux x64 or macOS arm64. [Client configuration, HTTP endpoint, inputs and limitations](docs/mcp.md) · [OCI recipe](docs/mcp-release.md) · [npm recipe](docs/mcp-npm-release.md) · [Accepted delivery](docs/mcp-release.md#accepted-delivery--14-october-2026). This MCP delivery is separate from the Node.js route above.
 
 ## Choose a case
 
@@ -193,7 +226,7 @@ This input was captured by released CLI 0.2.3 from the retained `.lawcase`; the 
 
 ## Inspect the evidence
 
-Preserve `answer.document` as the canonical bytes returned by Arxo. Repeated executions of identical explicit inputs reproduce those bytes and their hashes. `answer.proof.nodes` identifies the applied rules and their premises.
+Preserve `answer.document` as the canonical bytes returned by Arxo. With the same runtime version, pinned model and dependencies, repeated executions of identical complete inputs (query, facts, judgments, temporal context and options) reproduce those bytes and their hashes. `answer.proof.nodes` identifies the applied rules and their premises.
 
 The current SDK's `answer.sources` and proof-node source-anchor arrays are empty for these queries. Source links below are an explicit **static join** of executed producer IDs with anchors in the hash-checked model; they are not additional citations emitted by the evaluator. The pinned publication is the [FIDE Handbook, Laws 2023](https://handbook.fide.com/chapter/E012023).
 
