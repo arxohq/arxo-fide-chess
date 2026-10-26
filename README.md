@@ -2,7 +2,7 @@
 
 # FIDE Laws of Chess on Arxo
 
-[![Smithery](https://smithery.ai/badge/arxohq/fide-chess)](https://smithery.ai/servers/arxohq/fide-chess)
+[![LightNow capabilities](https://lightnow.ai/badge/io.arxo/fide-chess)](https://lightnow.ai/servers/io.arxo/fide-chess)
 
 **Explore a chess arbiter's decision through a pinned model, explicit facts and an inspectable answer.** Ten retained fictional cases cover illegal moves, flag fall, rapid/blitz exceptions, recording and arbiter judgment.
 
